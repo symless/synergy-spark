@@ -16,7 +16,8 @@
       "type": "lldb",
       "cwd": "${workspaceRoot}",
       "request": "launch",
-      "program": "${workspaceFolder}/build/deskflow/bin/deskflow"
+      "program": "${workspaceFolder}/build/deskflow/bin/deskflow",
+      "preLaunchTask": "kill-build"
     },
     {
       "name": "windows - gui",
@@ -24,7 +25,8 @@
       "cwd": "${workspaceRoot}",
       "request": "launch",
       "program": "${workspaceFolder}/build/deskflow/bin/deskflow",
-      "internalConsoleOptions": "openOnSessionStart"
+      "internalConsoleOptions": "openOnSessionStart",
+      "preLaunchTask": "kill-build"
     }
   ]
 }

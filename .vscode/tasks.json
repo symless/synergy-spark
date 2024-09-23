@@ -26,10 +26,26 @@
       "label": "gui",
       "type": "process",
       "command": "${workspaceFolder}/build/deskflow/bin/deskflow",
-      "dependsOn": ["build"],
+      "dependsOn": ["build", "kill"],
       "problemMatcher": [],
       "windows": {
         "command": "${workspaceFolder}/build/deskflow/bin/deskflow.exe"
+      }
+    },
+    {
+      "label": "kill-build",
+      "dependsOn": ["kill", "build"],
+      "problemMatcher": []
+    },
+    {
+      "label": "kill",
+      "type": "shell",
+      "command": "killall deskflow; killall deskflowc; killall deskflows || true",
+      "windows": {
+        "command": "taskkill /F /IM deskflow.exe /IM deskflowc.exe /IM deskflows.exe; $true"
+      },
+      "presentation": {
+        "reveal": "silent"
       }
     }
   ]
