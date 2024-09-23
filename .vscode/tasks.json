@@ -1,0 +1,36 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "setup.py",
+      "type": "shell",
+      "command": "./scripts/setup.py"
+    },
+    {
+      "label": "setup.py --skip-system",
+      "type": "shell",
+      "command": "./scripts/setup.py",
+      "args": ["--skip-system"]
+    },
+    {
+      "label": "build",
+      "type": "cmake",
+      "command": "build",
+      "targets": ["all"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "gui",
+      "type": "process",
+      "command": "${workspaceFolder}/build/deskflow/bin/deskflow",
+      "dependsOn": ["build"],
+      "problemMatcher": [],
+      "windows": {
+        "command": "${workspaceFolder}/build/deskflow/bin/deskflow.exe"
+      }
+    }
+  ]
+}
