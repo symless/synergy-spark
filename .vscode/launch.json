@@ -16,7 +16,7 @@
       "type": "lldb",
       "cwd": "${workspaceRoot}",
       "request": "launch",
-      "program": "${workspaceFolder}/build/deskflow/bin/deskflow",
+      "program": "${workspaceFolder}/build/deskflow/bin/synergy",
       "preLaunchTask": "kill-build"
     },
     {
@@ -24,7 +24,7 @@
       "type": "cppvsdbg",
       "cwd": "${workspaceRoot}",
       "request": "launch",
-      "program": "${workspaceFolder}/build/deskflow/bin/deskflow",
+      "program": "${workspaceFolder}/build/deskflow/bin/synergy",
       "internalConsoleOptions": "openOnSessionStart",
       "preLaunchTask": "kill-build"
     }

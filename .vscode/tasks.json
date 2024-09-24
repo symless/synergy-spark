@@ -25,11 +25,11 @@
     {
       "label": "gui",
       "type": "process",
-      "command": "${workspaceFolder}/build/deskflow/bin/deskflow",
+      "command": "${workspaceFolder}/build/deskflow/bin/synergy",
       "dependsOn": ["build", "kill"],
       "problemMatcher": [],
       "windows": {
-        "command": "${workspaceFolder}/build/deskflow/bin/deskflow.exe"
+        "command": "${workspaceFolder}/build/deskflow/bin/synergy.exe"
       }
     },
     {
@@ -40,9 +40,9 @@
     {
       "label": "kill",
       "type": "shell",
-      "command": "killall deskflow; killall deskflow-client; killall deskflow-server || true",
+      "command": "killall synergy; killall synergy-client; killall synergy-server || true",
       "windows": {
-        "command": "taskkill /F /IM deskflow.exe /IM deskflow-client.exe /IM deskflow-server.exe; $true"
+        "command": "taskkill /F /IM synergy.exe /IM synergy-client.exe /IM synergy-server.exe; $true"
       },
       "presentation": {
         "reveal": "silent"

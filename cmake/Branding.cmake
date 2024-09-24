@@ -14,12 +14,33 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.8)
+macro(configure_branding)
 
-project(synergy C CXX)
+  set(PRODUCT_NAME
+      "Synergy"
+      CACHE STRING "Product name")
 
-include(cmake/Branding.cmake)
+  set(GUI_BINARY_NAME
+      "synergy"
+      CACHE STRING "Filename of the GUI binary")
 
-configure_branding()
+  set(SERVER_BINARY_NAME
+      "synergy-server"
+      CACHE STRING "Filename of the server binary")
 
-add_subdirectory(deskflow)
+  set(CLIENT_BINARY_NAME
+      "synergy-client"
+      CACHE STRING "Filename of the client binary")
+
+  set(CORE_BINARY_NAME
+      "synergy-core"
+      CACHE STRING "Filename of the core binary")
+
+  set(DAEMON_BINARY_NAME
+      "synergy-daemon"
+      CACHE STRING "Filename of the daemon binary")
+
+  set(LEGACY_BINARY_NAME
+      "synergy-legacy"
+      CACHE STRING "Filename of the legacy binary")
+endmacro()
