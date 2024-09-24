@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "setup.py",
+      "name": "setup",
       "type": "debugpy",
       "request": "launch",
       "program": "scripts/setup.py",

@@ -47,6 +47,25 @@
       "presentation": {
         "reveal": "silent"
       }
+    },
+    {
+      "label": "reinstall daemon",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "scripts/daemon.py",
+        "--reinstall",
+        "--bin-name",
+        "synergy-daemon",
+        "--source-dir",
+        "../build/deskflow/temp/bin",
+        "--target-dir",
+        "../build/deskflow/bin"
+      ],
+      "dependsOn": ["build"],
+      "options": {
+        "cwd": "${workspaceFolder}/deskflow"
+      }
     }
   ]
 }
