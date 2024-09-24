@@ -25,7 +25,7 @@ def main():
 
 
 def setup_deskflow():
-    subprocess.run(["git", "clone", "https://github.com/deskflow/deskflow.git"])
+    subprocess.run(["git", "clone", "git@github.com:deskflow/deskflow.git"])
 
     current_dir = os.getcwd()
     try:
