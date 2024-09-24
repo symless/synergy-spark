@@ -19,17 +19,23 @@ import subprocess
 import sys
 import os
 
+DESKFLOW_DIR = "deskflow"
+
 
 def main():
     setup_deskflow()
 
 
+# Using CMake `FetchContent` would be nice, but that doesn't allow us to run the
+# `install_deps.py` script, which is necessary to install the dependencies before running CMake.
 def setup_deskflow():
-    subprocess.run(["git", "clone", "git@github.com:deskflow/deskflow.git"])
+    subprocess.run(
+        ["git", "clone", "git@github.com:deskflow/deskflow.git", DESKFLOW_DIR]
+    )
 
     current_dir = os.getcwd()
     try:
-        os.chdir("deskflow")
+        os.chdir(DESKFLOW_DIR)
         subprocess.run([sys.executable, "scripts/install_deps.py"] + sys.argv[1:])
     finally:
         os.chdir(current_dir)
