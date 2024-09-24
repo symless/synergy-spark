@@ -20,6 +20,7 @@ import sys
 import os
 
 DESKFLOW_DIR = "deskflow"
+DESKFLOW_TAG = "decommercialize"
 
 
 def main():
@@ -30,7 +31,14 @@ def main():
 # `install_deps.py` script, which is necessary to install the dependencies before running CMake.
 def setup_deskflow():
     subprocess.run(
-        ["git", "clone", "git@github.com:deskflow/deskflow.git", DESKFLOW_DIR]
+        [
+            "git",
+            "clone",
+            "git@github.com:deskflow/deskflow.git",
+            DESKFLOW_DIR,
+            "--branch",
+            DESKFLOW_TAG,
+        ]
     )
 
     current_dir = os.getcwd()
