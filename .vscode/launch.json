@@ -12,6 +12,13 @@
       "console": "integratedTerminal"
     },
     {
+      "name": "package",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "scripts/package.py",
+      "console": "integratedTerminal"
+    },
+    {
       "name": "unix - gui",
       "type": "lldb",
       "cwd": "${workspaceRoot}",

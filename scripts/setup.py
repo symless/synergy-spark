@@ -18,36 +18,15 @@
 import subprocess
 import sys
 import os
-import venv
+import lib.bootstrap as bootstrap
 
-VENV_DIR = ".venv"
 DESKFLOW_DIR = "deskflow"
 DESKFLOW_TAG = "decommercialize"
 
 
 def main():
-    if in_venv():
-        setup_deskflow()
-    else:
-        venv.create(VENV_DIR, with_pip=True)
-        run_in_venv()
-
-
-def run_in_venv():
-    print("Re-running in virtual environment...")
-    subprocess.run([get_python_executable(), __file__] + sys.argv[1:], check=True)
-
-
-def in_venv():
-    """Returns True if the script is running in a Python virtual environment."""
-    return sys.prefix != sys.base_prefix
-
-
-def get_python_executable(binary="python"):
-    if sys.platform == "win32":
-        return os.path.join(VENV_DIR, "Scripts", binary)
-    else:
-        return os.path.join(VENV_DIR, "bin", binary)
+    bootstrap.ensure_in_venv(__file__)
+    setup_deskflow()
 
 
 # Using CMake `FetchContent` would be nice, but that doesn't allow us to run the `install_deps.py`
