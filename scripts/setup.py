@@ -27,8 +27,11 @@ def main():
     setup_deskflow()
 
 
-# Using CMake `FetchContent` would be nice, but that doesn't allow us to run the
-# `install_deps.py` script, which is necessary to install the dependencies before running CMake.
+# Using CMake `FetchContent` would be nice, but that doesn't allow us to run the `install_deps.py`
+# script before configuring, which is necessary to install the dependencies before running CMake.
+# With `FetchContent`, there may be a way of running `install_deps.py`` before populating,
+# but it seemed quite complex and potentially required upstream changes. This approach seems
+# to be simpler and easier to maintain.
 def setup_deskflow():
     subprocess.run(
         [
