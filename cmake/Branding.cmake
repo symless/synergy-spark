@@ -52,6 +52,14 @@ macro(configure_branding)
       "${CMAKE_SOURCE_DIR}/res"
       CACHE STRING "Path to the res directory")
 
+  set(DESKFLOW_MAC_BUNDLE_CODE
+      "SYN1"
+      CACHE STRING "Mac bundle code (4 characters)")
+
+  configure_bin_names()
+endmacro()
+
+macro(configure_bin_names)
   set(GUI_BINARY_NAME
       "synergy"
       CACHE STRING "Filename of the GUI binary")
