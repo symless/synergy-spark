@@ -205,13 +205,8 @@ jobs:
         id: get
         run: |
           json_file="./deskflow/.github/workflows/ci-linux.json"
-          {
-            echo "json=<<EOF"
-            cat $json_file
-            echo "EOF"
-          } >> $GITHUB_OUTPUT
-
-          cat $GITHUB_OUTPUT
+          json=$(cat $json_file)
+          echo "json=$(echo $json)" >> $GITHUB_OUTPUT
 
   linux:
     needs: linux-matrix
