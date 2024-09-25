@@ -155,7 +155,7 @@ jobs:
         run: ./scripts/setup.py
 
       - name: Get version
-        uses: ./.github/actions/get-version
+        uses: ./deskflow/.github/actions/get-version
 
       - name: Configure
         run: cmake -B build --preset=mac-release
@@ -238,7 +238,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
 
       - name: Get version
-        uses: ./.github/actions/get-version
+        uses: ./deskflow/.github/actions/get-version
 
       - name: Configure
         run: cmake -B build --preset=linux-release ${{ matrix.distro.extra-cmake-args }}
