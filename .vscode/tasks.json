@@ -60,7 +60,11 @@
         "--source-dir",
         "../build/deskflow/temp/bin",
         "--target-dir",
-        "../build/deskflow/bin"
+        "../build/deskflow/bin",
+        "--service-id",
+        "synergy",
+        "--ignore-processes",
+        "synergy.exe"
       ],
       "dependsOn": ["build"],
       "options": {
