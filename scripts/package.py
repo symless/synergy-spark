@@ -20,17 +20,39 @@ import sys
 import os
 
 DESKFLOW_DIR = "deskflow"
-ARGS = ["--build-dir", "../build/deskflow"]
+DEFAULT_PREFIX = "synergy"
 
 
 def main():
+    args = [
+        "--filename-base",
+        get_env("SYNERGY_PACKAGE_PREFIX", default=DEFAULT_PREFIX),
+        "--build-dir",
+        "../build/deskflow",
+        "--dist-dir",
+        "../dist",
+    ]
 
     current_dir = os.getcwd()
     try:
         os.chdir(DESKFLOW_DIR)
-        subprocess.run([sys.executable, "scripts/package.py"] + ARGS)
+        subprocess.run([sys.executable, "scripts/package.py"] + args)
     finally:
         os.chdir(current_dir)
+
+
+def get_env(name, required=True, default=None):
+    value = os.getenv(name)
+    if value:
+        value = value.strip()
+
+    if not value:
+        if default:
+            return default
+        elif required:
+            raise ValueError(f"Required env var not set: {name}")
+
+    return value
 
 
 if __name__ == "__main__":
