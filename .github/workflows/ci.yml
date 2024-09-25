@@ -228,13 +228,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Should only restore the .venv directory from cache.
-      - name: Setup Python venv
-        uses: ./.github/actions/init-python
-        with:
-          cache-key: ci-${{ matrix.distro.name }}
-          setup: false
-
       - name: Config Git safe dir
         run: git config --global --add safe.directory $GITHUB_WORKSPACE
 
