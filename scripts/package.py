@@ -15,30 +15,34 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import subprocess
 import sys
 import os
 
-DESKFLOW_DIR = "deskflow"
+sys.path.insert(
+    0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../deskflow/scripts"))
+)
+
+import package
+
+PRODUCT_NAME = "Synergy"
+DESKFLOW_SOURCE_DIR = "deskflow"
+DESKFLOW_BUILD_DIR = "build/deskflow"
 DEFAULT_PREFIX = "synergy"
+DIST_DIR = "dist"
+VERSION_FILENAME = "deskflow/VERSION"
 
 
 def main():
-    args = [
-        "--filename-base",
-        get_env("SYNERGY_PACKAGE_PREFIX", default=DEFAULT_PREFIX),
-        "--build-dir",
-        "../build/deskflow",
-        "--dist-dir",
-        "../dist",
-    ]
-
-    current_dir = os.getcwd()
-    try:
-        os.chdir(DESKFLOW_DIR)
-        subprocess.run([sys.executable, "scripts/package.py"] + args)
-    finally:
-        os.chdir(current_dir)
+    filename_base = get_env("SYNERGY_PACKAGE_PREFIX", default=DEFAULT_PREFIX)
+    version = package.get_app_version(VERSION_FILENAME)
+    package.package(
+        filename_base,
+        version,
+        DESKFLOW_BUILD_DIR,
+        DIST_DIR,
+        PRODUCT_NAME,
+        source_dir=DESKFLOW_SOURCE_DIR,
+    )
 
 
 def get_env(name, required=True, default=None):
