@@ -16,9 +16,41 @@
 
 macro(configure_branding)
 
-  set(PRODUCT_NAME
+  if(NOT "$ENV{DESKFLOW_PRODUCT_NAME}" STREQUAL "")
+    set(DESKFLOW_PRODUCT_NAME $ENV{DESKFLOW_PRODUCT_NAME})
+  endif()
+
+  set(DESKFLOW_APP_ID
+      "synergy"
+      CACHE STRING "ID of the app for filenames, etc")
+
+  set(DESKFLOW_DOMAIN
+      "symless.com"
+      CACHE STRING "Domain of the app maintainer (not a URL)")
+
+  set(DESKFLOW_PRODUCT_NAME
       "Synergy"
       CACHE STRING "Product name")
+
+  set(DESKFLOW_AUTHOR_NAME
+      "Symless"
+      CACHE STRING "Author name")
+
+  set(DESKFLOW_MAINTAINER
+      "Synergy <support@symless.com>"
+      CACHE STRING "Maintainer email address in RFC 5322 mailbox format")
+
+  set(DESKFLOW_WEBSITE_URL
+      "https://symless.com/synergy"
+      CACHE STRING "URL of the app website")
+
+  set(DESKFLOW_VERSION_URL
+      "https://api.symless.com/version/synergy1"
+      CACHE STRING "URL to get the latest version")
+
+  set(DESKFLOW_RES_DIR
+      "${CMAKE_SOURCE_DIR}/res"
+      CACHE STRING "Path to the res directory")
 
   set(GUI_BINARY_NAME
       "synergy"
