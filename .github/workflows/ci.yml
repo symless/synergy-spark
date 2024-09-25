@@ -202,7 +202,13 @@ jobs:
         id: get
         run: |
           json_file="./deskflow/.github/actions/linux-matrix/matrix.json"
-          echo "json=$(cat $json_file)" >> $GITHUB_OUTPUT
+          {
+            echo "json=<<EOF"
+            cat $json_file
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+          cat $GITHUB_OUTPUT
 
   linux:
     needs: linux-matrix
