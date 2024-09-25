@@ -20,8 +20,7 @@ on:
 
 env:
   GIT_SHA: ${{ github.sha }}
-  DESKFLOW_PRODUCT_NAME: ${{ vars.DESKFLOW_PRODUCT_NAME }}
-  DESKFLOW_PACKAGE_PREFIX: ${{ vars.DESKFLOW_PACKAGE_PREFIX }}
+  PACKAGE_PREFIX: "synergy"
   PACKAGE_BUILD: ${{ !github.event.pull_request.draft }}
   PACKAGE_UPLOAD: ${{ !github.event.pull_request.draft }}
 
@@ -111,7 +110,7 @@ jobs:
         uses: ./.github/actions/dist-upload
         with:
           use-github: true
-          github-target-filename: "${{ env.DESKFLOW_PACKAGE_PREFIX }}-${{ matrix.target.name }}"
+          github-target-filename: "${{ env.PACKAGE_PREFIX }}-${{ matrix.target.name }}"
           package-version: ${{ env.DESKFLOW_VERSION }}
 
   macos:
@@ -186,7 +185,7 @@ jobs:
         uses: ./.github/actions/dist-upload
         with:
           use-github: true
-          github-target-filename: "${{ env.DESKFLOW_PACKAGE_PREFIX }}-${{ matrix.target.name }}"
+          github-target-filename: "${{ env.PACKAGE_PREFIX }}-${{ matrix.target.name }}"
           package-version: ${{ env.DESKFLOW_VERSION }}
 
   linux-matrix:
@@ -265,5 +264,5 @@ jobs:
         uses: ./.github/actions/dist-upload
         with:
           use-github: true
-          github-target-filename: "${{ env.DESKFLOW_PACKAGE_PREFIX }}-${{ matrix.distro.name }}"
+          github-target-filename: "${{ env.PACKAGE_PREFIX }}-${{ matrix.distro.name }}"
           package-version: ${{ env.DESKFLOW_VERSION }}
