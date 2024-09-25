@@ -198,6 +198,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install dependencies
+        run: ./scripts/setup.py --no-install-deps
+
       - name: Get JSON file
         id: get
         run: |

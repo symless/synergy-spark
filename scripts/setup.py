@@ -18,6 +18,7 @@
 import subprocess
 import sys
 import os
+import argparse
 import lib.bootstrap as bootstrap
 
 DESKFLOW_DIR = "deskflow"
@@ -27,8 +28,16 @@ DESKFLOW_REPO_HTTPS = "https://github.com/deskflow/deskflow.git"
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--no-install-deps",
+        action="store_true",
+        help="Leave test package installed",
+    )
+    args, _unknown = parser.parse_known_args()
+
     bootstrap.ensure_in_venv(__file__)
-    setup_deskflow()
+    setup_deskflow(args.no_install_deps == False)
 
 
 # Using CMake `FetchContent` would be nice, but that doesn't allow us to run the `install_deps.py`
@@ -36,7 +45,7 @@ def main():
 # With `FetchContent`, there may be a way of running `install_deps.py`` before populating,
 # but it seemed quite complex and potentially required upstream changes. This approach seems
 # to be simpler and easier to maintain.
-def setup_deskflow():
+def setup_deskflow(install_deps):
     if os.getenv("CI"):
         repo = DESKFLOW_REPO_HTTPS
     else:
@@ -53,12 +62,15 @@ def setup_deskflow():
         ]
     )
 
-    current_dir = os.getcwd()
-    try:
-        os.chdir(DESKFLOW_DIR)
-        subprocess.run([sys.executable, "scripts/install_deps.py"] + sys.argv[1:])
-    finally:
-        os.chdir(current_dir)
+    if install_deps:
+        current_dir = os.getcwd()
+        try:
+            os.chdir(DESKFLOW_DIR)
+            subprocess.run([sys.executable, "scripts/install_deps.py"] + sys.argv[1:])
+        finally:
+            os.chdir(current_dir)
+    else:
+        print("Skipping install deps")
 
 
 if __name__ == "__main__":
