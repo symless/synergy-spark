@@ -59,7 +59,7 @@ jobs:
           path: |
             vcpkg
             vcpkg_installed
-          key: vcpkg-${{ runner.os }}-${{ hashFiles('vcpkg.json', 'vcpkg-configuration.json') }}
+          key: vcpkg-${{ runner.os }}-${{ hashFiles('deskflow/vcpkg.json', 'deskflow/vcpkg-configuration.json') }}
 
       - name: Cache deps dir
         uses: actions/cache@v4
