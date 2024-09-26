@@ -18,7 +18,6 @@
 import subprocess
 import sys
 import os
-import argparse
 import lib.bootstrap as bootstrap
 
 DESKFLOW_DIR = "deskflow"
