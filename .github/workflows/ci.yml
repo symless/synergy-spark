@@ -56,13 +56,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      # HACK: Download Deskflow git repo first, but don't install deps.
-      # Maybe we should use submodules instead? That way we can just add the submodule
-      # arg to `actions/checkout`.
-      # Submodules suck, but maybe this is the appropriate use case.
-      - name: Install dependencies
-        run: python ./scripts/setup.py --no-install-deps
+        with:
+          submodules: true
 
       - name: Cache vcpkg dir
         uses: actions/cache@v4
@@ -160,6 +155,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          submodules: true
 
       - name: Cache deps dir
         uses: actions/cache@v4
@@ -221,9 +218,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Install dependencies
-        run: ./scripts/setup.py --no-install-deps
+        with:
+          submodules: true
 
       - name: Get JSON file
         id: get
@@ -248,6 +244,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          submodules: true
 
       - name: Config Git safe dir
         run: git config --global --add safe.directory $GITHUB_WORKSPACE
