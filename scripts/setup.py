@@ -43,15 +43,16 @@ def main():
 # but it seemed quite complex and potentially required upstream changes. This approach seems
 # to be simpler and easier to maintain.
 def setup_deskflow(install_deps):
-    subprocess.run(
-        [
-            "git",
-            "submodule",
-            "update",
-            "--init",
-            "--recursive",
-        ]
-    )
+    if not os.getenv("CI"):
+        subprocess.run(
+            [
+                "git",
+                "submodule",
+                "update",
+                "--init",
+                "--recursive",
+            ]
+        )
 
     if install_deps:
         current_dir = os.getcwd()
