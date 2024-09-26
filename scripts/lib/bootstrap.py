@@ -28,12 +28,14 @@ def add_deskflow_path(script):
 
 
 def ensure_in_venv(script):
-    if not in_venv():
+    if in_venv():
+        print(f"Running in venv, executable: {sys.executable}", flush=True)
+    else:
+        print(f"Using virtual environment for: {script}", flush=True)
         run_in_venv(script)
 
 
 def run_in_venv(script):
-    print("Re-running in virtual environment...")
     venv.create(VENV_DIR, with_pip=True)
     result = subprocess.run([get_python_executable(), script] + sys.argv[1:])
     sys.exit(result.returncode)
