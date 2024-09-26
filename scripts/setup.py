@@ -43,6 +43,8 @@ def setup_deskflow():
                 "update",
                 "--init",
                 "--recursive",
+                "--remote",
+                "--merge",
             ]
         )
 

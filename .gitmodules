@@ -1,3 +1,4 @@
 [submodule "deskflow"]
 	path = deskflow
 	url = git@github.com:deskflow/deskflow.git
+	branch = decommercialize
