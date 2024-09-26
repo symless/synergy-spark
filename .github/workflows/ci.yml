@@ -97,6 +97,7 @@ jobs:
         timeout-minutes: 2
         with:
           job: ${{ matrix.target.name }}
+          bin-dir: build/deskflow/bin
 
       - name: Package
         if: ${{ env.PACKAGE_BUILD == 'true' }}
@@ -171,6 +172,7 @@ jobs:
         timeout-minutes: 2
         with:
           job: ${{ matrix.target.name }}
+          bin-dir: build/deskflow/bin
 
       - name: Package
         if: ${{ env.PACKAGE_BUILD == 'true' }}
@@ -251,6 +253,7 @@ jobs:
         timeout-minutes: 2
         with:
           job: linux-${{ matrix.distro.name }}
+          bin-dir: build/deskflow/bin
 
       - name: Package
         if: ${{ env.PACKAGE_BUILD == 'true' }}
