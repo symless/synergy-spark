@@ -64,14 +64,14 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            vcpkg
-            vcpkg_installed
+            deskflow/vcpkg
+            deskflow/vcpkg_installed
           key: vcpkg-${{ runner.os }}-${{ hashFiles('deskflow/vcpkg.json', 'deskflow/vcpkg-configuration.json') }}
 
       - name: Cache deps dir
         uses: actions/cache@v4
         with:
-          path: ./deps
+          path: deskflow/deps
           key: ${{ runner.os }}-deps-${{ hashFiles('config.yaml') }}
 
       # This effectively runs `vcvarsall.bat`, etc. It's not actually installing
@@ -156,7 +156,7 @@ jobs:
       - name: Cache deps dir
         uses: actions/cache@v4
         with:
-          path: ./deps
+          path: deskflow/deps
           key: ${{ runner.os }}-deps-${{ hashFiles('config.yaml') }}
 
       - name: Install dependencies
