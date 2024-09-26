@@ -53,7 +53,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # HACK: Download git repo first, but don't install deps.
+      # HACK: Download Deskflow git repo first, but don't install deps.
+      # Maybe we should use submodules instead? That way we can just add the submodule
+      # arg to `actions/checkout`.
+      # Submodules suck, but maybe this is the appropriate use case.
       - name: Install dependencies
         run: python ./scripts/setup.py --no-install-deps
 
