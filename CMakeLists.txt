@@ -18,8 +18,8 @@ cmake_minimum_required(VERSION 3.8)
 
 project(synergy C CXX)
 
-include(cmake/Branding.cmake)
+include(cmake/Deskflow.cmake)
 
-configure_branding()
+configure_deskflow()
 
 add_subdirectory(deskflow)

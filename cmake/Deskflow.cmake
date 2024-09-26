@@ -14,10 +14,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-macro(configure_branding)
+macro(configure_deskflow)
 
-  if(NOT "$ENV{DESKFLOW_PRODUCT_NAME}" STREQUAL "")
-    set(DESKFLOW_PRODUCT_NAME $ENV{DESKFLOW_PRODUCT_NAME})
+  configure_meta()
+  configure_dist()
+  configure_bin_names()
+endmacro()
+
+macro(configure_meta)
+
+  if(NOT "$ENV{SYNERGY_PRODUCT_NAME}" STREQUAL "")
+    set(DESKFLOW_PRODUCT_NAME $ENV{SYNERGY_PRODUCT_NAME})
   endif()
 
   set(DESKFLOW_APP_ID
@@ -56,10 +63,22 @@ macro(configure_branding)
       "SYN1"
       CACHE STRING "Mac bundle code (4 characters)")
 
-  configure_bin_names()
+endmacro()
+
+macro(configure_dist)
+
+    set(DESKFLOW_MSI_64_GUID
+    "E8A4FA54-14B9-4FD1-8E00-7BC46555FDA0"
+    CACHE STRING "GUID for 64-bit MSI installer")
+
+    set(DESKFLOW_MSI_32_GUID
+    "BE0B9FD8-45E2-4A8E-A0D8-1F774D074A78"
+    CACHE STRING "GUID for 32-bit MSI installer")
+
 endmacro()
 
 macro(configure_bin_names)
+
   set(GUI_BINARY_NAME
       "synergy"
       CACHE STRING "Filename of the GUI binary")
@@ -83,4 +102,5 @@ macro(configure_bin_names)
   set(LEGACY_BINARY_NAME
       "synergy-legacy"
       CACHE STRING "Filename of the legacy binary")
+
 endmacro()
