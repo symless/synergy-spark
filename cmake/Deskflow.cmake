@@ -67,13 +67,17 @@ endmacro()
 
 macro(configure_dist)
 
-    set(DESKFLOW_MSI_64_GUID
-    "E8A4FA54-14B9-4FD1-8E00-7BC46555FDA0"
-    CACHE STRING "GUID for 64-bit MSI installer")
+  set(DESKFLOW_MSI_64_GUID
+      "E8A4FA54-14B9-4FD1-8E00-7BC46555FDA0"
+      CACHE STRING "GUID for 64-bit MSI installer")
 
-    set(DESKFLOW_MSI_32_GUID
-    "BE0B9FD8-45E2-4A8E-A0D8-1F774D074A78"
-    CACHE STRING "GUID for 32-bit MSI installer")
+  set(DESKFLOW_MSI_32_GUID
+      "BE0B9FD8-45E2-4A8E-A0D8-1F774D074A78"
+      CACHE STRING "GUID for 32-bit MSI installer")
+
+  set(DESKFLOW_BUNDLE_SOURCE_DIR
+      ${CMAKE_SOURCE_DIR}/res/dist/mac/bundle
+      CACHE PATH "Path to the macOS app bundle")
 
 endmacro()
 
