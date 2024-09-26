@@ -53,6 +53,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # HACK: Download git repo first, but don't install deps.
+      - name: Install dependencies
+        run: python ./scripts/setup.py --no-install-deps
+
       - name: Cache vcpkg dir
         uses: actions/cache@v4
         with:
