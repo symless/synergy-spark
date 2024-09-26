@@ -93,7 +93,7 @@ jobs:
         run: cmake --build build -j8
 
       - name: Tests
-        uses: ./.github/actions/run-tests
+        uses: ./deskflow/.github/actions/run-tests
         timeout-minutes: 2
         with:
           job: ${{ matrix.target.name }}
@@ -107,7 +107,7 @@ jobs:
 
       - name: Upload
         if: ${{ env.PACKAGE_UPLOAD == 'true' }}
-        uses: ./.github/actions/dist-upload
+        uses: ./deskflow/.github/actions/dist-upload
         with:
           use-github: true
           github-target-filename: "${{ env.PACKAGE_PREFIX }}-${{ matrix.target.name }}"
@@ -167,7 +167,7 @@ jobs:
         run: cmake --build build -j8
 
       - name: Tests
-        uses: ./.github/actions/run-tests
+        uses: ./deskflow/.github/actions/run-tests
         timeout-minutes: 2
         with:
           job: ${{ matrix.target.name }}
@@ -185,7 +185,7 @@ jobs:
 
       - name: Upload
         if: ${{ env.PACKAGE_UPLOAD == 'true' }}
-        uses: ./.github/actions/dist-upload
+        uses: ./deskflow/.github/actions/dist-upload
         with:
           use-github: true
           github-target-filename: "${{ env.PACKAGE_PREFIX }}-${{ matrix.target.name }}"
@@ -247,7 +247,7 @@ jobs:
         run: cmake --build build -j8
 
       - name: Tests
-        uses: ./.github/actions/run-tests
+        uses: ./deskflow/.github/actions/run-tests
         timeout-minutes: 2
         with:
           job: linux-${{ matrix.distro.name }}
@@ -261,7 +261,7 @@ jobs:
 
       - name: Upload
         if: ${{ env.PACKAGE_UPLOAD == 'true' }}
-        uses: ./.github/actions/dist-upload
+        uses: ./deskflow/.github/actions/dist-upload
         with:
           use-github: true
           github-target-filename: "${{ env.PACKAGE_PREFIX }}-${{ matrix.distro.name }}"
