@@ -1,6 +1,3 @@
-# Deskflow subproject
-/deskflow
-
 # temp dirs created during build
 /build
 /dist

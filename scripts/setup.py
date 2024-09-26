@@ -22,9 +22,6 @@ import argparse
 import lib.bootstrap as bootstrap
 
 DESKFLOW_DIR = "deskflow"
-DESKFLOW_TAG = "decommercialize"
-DESKFLOW_REPO_SSH = "git@github.com:deskflow/deskflow.git"
-DESKFLOW_REPO_HTTPS = "https://github.com/deskflow/deskflow.git"
 
 
 def main():
@@ -46,19 +43,13 @@ def main():
 # but it seemed quite complex and potentially required upstream changes. This approach seems
 # to be simpler and easier to maintain.
 def setup_deskflow(install_deps):
-    if os.getenv("CI"):
-        repo = DESKFLOW_REPO_HTTPS
-    else:
-        repo = DESKFLOW_REPO_SSH
-
     subprocess.run(
         [
             "git",
-            "clone",
-            repo,
-            DESKFLOW_DIR,
-            "--branch",
-            DESKFLOW_TAG,
+            "submodule",
+            "update",
+            "--init",
+            "--recursive",
         ]
     )
 
