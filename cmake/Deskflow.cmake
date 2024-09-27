@@ -40,7 +40,14 @@ endmacro()
 macro(configure_meta)
 
   if(NOT "$ENV{SYNERGY_PRODUCT_NAME}" STREQUAL "")
-    set(DESKFLOW_PRODUCT_NAME $ENV{SYNERGY_PRODUCT_NAME})
+    message(STATUS "Using product name from environment variable")
+    set(DESKFLOW_PRODUCT_NAME
+        $ENV{SYNERGY_PRODUCT_NAME}
+        CACHE STRING "Product name")
+  else()
+    set(DESKFLOW_PRODUCT_NAME
+        "Synergy"
+        CACHE STRING "Product name")
   endif()
 
   set(DESKFLOW_APP_ID
@@ -50,10 +57,6 @@ macro(configure_meta)
   set(DESKFLOW_DOMAIN
       "symless.com"
       CACHE STRING "Domain of the app maintainer (not a URL)")
-
-  set(DESKFLOW_PRODUCT_NAME
-      "Synergy"
-      CACHE STRING "Product name")
 
   set(DESKFLOW_AUTHOR_NAME
       "Symless"
