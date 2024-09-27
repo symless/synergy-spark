@@ -19,8 +19,10 @@
 
 #include "synergy/gui/ActivationDialog.h"
 #include "synergy/gui/license/LicenseHandler.h"
+#include "synergy/gui/license/license_utils.h"
 
 #include <QtCore>
+#include <qdebug.h>
 
 namespace synergy::inject {
 
@@ -28,25 +30,30 @@ inline bool preStart(AppConfig *appConfig) {
 
   // qRegisterMetaType<Edition>("Edition");
 
-#ifdef SYNERGY_ENABLE_ACTIVATION
+  if (!synergy::gui::license::isActivationEnabled()) {
+    qDebug("license activation disabled");
+    return true;
+  }
+
   qDebug("license activation enabled");
   LicenseHandler licenseHandler;
   const auto &license = licenseHandler.license();
 
-  if (!license.isValid()) {
-    qInfo("license not valid, showing activation dialog");
-    ActivationDialog dialog(nullptr, *appConfig, licenseHandler);
-    const auto result = dialog.exec();
-    if (result == QDialog::Rejected) {
-      qWarning("license activation dialog declined, exiting");
-      return false;
-    }
-  } else {
+  if (license.isValid()) {
     qInfo("license is valid");
+    return true;
   }
-#endif
 
-  return true;
+  qInfo("license not valid, showing activation dialog");
+  ActivationDialog dialog(nullptr, *appConfig, licenseHandler);
+  const auto result = dialog.exec();
+  if (result == QDialog::Accepted) {
+    qDebug("license activation dialog accepted");
+    return true;
+  } else {
+    qWarning("license activation dialog declined, exiting");
+    return false;
+  }
 }
 
 } // namespace synergy::inject

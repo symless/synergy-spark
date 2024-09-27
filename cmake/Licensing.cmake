@@ -18,7 +18,10 @@ macro(configure_licensing)
   # activation is off by default to make life easier for contributors.
   option(SYNERGY_ENABLE_ACTIVATION "Enable activation dialog, etc" ON)
   if(SYNERGY_ENABLE_ACTIVATION)
+    message(STATUS "License activation is enabled")
     add_definitions(-DSYNERGY_ENABLE_ACTIVATION)
+  else()
+    message(STATUS "License activation is disabled")
   endif()
 
 endmacro()

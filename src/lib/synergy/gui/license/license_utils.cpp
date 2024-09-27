@@ -25,7 +25,7 @@
 
 namespace synergy::gui::license {
 
-#ifndef DESKFLOW_LICENSED_PRODUCT
+#ifdef SYNERGY_ENABLE_ACTIVATION
 const bool kEnableActivation = true;
 #else
 const bool kEnableActivation = false;
