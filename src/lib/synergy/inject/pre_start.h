@@ -21,12 +21,15 @@
 #include "synergy/gui/license/LicenseHandler.h"
 #include "synergy/gui/license/license_utils.h"
 
+#include <QApplication>
+#include <QScreen>
 #include <QtCore>
-#include <qdebug.h>
+
+using namespace Qt;
 
 namespace synergy::inject {
 
-inline bool preStart(AppConfig *appConfig) {
+inline bool preStart(QWidget *parent, AppConfig *appConfig) {
 
   // qRegisterMetaType<Edition>("Edition");
 
@@ -45,9 +48,11 @@ inline bool preStart(AppConfig *appConfig) {
   }
 
   qInfo("license not valid, showing activation dialog");
-  ActivationDialog dialog(nullptr, *appConfig, licenseHandler);
+  ActivationDialog dialog(parent, *appConfig, licenseHandler);
+
   const auto result = dialog.exec();
   if (result == QDialog::Accepted) {
+    QCoreApplication::setApplicationName(licenseHandler.productName());
     qDebug("license activation dialog accepted");
     return true;
   } else {

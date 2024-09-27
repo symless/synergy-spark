@@ -26,11 +26,11 @@ endmacro()
 
 macro(configure_pre_start)
 
-  set(DESKFLOW_PRE_START_HEADER "synergy/inject/pre_start.h")
-  set(DESKFLOW_PRE_START_SNIPPET
-      "if (!synergy::inject::preStart(&appConfig)) { return 0; }")
+  set(DESKFLOW_START_HEADER "synergy/inject/pre_start.h")
+  set(DESKFLOW_START_HOOK
+      "if (!synergy::inject::preStart(&mainWindow, &appConfig)) { return 0; }")
 
-  set(DESKFLOW_PRE_START_LIB
+  set(DESKFLOW_START_LIB
       "sgui"
       CACHE STRING "Pre-start library")
 

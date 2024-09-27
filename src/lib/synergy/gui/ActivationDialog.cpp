@@ -58,16 +58,19 @@ ActivationDialog::ActivationDialog(QWidget *parent, AppConfig &appConfig,
   if (!m_licenseHandler.license().isExpired()) {
     m_ui->m_widgetNotice->hide();
   }
-
-  const QString envSerialKey = ::getenv("SYNERGY_TEST_SERIAL_KEY");
-  if (!envSerialKey.isEmpty()) {
-    qDebug() << "using env test serial key:" << envSerialKey;
-    m_ui->m_pTextEditSerialKey->setText(envSerialKey);
-  }
 }
 
 void ActivationDialog::refreshSerialKey() {
-  m_ui->m_pTextEditSerialKey->setText(serialKey());
+
+  const QString envSerialKey = ::getenv("SYNERGY_TEST_SERIAL_KEY");
+  if (!envSerialKey.isEmpty()) {
+    qDebug("using serial key from env var");
+    m_ui->m_pTextEditSerialKey->setText(envSerialKey);
+  } else {
+    qDebug("using serial key from config");
+    m_ui->m_pTextEditSerialKey->setText(serialKey());
+  }
+
   m_ui->m_pTextEditSerialKey->setFocus();
   m_ui->m_pTextEditSerialKey->moveCursor(QTextCursor::End);
 
