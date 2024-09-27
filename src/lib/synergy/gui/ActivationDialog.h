@@ -31,8 +31,8 @@ class ActivationDialog : public QDialog {
   Q_OBJECT
 
 public:
-  ActivationDialog(QWidget *parent, AppConfig &appConfig,
-                   LicenseHandler &licenseHandler);
+  ActivationDialog(
+      QWidget *parent, AppConfig &appConfig, LicenseHandler &licenseHandler);
   ~ActivationDialog() override;
 
   class ActivationMessageError : public std::runtime_error {

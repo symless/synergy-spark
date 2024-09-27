@@ -58,8 +58,8 @@ public:
   void setEnabled(bool enabled) { m_enabled = enabled; }
   bool handleStart(QMainWindow *parent, AppConfig *appConfig);
   void handleSettings(QDialog *parent, QCheckBox *checkBoxEnableTls) const;
-  void checkTlsCheckBox(QDialog *parent, QCheckBox *checkBoxEnableTls,
-                        bool showDialog) const;
+  void checkTlsCheckBox(
+      QDialog *parent, QCheckBox *checkBoxEnableTls, bool showDialog) const;
   void updateMainWindow() const;
   bool showActivationDialog(QMainWindow *parent, AppConfig *appConfig);
 

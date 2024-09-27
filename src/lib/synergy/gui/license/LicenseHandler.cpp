@@ -70,8 +70,8 @@ bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
   return showActivationDialog(parent, appConfig);
 }
 
-bool LicenseHandler::showActivationDialog(QMainWindow *parent,
-                                          AppConfig *appConfig) {
+bool LicenseHandler::showActivationDialog(
+    QMainWindow *parent, AppConfig *appConfig) {
   ActivationDialog dialog(parent, *appConfig, *this);
   const auto result = dialog.exec();
   if (result == QDialog::Accepted) {
@@ -91,8 +91,8 @@ void LicenseHandler::updateMainWindow() const {
   m_mainWindow->setWindowTitle(m_license.productName().c_str());
 }
 
-void LicenseHandler::handleSettings(QDialog *parent,
-                                    QCheckBox *checkBoxEnableTls) const {
+void LicenseHandler::handleSettings(
+    QDialog *parent, QCheckBox *checkBoxEnableTls) const {
 
   const auto onTlsToggle = [this, parent, checkBoxEnableTls] {
     qDebug("tls checkbox toggled");
@@ -104,9 +104,8 @@ void LicenseHandler::handleSettings(QDialog *parent,
   checkTlsCheckBox(parent, checkBoxEnableTls, false);
 }
 
-void LicenseHandler::checkTlsCheckBox(QDialog *parent,
-                                      QCheckBox *checkBoxEnableTls,
-                                      bool showDialog) const {
+void LicenseHandler::checkTlsCheckBox(
+    QDialog *parent, QCheckBox *checkBoxEnableTls, bool showDialog) const {
   if (!m_license.isTlsAvailable() && checkBoxEnableTls->isChecked()) {
     qDebug("tls not available, showing upgrade dialog");
     checkBoxEnableTls->setChecked(false);

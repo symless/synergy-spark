@@ -44,9 +44,11 @@ QString serialKey() { return ""; }
 // TODO
 bool isAvailableAndEnabled(const TlsUtility &tls) { return false; }
 
-ActivationDialog::ActivationDialog(QWidget *parent, AppConfig &appConfig,
-                                   LicenseHandler &licenseHandler)
-    : QDialog(parent), m_ui(new Ui::ActivationDialog), m_pAppConfig(&appConfig),
+ActivationDialog::ActivationDialog(
+    QWidget *parent, AppConfig &appConfig, LicenseHandler &licenseHandler)
+    : QDialog(parent),
+      m_ui(new Ui::ActivationDialog),
+      m_pAppConfig(&appConfig),
       m_licenseHandler(licenseHandler) {
 
   m_ui->setupUi(this);

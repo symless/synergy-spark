@@ -21,8 +21,8 @@
 
 class SerialKeyType {
 private:
-  friend bool operator==(SerialKeyType const &lhs,
-                         SerialKeyType const &rhs) = default;
+  friend bool
+  operator==(SerialKeyType const &lhs, SerialKeyType const &rhs) = default;
 
 public:
   static const std::string Trial;

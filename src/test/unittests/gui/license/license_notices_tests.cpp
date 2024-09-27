@@ -96,8 +96,9 @@ TEST(license_notices_tests, licenseNotice_subscriptionExpired_correctText) {
   EXPECT_THAT(notice.toStdString(), HasSubstr("Your license has expired"));
 }
 
-TEST(license_notices_tests,
-     licenseNotice_subscriptionExpiringInOneHour_correctText) {
+TEST(
+    license_notices_tests,
+    licenseNotice_subscriptionExpiringInOneHour_correctText) {
   SerialKey serialKey("");
   serialKey.isValid = true;
   serialKey.warnTime = kFutureOneHour;
@@ -110,8 +111,9 @@ TEST(license_notices_tests,
   EXPECT_THAT(notice.toStdString(), HasSubstr("Your license expires today"));
 }
 
-TEST(license_notices_tests,
-     licenseNotice_subscriptionExpiringInOneDay_correctText) {
+TEST(
+    license_notices_tests,
+    licenseNotice_subscriptionExpiringInOneDay_correctText) {
   SerialKey serialKey("");
   serialKey.isValid = true;
   serialKey.warnTime = kFutureOneDay;
@@ -124,8 +126,9 @@ TEST(license_notices_tests,
   EXPECT_THAT(notice.toStdString(), HasSubstr("Your license expires in 1 day"));
 }
 
-TEST(license_notices_tests,
-     licenseNotice_subscriptionExpiringInOneWeek_correctText) {
+TEST(
+    license_notices_tests,
+    licenseNotice_subscriptionExpiringInOneWeek_correctText) {
   SerialKey serialKey("");
   serialKey.isValid = true;
   serialKey.warnTime = kFutureOneWeek;
@@ -135,6 +138,6 @@ TEST(license_notices_tests,
 
   QString notice = licenseNotice(license);
 
-  EXPECT_THAT(notice.toStdString(),
-              HasSubstr("Your license expires in 7 days"));
+  EXPECT_THAT(
+      notice.toStdString(), HasSubstr("Your license expires in 7 days"));
 }

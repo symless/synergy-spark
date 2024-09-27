@@ -41,8 +41,8 @@ public:
 
 class InvalidSerialKeyDate : public SerialKeyParseError {
 public:
-  explicit InvalidSerialKeyDate(const std::string &date,
-                                const std::string &cause)
+  explicit InvalidSerialKeyDate(
+      const std::string &date, const std::string &cause)
       : SerialKeyParseError("invalid serial key date: " + date + "\n" + cause) {
   }
 };
