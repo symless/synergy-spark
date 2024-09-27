@@ -64,6 +64,7 @@ public:
                         bool showDialog);
   void updateMainWindow() const;
   bool showActivationDialog(QMainWindow *parent, AppConfig *appConfig);
+  void onChangeSerialKey();
 
 signals:
   void serialKeyChanged(const QString &serialKey) const;
@@ -74,4 +75,5 @@ private:
   License m_license = License::invalid();
   synergy::gui::license::LicenseSettings m_settings;
   QMainWindow *m_mainWindow = nullptr;
+  AppConfig *m_appConfig = nullptr;
 };

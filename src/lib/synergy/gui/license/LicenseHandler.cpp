@@ -45,11 +45,10 @@ LicenseHandler &LicenseHandler::instance() {
 
 bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
   m_mainWindow = parent;
+  m_appConfig = appConfig;
 
-  const auto serialKeyAction =
-      parent->addAction("Change serial key", [this, parent, appConfig] {
-        showActivationDialog(parent, appConfig);
-      });
+  const auto serialKeyAction = parent->addAction(
+      "Change serial key", &LicenseHandler::onChangeSerialKey);
 
   const auto licenseMenu = new QMenu("License");
   licenseMenu->addAction(serialKeyAction);
@@ -65,6 +64,10 @@ bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
 
   qInfo("license not valid, showing activation dialog");
   return showActivationDialog(parent, appConfig);
+}
+
+void LicenseHandler::onChangeSerialKey() {
+  showActivationDialog(m_mainWindow, m_appConfig);
 }
 
 bool LicenseHandler::showActivationDialog(QMainWindow *parent,
