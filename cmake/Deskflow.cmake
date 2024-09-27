@@ -85,6 +85,10 @@ macro(configure_meta)
       "SYN1"
       CACHE STRING "Mac bundle code (4 characters)")
 
+  set(DESKFLOW_SHOW_DEV_THANKS
+      false
+      CACHE BOOL "Show developer thanks message")
+
 endmacro()
 
 macro(configure_dist)
