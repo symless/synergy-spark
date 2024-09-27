@@ -20,7 +20,7 @@
 #include "synergy/gui/ActivationDialog.h"
 #include "synergy/gui/license/LicenseHandler.h"
 
-#include <QtLogging>
+#include <QtCore>
 
 namespace synergy::inject {
 
