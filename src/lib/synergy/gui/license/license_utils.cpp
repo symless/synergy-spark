@@ -17,48 +17,31 @@
 
 #include "license_utils.h"
 
-#include "license/parse_serial_key.h"
-#include "string_utils.h"
+#include "gui/string_utils.h"
+#include "synergy/license/parse_serial_key.h"
 
 #include <QString>
 #include <QtGlobal>
 
-namespace deskflow::gui::license {
+namespace synergy::gui::license {
 
-#ifdef DESKFLOW_LICENSED_PRODUCT
-const bool kLicensedProduct = true;
-#else
-const bool kLicensedProduct = false;
-#endif
-
-#ifdef DESKFLOW_ENABLE_ACTIVATION
 #ifndef DESKFLOW_LICENSED_PRODUCT
-#error "activation requires licensed product"
-#endif
 const bool kEnableActivation = true;
 #else
 const bool kEnableActivation = false;
-#endif // DESKFLOW_ENABLE_ACTIVATION
-
-bool isLicensedProduct() {
-  if (strToTrue(qEnvironmentVariable("DESKFLOW_LICENSED_PRODUCT"))) {
-    return true;
-  } else {
-    return kLicensedProduct;
-  }
-}
+#endif // SYNERGY_ENABLE_ACTIVATION
 
 bool isActivationEnabled() {
-  if (strToTrue(qEnvironmentVariable("DESKFLOW_ENABLE_ACTIVATION"))) {
+  if (strToTrue(qEnvironmentVariable("SYNERGY_ENABLE_ACTIVATION"))) {
     return true;
   } else {
     return kEnableActivation;
   }
 }
 
-deskflow::license::SerialKey parseSerialKey(const QString &hexString) {
+synergy::license::SerialKey parseSerialKey(const QString &hexString) {
   try {
-    return deskflow::license::parseSerialKey(hexString.toStdString());
+    return synergy::license::parseSerialKey(hexString.toStdString());
   } catch (const std::exception &e) {
     qFatal("failed to parse serial key: %s", e.what());
     abort();
@@ -68,4 +51,4 @@ deskflow::license::SerialKey parseSerialKey(const QString &hexString) {
   }
 }
 
-} // namespace deskflow::gui::license
+} // namespace synergy::gui::license

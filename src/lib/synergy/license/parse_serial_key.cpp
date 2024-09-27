@@ -31,7 +31,7 @@ using Parts = std::vector<std::string>;
 using system_clock = std::chrono::system_clock;
 using time_point = system_clock::time_point;
 
-namespace deskflow::license {
+namespace synergy::license {
 
 std::string decode(const std::string &hexString);
 Parts tokenize(const std::string &plainText);
@@ -54,7 +54,7 @@ SerialKey parseSerialKey(const std::string &hexString) {
 }
 
 std::string decode(const std::string &hexString) {
-  std::string trimmed = utils::trim(hexString);
+  std::string trimmed = deskflow::utils::trim(hexString);
 
   if (trimmed.length() % 2 != 0) {
     throw InvalidHexString();
@@ -124,7 +124,7 @@ Parts tokenize(const std::string &plainText) {
 }
 
 std::optional<time_point> parseDate(const std::string &unixTimeString) {
-  auto clean = utils::trim(unixTimeString);
+  auto clean = deskflow::utils::trim(unixTimeString);
   if (clean.empty()) {
     return std::nullopt;
   }
@@ -147,4 +147,4 @@ std::optional<time_point> parseDate(const std::string &unixTimeString) {
   }
 }
 
-} // namespace deskflow::license
+} // namespace synergy::license

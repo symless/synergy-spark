@@ -1,6 +1,5 @@
 # Synergy -- mouse and keyboard sharing utility
-# Copyright (C) 2012-2024 Symless Ltd.
-# Copyright (C) 2009-2012 Nick Bolton
+# Copyright (C) 2024 Symless Ltd.
 #
 # This package is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -14,5 +13,4 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#add_subdirectory(license)
-#add_subdirectory(gui)
+add_subdirectory(synergy)

@@ -19,7 +19,7 @@
 
 #define TEST_ENV
 
-#include "license/Product.h"
+#include "synergy/license/Product.h"
 
 #include <gtest/gtest.h>
 

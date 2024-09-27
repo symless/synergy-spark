@@ -17,7 +17,7 @@
 
 #define TEST_ENV
 
-#include "license/SerialKeyType.h"
+#include "synergy/license/SerialKeyType.h"
 
 #include <gtest/gtest.h>
 

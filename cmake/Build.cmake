@@ -13,12 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-macro(configure_licensing)
+macro(configure_build)
 
-  # activation is off by default to make life easier for contributors.
-  option(SYNERGY_ENABLE_ACTIVATION "Enable activation dialog, etc" ON)
-  if(SYNERGY_ENABLE_ACTIVATION)
-    add_definitions(-DSYNERGY_ENABLE_ACTIVATION)
-  endif()
+  set(CMAKE_CXX_STANDARD 20)
+  set(CMAKE_CXX_EXTENSIONS OFF)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
 
 endmacro()

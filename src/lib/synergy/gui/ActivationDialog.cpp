@@ -18,22 +18,31 @@
 #include "ActivationDialog.h"
 
 #include "CancelActivationDialog.h"
-#include "MainWindow.h"
 #include "gui/config/AppConfig.h"
-#include "gui/constants.h"
-#include "gui/license/LicenseHandler.h"
-#include "gui/license/license_notices.h"
 #include "gui/styles.h"
-#include "license/ProductEdition.h"
-#include "license/parse_serial_key.h"
+#include "gui/tls/TlsUtility.h"
+#include "synergy/gui/constants.h"
+#include "synergy/gui/license/LicenseHandler.h"
+#include "synergy/gui/license/license_notices.h"
+#include "synergy/license/ProductEdition.h"
+#include "synergy/license/parse_serial_key.h"
 #include "ui_ActivationDialog.h"
 
 #include <QApplication>
 #include <QMessageBox>
+#include <QScreen>
+#include <QStyle>
 #include <QThread>
 
 using namespace deskflow::gui;
-using namespace deskflow::license;
+using namespace synergy::gui;
+using namespace synergy::license;
+
+// TODO
+QString serialKey() { return ""; }
+
+// TODO
+bool isAvailableAndEnabled(const TlsUtility &tls) { return false; }
 
 ActivationDialog::ActivationDialog(QWidget *parent, AppConfig &appConfig,
                                    LicenseHandler &licenseHandler)
@@ -50,7 +59,7 @@ ActivationDialog::ActivationDialog(QWidget *parent, AppConfig &appConfig,
     m_ui->m_widgetNotice->hide();
   }
 
-  const QString envSerialKey = ::getenv("DESKFLOW_TEST_SERIAL_KEY");
+  const QString envSerialKey = ::getenv("SYNERGY_TEST_SERIAL_KEY");
   if (!envSerialKey.isEmpty()) {
     qDebug() << "using env test serial key:" << envSerialKey;
     m_ui->m_pTextEditSerialKey->setText(envSerialKey);
@@ -58,7 +67,7 @@ ActivationDialog::ActivationDialog(QWidget *parent, AppConfig &appConfig,
 }
 
 void ActivationDialog::refreshSerialKey() {
-  m_ui->m_pTextEditSerialKey->setText(m_pAppConfig->serialKey());
+  m_ui->m_pTextEditSerialKey->setText(serialKey());
   m_ui->m_pTextEditSerialKey->setFocus();
   m_ui->m_pTextEditSerialKey->moveCursor(QTextCursor::End);
 
@@ -150,8 +159,8 @@ void ActivationDialog::showSuccessDialog() {
   QString message = tr("<p>Thanks for activating %1.</p>")
                         .arg(m_licenseHandler.productName());
 
-  TlsUtility tls(*m_pAppConfig, license);
-  if (tls.isAvailableAndEnabled()) {
+  TlsUtility tls(*m_pAppConfig);
+  if (isAvailableAndEnabled(tls)) {
     message +=
         "<p>To ensure that TLS encryption works correctly, "
         "please activate all of your computers with the same serial key.</p>";

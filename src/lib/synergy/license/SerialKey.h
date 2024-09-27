@@ -19,15 +19,15 @@
 
 #include "ProductEdition.h"
 #include "SerialKeyType.h"
-#include "license/Product.h"
-#include "license/ProductEdition.h"
+#include "synergy/license/Product.h"
+#include "synergy/license/ProductEdition.h"
 
 #include <chrono>
 #include <ctime>
 #include <optional>
 #include <string>
 
-namespace deskflow::license {
+namespace synergy::license {
 
 struct SerialKey {
   using time_point = std::chrono::system_clock::time_point;
@@ -57,4 +57,4 @@ private:
   explicit SerialKey(Edition edition) : product(edition) {}
 };
 
-} // namespace deskflow::license
+} // namespace synergy::license

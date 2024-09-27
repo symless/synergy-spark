@@ -13,12 +13,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-macro(configure_licensing)
+file(GLOB headers "*.h")
+file(GLOB sources "*.cpp")
 
-  # activation is off by default to make life easier for contributors.
-  option(SYNERGY_ENABLE_ACTIVATION "Enable activation dialog, etc" ON)
-  if(SYNERGY_ENABLE_ACTIVATION)
-    add_definitions(-DSYNERGY_ENABLE_ACTIVATION)
-  endif()
+if(ADD_HEADERS_TO_SOURCES)
+  list(APPEND sources ${headers})
+endif()
 
-endmacro()
+add_library(license STATIC ${sources})
+
+target_link_libraries(license arch base)

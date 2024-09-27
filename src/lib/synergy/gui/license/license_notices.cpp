@@ -18,12 +18,13 @@
 #include "license_notices.h"
 
 #include "constants.h"
-#include "license/License.h"
-#include "styles.h"
+#include "gui/styles.h"
+#include "synergy/license/License.h"
 
-using License = deskflow::license::License;
+using License = synergy::license::License;
+using namespace deskflow::gui;
 
-namespace deskflow::gui {
+namespace synergy::gui {
 
 QString trialLicenseNotice(const License &license);
 QString subscriptionLicenseNotice(const License &license);
@@ -74,4 +75,4 @@ QString subscriptionLicenseNotice(const License &license) {
   }
 }
 
-} // namespace deskflow::gui
+} // namespace synergy::gui

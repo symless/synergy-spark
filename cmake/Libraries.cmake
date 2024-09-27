@@ -1,6 +1,5 @@
 # Synergy -- mouse and keyboard sharing utility
-# Copyright (C) 2012-2024 Symless Ltd.
-# Copyright (C) 2009-2012 Nick Bolton
+# Copyright (C) 2024 Symless Ltd.
 #
 # This package is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -14,13 +13,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-file(GLOB headers "*.h")
-file(GLOB sources "*.cpp")
+macro(configure_libs)
 
-if(ADD_HEADERS_TO_SOURCES)
-  list(APPEND sources ${headers})
-endif()
+  configure_qt()
 
-add_library(license STATIC ${sources})
+endmacro()
 
-target_link_libraries(license arch base)
+macro(configure_qt)
+
+  find_package(
+    Qt6
+    COMPONENTS Core Widgets Network
+    REQUIRED)
+
+  message(STATUS "Qt version: ${Qt6_VERSION}")
+
+  set(GUI_RES_DIR ${DESKFLOW_RES_DIR}/gui)
+  set(GUI_QRC_FILE ${GUI_RES_DIR}/app.qrc)
+
+endmacro()

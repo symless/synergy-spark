@@ -18,15 +18,15 @@
 #include "License.h"
 
 #include "Product.h"
-#include "license/SerialKey.h"
-#include "license/parse_serial_key.h"
+#include "synergy/license/SerialKey.h"
+#include "synergy/license/parse_serial_key.h"
 
 #include <chrono>
 #include <climits>
 
 using namespace std::chrono;
 
-namespace deskflow::license {
+namespace synergy::license {
 
 License::License(const std::string &hexString)
     : m_serialKey(parseSerialKey(hexString)) {}
@@ -98,4 +98,4 @@ std::string License::productName() const {
   return name;
 }
 
-} // namespace deskflow::license
+} // namespace synergy::license

@@ -18,8 +18,8 @@
 #include "LicenseHandler.h"
 
 #include "constants.h"
-#include "gui/license/license_utils.h"
-#include "license/ProductEdition.h"
+#include "synergy/gui/license/license_utils.h"
+#include "synergy/license/ProductEdition.h"
 
 #include <QDebug>
 #include <QProcessEnvironment>
@@ -27,10 +27,10 @@
 #include <QtGlobal>
 
 using namespace std::chrono;
-using namespace deskflow::gui::license;
-using License = deskflow::license::License;
+using namespace synergy::gui::license;
+using License = synergy::license::License;
 
-const deskflow::license::License &LicenseHandler::license() const {
+const synergy::license::License &LicenseHandler::license() const {
   return m_license;
 }
 

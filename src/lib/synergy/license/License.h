@@ -29,7 +29,7 @@ class Server;
 class LicenseHandler;
 class LicenseTests;
 
-namespace deskflow::license {
+namespace synergy::license {
 
 class License : public ILicense {
   friend class ::Server;
@@ -93,4 +93,4 @@ private:
   NowFunc m_nowFunc = []() { return system_clock::now(); };
 };
 
-} // namespace deskflow::license
+} // namespace synergy::license

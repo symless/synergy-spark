@@ -1,6 +1,5 @@
 # Synergy -- mouse and keyboard sharing utility
 # Copyright (C) 2024 Symless Ltd.
-# Copyright (C) 2009 Nick Bolton
 #
 # This package is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,6 +15,8 @@
 
 macro(configure_deskflow)
 
+  set(DESKFLOW_SOURCE_DIR ${CMAKE_SOURCE_DIR}/deskflow)
+
   configure_meta()
   configure_dist()
   configure_bin_names()
@@ -25,11 +26,12 @@ endmacro()
 
 macro(configure_pre_start)
 
-  set(DESKFLOW_PRE_START_HEADER "synergy/pre_start.h")
-  set(DESKFLOW_PRE_START_SNIPPET "if (!synergy::preStart()) { return 0; }")
+  set(DESKFLOW_PRE_START_HEADER "synergy/inject/pre_start.h")
+  set(DESKFLOW_PRE_START_SNIPPET
+      "if (!synergy::inject::preStart(&appConfig)) { return 0; }")
 
   set(DESKFLOW_PRE_START_LIB
-      "synergy"
+      "sgui"
       CACHE STRING "Pre-start library")
 
   include_directories(${CMAKE_SOURCE_DIR}/src/lib)

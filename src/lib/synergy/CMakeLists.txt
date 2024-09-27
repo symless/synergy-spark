@@ -13,34 +13,5 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-set(target synergy-gui)
-
-set(res_dir ${GUI_RES_DIR})
-set(qrc_file ${GUI_QRC_FILE})
-
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
-file(GLOB_RECURSE sources *.cpp)
-file(GLOB_RECURSE headers *.h)
-file(GLOB_RECURSE ui_files *.ui)
-
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  file(GLOB mac_sources *.mm)
-  list(APPEND sources ${mac_sources})
-endif()
-
-if(ADD_HEADERS_TO_SOURCES)
-  list(APPEND sources ${headers})
-endif()
-
-add_library(${target} STATIC ${sources} ${ui_files} ${qrc_file})
-
-target_link_libraries(
-  ${target}
-  license
-  Qt6::Core
-  Qt6::Widgets
-  Qt6::Network)
+add_subdirectory(license)
+add_subdirectory(gui)

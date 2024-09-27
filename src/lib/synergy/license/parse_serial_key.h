@@ -20,7 +20,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace deskflow::license {
+namespace synergy::license {
 
 class SerialKeyParseError : public std::runtime_error {
 public:
@@ -55,4 +55,4 @@ public:
 
 SerialKey parseSerialKey(const std::string &hexString);
 
-} // namespace deskflow::license
+} // namespace synergy::license

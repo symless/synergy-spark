@@ -17,7 +17,7 @@
 
 #pragma once
 
-#include "gui/license/LicenseHandler.h"
+#include "synergy/gui/license/LicenseHandler.h"
 
 #include <QDialog>
 

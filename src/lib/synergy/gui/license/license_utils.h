@@ -1,6 +1,6 @@
 /*
  * Synergy -- mouse and keyboard sharing utility
- * Copyright (C) 2016 Symless Ltd.
+ * Copyright (C) 2024 Symless Ltd.
  *
  * This package is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,16 +17,13 @@
 
 #pragma once
 
-class Server;
-class LicenseHandler;
-class LicenseTests;
+#include <QString>
 
-namespace deskflow::license {
+#include "synergy/license/SerialKey.h"
 
-class ILicense {
-public:
-  virtual ~ILicense() = default;
-  virtual bool isTlsAvailable() const = 0;
-};
+namespace synergy::gui::license {
 
-} // namespace deskflow::license
+bool isActivationEnabled();
+synergy::license::SerialKey parseSerialKey(const QString &hexString);
+
+} // namespace synergy::gui::license

@@ -17,10 +17,10 @@
 
 #pragma once
 
-#include "gui/constants.h"
-#include "gui/license/license_utils.h"
-#include "license/License.h"
-#include "license/ProductEdition.h"
+#include "synergy/gui/constants.h"
+#include "synergy/gui/license/license_utils.h"
+#include "synergy/license/License.h"
+#include "synergy/license/ProductEdition.h"
 
 #include <QObject>
 
@@ -29,8 +29,8 @@
  */
 class LicenseHandler : public QObject {
   Q_OBJECT
-  using License = deskflow::license::License;
-  using SerialKey = deskflow::license::SerialKey;
+  using License = synergy::license::License;
+  using SerialKey = synergy::license::SerialKey;
 
 public:
   enum class ChangeSerialKeyResult {
@@ -53,6 +53,6 @@ signals:
   void invalidLicense() const;
 
 private:
-  bool m_enabled = deskflow::gui::license::isActivationEnabled();
+  bool m_enabled = synergy::gui::license::isActivationEnabled();
   License m_license = License::invalid();
 };

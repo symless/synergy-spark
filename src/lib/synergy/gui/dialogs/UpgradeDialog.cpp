@@ -17,7 +17,7 @@
 
 #include "UpgradeDialog.h"
 
-#include "gui/constants.h"
+#include "synergy/gui/constants.h"
 
 #include <QtCore>
 #include <QtGui>
@@ -33,7 +33,7 @@ void UpgradeDialog::showDialog(const QString &text) {
   exec();
 
   if (clickedButton() == m_upgrade) {
-    const auto url = QUrl(deskflow::gui::kUrlUpgrade);
+    const auto url = QUrl(synergy::gui::kUrlUpgrade);
     if (QDesktopServices::openUrl(url)) {
       qDebug("opened url: %s", qUtf8Printable(url.toString()));
     } else {

@@ -17,12 +17,12 @@
 
 #pragma once
 
-#include "license/License.h"
+#include "synergy/license/License.h"
 
 #include <QString>
 
-namespace deskflow::gui {
+namespace synergy::gui {
 
-QString licenseNotice(const deskflow::license::License &license);
+QString licenseNotice(const synergy::license::License &license);
 
-} // namespace deskflow::gui
+} // namespace synergy::gui

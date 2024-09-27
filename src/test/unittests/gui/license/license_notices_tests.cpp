@@ -22,8 +22,8 @@
 #include <gtest/gtest.h>
 
 using namespace std::chrono;
-using namespace deskflow::license;
-using namespace deskflow::gui;
+using namespace synergy::license;
+using namespace synergy::gui;
 using ::testing::HasSubstr;
 
 const auto kPast = system_clock::now() - hours(1);
@@ -96,9 +96,8 @@ TEST(license_notices_tests, licenseNotice_subscriptionExpired_correctText) {
   EXPECT_THAT(notice.toStdString(), HasSubstr("Your license has expired"));
 }
 
-TEST(
-    license_notices_tests,
-    licenseNotice_subscriptionExpiringInOneHour_correctText) {
+TEST(license_notices_tests,
+     licenseNotice_subscriptionExpiringInOneHour_correctText) {
   SerialKey serialKey("");
   serialKey.isValid = true;
   serialKey.warnTime = kFutureOneHour;
@@ -111,9 +110,8 @@ TEST(
   EXPECT_THAT(notice.toStdString(), HasSubstr("Your license expires today"));
 }
 
-TEST(
-    license_notices_tests,
-    licenseNotice_subscriptionExpiringInOneDay_correctText) {
+TEST(license_notices_tests,
+     licenseNotice_subscriptionExpiringInOneDay_correctText) {
   SerialKey serialKey("");
   serialKey.isValid = true;
   serialKey.warnTime = kFutureOneDay;
@@ -126,9 +124,8 @@ TEST(
   EXPECT_THAT(notice.toStdString(), HasSubstr("Your license expires in 1 day"));
 }
 
-TEST(
-    license_notices_tests,
-    licenseNotice_subscriptionExpiringInOneWeek_correctText) {
+TEST(license_notices_tests,
+     licenseNotice_subscriptionExpiringInOneWeek_correctText) {
   SerialKey serialKey("");
   serialKey.isValid = true;
   serialKey.warnTime = kFutureOneWeek;
@@ -138,6 +135,6 @@ TEST(
 
   QString notice = licenseNotice(license);
 
-  EXPECT_THAT(
-      notice.toStdString(), HasSubstr("Your license expires in 7 days"));
+  EXPECT_THAT(notice.toStdString(),
+              HasSubstr("Your license expires in 7 days"));
 }

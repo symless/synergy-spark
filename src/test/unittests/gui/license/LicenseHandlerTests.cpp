@@ -20,7 +20,7 @@
 #include <chrono>
 #include <gtest/gtest.h>
 
-using namespace deskflow::license;
+using namespace synergy::license;
 using namespace std::chrono;
 
 const auto kPast = system_clock::now() - hours(1);

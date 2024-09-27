@@ -18,15 +18,15 @@
 #include <chrono>
 #define TEST_ENV
 
-#include "license/ProductEdition.h"
+#include "synergy/license/ProductEdition.h"
 
-#include "license/License.h"
+#include "synergy/license/License.h"
 
 #include <climits>
 #include <gtest/gtest.h>
 
 using enum Edition;
-using namespace deskflow::license;
+using namespace synergy::license;
 using time_point = std::chrono::system_clock::time_point;
 using seconds = std::chrono::seconds;
 
