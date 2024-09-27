@@ -63,6 +63,9 @@ public:
   void updateMainWindow() const;
   bool showActivationDialog(QMainWindow *parent, AppConfig *appConfig);
 
+private slots:
+  void onChangeSerialKey();
+
 signals:
   void serialKeyChanged(const QString &serialKey) const;
   void invalidLicense() const;

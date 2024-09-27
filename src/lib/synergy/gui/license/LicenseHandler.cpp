@@ -47,12 +47,8 @@ bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
   m_mainWindow = parent;
   m_appConfig = appConfig;
 
-  const auto onChangeSerialKey = [this] {
-    showActivationDialog(m_mainWindow, m_appConfig);
-  };
-
-  const auto serialKeyAction =
-      parent->addAction("Change serial key", onChangeSerialKey);
+  const auto serialKeyAction = parent->addAction(
+      "Change serial key", this, &LicenseHandler::onChangeSerialKey);
 
   const auto licenseMenu = new QMenu("License");
   licenseMenu->addAction(serialKeyAction);
@@ -85,12 +81,6 @@ bool LicenseHandler::showActivationDialog(
   }
 }
 
-void LicenseHandler::updateMainWindow() const {
-  const auto productName = QString::fromStdString(m_license.productName());
-  qDebug("updating main window title: %s", qPrintable(productName));
-  m_mainWindow->setWindowTitle(m_license.productName().c_str());
-}
-
 void LicenseHandler::handleSettings(
     QDialog *parent, QCheckBox *checkBoxEnableTls) const {
 
@@ -102,6 +92,16 @@ void LicenseHandler::handleSettings(
   QObject::connect(checkBoxEnableTls, &QCheckBox::toggled, onTlsToggle);
 
   checkTlsCheckBox(parent, checkBoxEnableTls, false);
+}
+
+void LicenseHandler::onChangeSerialKey() {
+  showActivationDialog(m_mainWindow, m_appConfig);
+}
+
+void LicenseHandler::updateMainWindow() const {
+  const auto productName = QString::fromStdString(m_license.productName());
+  qDebug("updating main window title: %s", qPrintable(productName));
+  m_mainWindow->setWindowTitle(m_license.productName().c_str());
 }
 
 void LicenseHandler::checkTlsCheckBox(
