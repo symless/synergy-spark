@@ -60,7 +60,7 @@ public:
   bool isSubscription() const;
   bool isTimeLimited() const;
   days daysLeft() const;
-  Edition productEdition() const;
+  Product::Edition productEdition() const;
   std::string productName() const;
   const SerialKey &serialKey() const { return m_serialKey; }
   void invalidate() { m_serialKey = SerialKey::invalid(); }

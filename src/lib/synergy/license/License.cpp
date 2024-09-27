@@ -51,7 +51,7 @@ bool License::isTlsAvailable() const {
   return m_serialKey.product.isTlsAvailable();
 }
 
-Edition License::productEdition() const {
+Product::Edition License::productEdition() const {
   return m_serialKey.product.edition();
 }
 

@@ -17,8 +17,8 @@
 
 #pragma once
 
+#include <QSettings>
 #include <QString>
-#include <qsettings.h>
 
 namespace synergy::gui::license {
 

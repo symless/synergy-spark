@@ -21,14 +21,12 @@
 #include "synergy/gui/license/LicenseSettings.h"
 #include "synergy/gui/license/license_utils.h"
 #include "synergy/license/License.h"
-#include "synergy/license/ProductEdition.h"
-
-#include <QCheckBox>
-#include <QMainWindow>
-#include <QObject>
-#include <qmainwindow.h>
+#include "synergy/license/Product.h"
 
 class AppConfig;
+class QMainWindow;
+class QDialog;
+class QCheckBox;
 
 /**
  * @brief A convenience wrapper for `License` that provides Qt signals, etc.
@@ -52,19 +50,18 @@ public:
 
   void load();
   void save();
-  Edition productEdition() const;
+  Product::Edition productEdition() const;
   const License &license() const;
   void validate() const;
   QString productName() const;
   ChangeSerialKeyResult changeSerialKey(const QString &hexString);
   void setEnabled(bool enabled) { m_enabled = enabled; }
   bool handleStart(QMainWindow *parent, AppConfig *appConfig);
-  void handleSettings(QDialog *parent, QCheckBox *checkBoxEnableTls);
+  void handleSettings(QDialog *parent, QCheckBox *checkBoxEnableTls) const;
   void checkTlsCheckBox(QDialog *parent, QCheckBox *checkBoxEnableTls,
-                        bool showDialog);
+                        bool showDialog) const;
   void updateMainWindow() const;
   bool showActivationDialog(QMainWindow *parent, AppConfig *appConfig);
-  void onChangeSerialKey();
 
 signals:
   void serialKeyChanged(const QString &serialKey) const;

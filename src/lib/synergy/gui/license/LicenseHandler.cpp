@@ -21,7 +21,7 @@
 #include "constants.h"
 #include "dialogs/UpgradeDialog.h"
 #include "synergy/gui/license/license_utils.h"
-#include "synergy/license/ProductEdition.h"
+#include "synergy/license/Product.h"
 
 #include <QCheckBox>
 #include <QCoreApplication>
@@ -47,8 +47,12 @@ bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
   m_mainWindow = parent;
   m_appConfig = appConfig;
 
-  const auto serialKeyAction = parent->addAction(
-      "Change serial key", &LicenseHandler::onChangeSerialKey);
+  const auto onChangeSerialKey = [this] {
+    showActivationDialog(m_mainWindow, m_appConfig);
+  };
+
+  const auto serialKeyAction =
+      parent->addAction("Change serial key", onChangeSerialKey);
 
   const auto licenseMenu = new QMenu("License");
   licenseMenu->addAction(serialKeyAction);
@@ -64,10 +68,6 @@ bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
 
   qInfo("license not valid, showing activation dialog");
   return showActivationDialog(parent, appConfig);
-}
-
-void LicenseHandler::onChangeSerialKey() {
-  showActivationDialog(m_mainWindow, m_appConfig);
 }
 
 bool LicenseHandler::showActivationDialog(QMainWindow *parent,
@@ -92,7 +92,7 @@ void LicenseHandler::updateMainWindow() const {
 }
 
 void LicenseHandler::handleSettings(QDialog *parent,
-                                    QCheckBox *checkBoxEnableTls) {
+                                    QCheckBox *checkBoxEnableTls) const {
 
   const auto onTlsToggle = [this, parent, checkBoxEnableTls] {
     qDebug("tls checkbox toggled");
@@ -106,7 +106,7 @@ void LicenseHandler::handleSettings(QDialog *parent,
 
 void LicenseHandler::checkTlsCheckBox(QDialog *parent,
                                       QCheckBox *checkBoxEnableTls,
-                                      bool showDialog) {
+                                      bool showDialog) const {
   if (!m_license.isTlsAvailable() && checkBoxEnableTls->isChecked()) {
     qDebug("tls not available, showing upgrade dialog");
     checkBoxEnableTls->setChecked(false);
@@ -140,7 +140,7 @@ const synergy::license::License &LicenseHandler::license() const {
   return m_license;
 }
 
-Edition LicenseHandler::productEdition() const {
+Product::Edition LicenseHandler::productEdition() const {
   return m_license.productEdition();
 }
 
@@ -158,7 +158,6 @@ LicenseHandler::changeSerialKey(const QString &hexString) {
 
   if (hexString.isEmpty()) {
     qFatal("serial key is empty");
-    return kFatal;
   }
 
   qDebug() << "changing serial key to:" << hexString;

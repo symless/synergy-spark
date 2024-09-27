@@ -24,7 +24,7 @@
 #include "synergy/gui/constants.h"
 #include "synergy/gui/license/LicenseHandler.h"
 #include "synergy/gui/license/license_notices.h"
-#include "synergy/license/ProductEdition.h"
+#include "synergy/license/Product.h"
 #include "synergy/license/parse_serial_key.h"
 #include "ui_ActivationDialog.h"
 
@@ -85,7 +85,7 @@ ActivationDialog::~ActivationDialog() { delete m_ui; }
 void ActivationDialog::reject() {
   // don't show the cancel confirmation dialog if they've already registered,
   // since it's not relevant to customers who are changing their serial key.
-  if (m_licenseHandler.productEdition() != Edition::kUnregistered) {
+  if (m_licenseHandler.productEdition() != Product::Edition::kUnregistered) {
     QDialog::reject();
     return;
   }

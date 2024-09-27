@@ -17,10 +17,8 @@
 
 #pragma once
 
-#include "ProductEdition.h"
+#include "Product.h"
 #include "SerialKeyType.h"
-#include "synergy/license/Product.h"
-#include "synergy/license/ProductEdition.h"
 
 #include <chrono>
 #include <ctime>
@@ -54,7 +52,7 @@ struct SerialKey {
   std::optional<time_point> expireTime = std::nullopt;
 
 private:
-  explicit SerialKey(Edition edition) : product(edition) {}
+  explicit SerialKey(Product::Edition edition) : product(edition) {}
 };
 
 } // namespace synergy::license
