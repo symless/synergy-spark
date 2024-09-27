@@ -51,26 +51,25 @@ public:
     return instance;
   }
 
-  void load();
-  void save();
-  Product::Edition productEdition() const;
-  const License &license() const;
-  void validate() const;
-  QString productName() const;
-  ChangeSerialKeyResult changeSerialKey(const QString &hexString);
-  void setEnabled(bool enabled) { m_enabled = enabled; }
   bool handleStart(QMainWindow *parent, AppConfig *appConfig);
   void handleSettings(QDialog *parent, QCheckBox *checkBoxEnableTls) const;
-  void checkTlsCheckBox(
-      QDialog *parent, QCheckBox *checkBoxEnableTls, bool showDialog) const;
-  void updateMainWindow() const;
-  bool showActivationDialog(QMainWindow *parent, AppConfig *appConfig);
+  void load();
+  void save();
+  const License &license() const;
+  Product::Edition productEdition() const;
+  QString productName() const;
+  ChangeSerialKeyResult changeSerialKey(const QString &hexString);
 
 signals:
   void serialKeyChanged(const QString &serialKey) const;
   void invalidLicense() const;
 
 private:
+  void checkTlsCheckBox(
+      QDialog *parent, QCheckBox *checkBoxEnableTls, bool showDialog) const;
+  void updateMainWindow() const;
+  bool showActivationDialog(QMainWindow *parent, AppConfig *appConfig);
+
   bool m_enabled = synergy::gui::license::isActivationEnabled();
   License m_license = License::invalid();
   synergy::gui::license::LicenseSettings m_settings;

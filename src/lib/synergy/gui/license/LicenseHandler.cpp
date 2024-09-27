@@ -77,6 +77,21 @@ void LicenseHandler::handleSettings(
   checkTlsCheckBox(parent, checkBoxEnableTls, false);
 }
 
+void LicenseHandler::load() {
+  m_settings.load();
+
+  const auto serialKey = m_settings.serialKey();
+  if (!serialKey.isEmpty()) {
+    changeSerialKey(m_settings.serialKey());
+  }
+}
+
+void LicenseHandler::save() {
+  const auto hexString = m_license.serialKey().hexString;
+  m_settings.setSerialKey(QString::fromStdString(hexString));
+  m_settings.save();
+}
+
 bool LicenseHandler::showActivationDialog(
     QMainWindow *parent, AppConfig *appConfig) {
   ActivationDialog dialog(parent, *appConfig, *this);
@@ -112,21 +127,6 @@ void LicenseHandler::checkTlsCheckBox(
               .arg(synergy::gui::kProProductName));
     }
   }
-}
-
-void LicenseHandler::load() {
-  m_settings.load();
-
-  const auto serialKey = m_settings.serialKey();
-  if (!serialKey.isEmpty()) {
-    changeSerialKey(m_settings.serialKey());
-  }
-}
-
-void LicenseHandler::save() {
-  const auto hexString = m_license.serialKey().hexString;
-  m_settings.setSerialKey(QString::fromStdString(hexString));
-  m_settings.save();
 }
 
 const synergy::license::License &LicenseHandler::license() const {
@@ -186,16 +186,4 @@ LicenseHandler::changeSerialKey(const QString &hexString) {
   }
 
   return kSuccess;
-}
-
-void LicenseHandler::validate() const {
-  if (!m_license.isValid()) {
-    qDebug("license validation failed, license invalid");
-    emit invalidLicense();
-  }
-
-  if (m_license.isExpired()) {
-    qDebug("license validation failed, license expired");
-    emit invalidLicense();
-  }
 }
