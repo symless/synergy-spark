@@ -25,7 +25,7 @@ endmacro()
 
 macro(configure_pre_start)
 
-  set(DESKFLOW_PRE_START_INCLUDE "synergy/pre_start.h")
+  set(DESKFLOW_PRE_START_HEADER "synergy/pre_start.h")
   set(DESKFLOW_PRE_START_SNIPPET "if (!synergy::preStart()) { return 0; }")
 
   set(DESKFLOW_PRE_START_LIB
