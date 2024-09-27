@@ -17,11 +17,19 @@
 
 #include "LicenseHandler.h"
 
+#include "ActivationDialog.h"
 #include "constants.h"
+#include "dialogs/UpgradeDialog.h"
 #include "synergy/gui/license/license_utils.h"
 #include "synergy/license/ProductEdition.h"
 
+#include <QCheckBox>
+#include <QCoreApplication>
 #include <QDebug>
+#include <QDialog>
+#include <QMainWindow>
+#include <QMenuBar>
+#include <QObject>
 #include <QProcessEnvironment>
 #include <QTimer>
 #include <QtGlobal>
@@ -29,6 +37,86 @@
 using namespace std::chrono;
 using namespace synergy::gui::license;
 using License = synergy::license::License;
+
+LicenseHandler &LicenseHandler::instance() {
+  static LicenseHandler instance;
+  return instance;
+}
+
+bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
+  m_mainWindow = parent;
+
+  const auto serialKeyAction =
+      parent->addAction("Change serial key", [this, parent, appConfig] {
+        showActivationDialog(parent, appConfig);
+      });
+
+  const auto licenseMenu = new QMenu("License");
+  licenseMenu->addAction(serialKeyAction);
+  parent->menuBar()->addAction(licenseMenu->menuAction());
+
+  load();
+
+  if (m_license.isValid()) {
+    qInfo("license is valid, continuing with start");
+    updateMainWindow();
+    return true;
+  }
+
+  qInfo("license not valid, showing activation dialog");
+  return showActivationDialog(parent, appConfig);
+}
+
+bool LicenseHandler::showActivationDialog(QMainWindow *parent,
+                                          AppConfig *appConfig) {
+  ActivationDialog dialog(parent, *appConfig, *this);
+  const auto result = dialog.exec();
+  if (result == QDialog::Accepted) {
+    save();
+    updateMainWindow();
+    qDebug("license activation dialog accepted");
+    return true;
+  } else {
+    qWarning("license activation dialog declined, exiting");
+    return false;
+  }
+}
+
+void LicenseHandler::updateMainWindow() const {
+  const auto productName = QString::fromStdString(m_license.productName());
+  qDebug("updating main window title: %s", qPrintable(productName));
+  m_mainWindow->setWindowTitle(m_license.productName().c_str());
+}
+
+void LicenseHandler::handleSettings(QDialog *parent,
+                                    QCheckBox *checkBoxEnableTls) {
+
+  const auto onTlsToggle = [this, parent, checkBoxEnableTls] {
+    qDebug("tls checkbox toggled");
+    checkTlsCheckBox(parent, checkBoxEnableTls, true);
+  };
+
+  QObject::connect(checkBoxEnableTls, &QCheckBox::toggled, onTlsToggle);
+
+  checkTlsCheckBox(parent, checkBoxEnableTls, false);
+}
+
+void LicenseHandler::checkTlsCheckBox(QDialog *parent,
+                                      QCheckBox *checkBoxEnableTls,
+                                      bool showDialog) {
+  if (!m_license.isTlsAvailable() && checkBoxEnableTls->isChecked()) {
+    qDebug("tls not available, showing upgrade dialog");
+    checkBoxEnableTls->setChecked(false);
+
+    if (showDialog) {
+      UpgradeDialog dialog(parent);
+      dialog.showDialog(
+          QString("TLS Encryption"),
+          QString("Please upgrade to %1 to enable TLS encryption.")
+              .arg(synergy::gui::kProProductName));
+    }
+  }
+}
 
 void LicenseHandler::load() {
   m_settings.load();

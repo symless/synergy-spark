@@ -21,6 +21,8 @@
 
 namespace synergy::gui {
 
+const auto kProProductName = "Synergy 1 Pro";
+
 const auto kUrlWebsite = DESKFLOW_WEBSITE_URL;
 const auto kUrlSourceQuery = "source=gui";
 

@@ -17,49 +17,26 @@
 
 #pragma once
 
-#include "synergy/gui/ActivationDialog.h"
 #include "synergy/gui/license/LicenseHandler.h"
 #include "synergy/gui/license/license_utils.h"
-
-#include <QApplication>
-#include <QScreen>
-#include <QtCore>
 
 using namespace Qt;
 
 namespace synergy::inject {
 
-inline bool onStart(QWidget *parent, AppConfig *appConfig) {
-
-  // qRegisterMetaType<Edition>("Edition");
-
-  if (!synergy::gui::license::isActivationEnabled()) {
+inline bool onStart(QMainWindow *parent, AppConfig *appConfig) {
+  if (synergy::gui::license::isActivationEnabled()) {
+    qDebug("license activation enabled");
+    return LicenseHandler::instance().handleStart(parent, appConfig);
+  } else {
     qDebug("license activation disabled");
     return true;
   }
+}
 
-  qDebug("license activation enabled");
-  LicenseHandler licenseHandler;
-  licenseHandler.load();
-
-  const auto &license = licenseHandler.license();
-  if (license.isValid()) {
-    qInfo("license is valid, continuing with start");
-    return true;
-  }
-
-  qInfo("license not valid, showing activation dialog");
-  ActivationDialog dialog(parent, *appConfig, licenseHandler);
-
-  const auto result = dialog.exec();
-  if (result == QDialog::Accepted) {
-    licenseHandler.save();
-    QCoreApplication::setApplicationName(licenseHandler.productName());
-    qDebug("license activation dialog accepted");
-    return true;
-  } else {
-    qWarning("license activation dialog declined, exiting");
-    return false;
+inline void onSettings(QDialog *parent, QCheckBox *checkBoxEnableTls) {
+  if (synergy::gui::license::isActivationEnabled()) {
+    return LicenseHandler::instance().handleSettings(parent, checkBoxEnableTls);
   }
 }
 

@@ -23,13 +23,19 @@
 #include "synergy/license/License.h"
 #include "synergy/license/ProductEdition.h"
 
+#include <QCheckBox>
+#include <QMainWindow>
 #include <QObject>
+#include <qmainwindow.h>
+
+class AppConfig;
 
 /**
  * @brief A convenience wrapper for `License` that provides Qt signals, etc.
  */
 class LicenseHandler : public QObject {
   Q_OBJECT
+
   using License = synergy::license::License;
   using SerialKey = synergy::license::SerialKey;
 
@@ -42,6 +48,8 @@ public:
     kExpired,
   };
 
+  static LicenseHandler &instance();
+
   void load();
   void save();
   Edition productEdition() const;
@@ -50,6 +58,12 @@ public:
   QString productName() const;
   ChangeSerialKeyResult changeSerialKey(const QString &hexString);
   void setEnabled(bool enabled) { m_enabled = enabled; }
+  bool handleStart(QMainWindow *parent, AppConfig *appConfig);
+  void handleSettings(QDialog *parent, QCheckBox *checkBoxEnableTls);
+  void checkTlsCheckBox(QDialog *parent, QCheckBox *checkBoxEnableTls,
+                        bool showDialog);
+  void updateMainWindow() const;
+  bool showActivationDialog(QMainWindow *parent, AppConfig *appConfig);
 
 signals:
   void serialKeyChanged(const QString &serialKey) const;
@@ -59,4 +73,5 @@ private:
   bool m_enabled = synergy::gui::license::isActivationEnabled();
   License m_license = License::invalid();
   synergy::gui::license::LicenseSettings m_settings;
+  QMainWindow *m_mainWindow = nullptr;
 };

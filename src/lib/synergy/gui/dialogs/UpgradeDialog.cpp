@@ -23,13 +23,13 @@
 #include <QtGui>
 
 UpgradeDialog::UpgradeDialog(QWidget *parent) : QMessageBox(parent) {
-  setWindowTitle("Upgrade to access this feature");
   m_cancel = addButton("Cancel", QMessageBox::RejectRole);
   m_upgrade = addButton("Upgrade", QMessageBox::AcceptRole);
 }
 
-void UpgradeDialog::showDialog(const QString &text) {
-  setText(text);
+void UpgradeDialog::showDialog(const QString &title, const QString &body) {
+  setWindowTitle(title);
+  setText(body);
   exec();
 
   if (clickedButton() == m_upgrade) {
