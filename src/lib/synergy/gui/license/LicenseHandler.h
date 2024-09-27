@@ -46,7 +46,10 @@ public:
     kExpired,
   };
 
-  static LicenseHandler &instance();
+  static LicenseHandler &instance() {
+    static LicenseHandler instance;
+    return instance;
+  }
 
   void load();
   void save();
@@ -62,9 +65,6 @@ public:
       QDialog *parent, QCheckBox *checkBoxEnableTls, bool showDialog) const;
   void updateMainWindow() const;
   bool showActivationDialog(QMainWindow *parent, AppConfig *appConfig);
-
-private slots:
-  void onChangeSerialKey();
 
 signals:
   void serialKeyChanged(const QString &serialKey) const;

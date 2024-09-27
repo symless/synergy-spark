@@ -23,6 +23,7 @@
 #include "synergy/gui/license/license_utils.h"
 #include "synergy/license/Product.h"
 
+#include <QAction>
 #include <QCheckBox>
 #include <QCoreApplication>
 #include <QDebug>
@@ -38,17 +39,14 @@ using namespace std::chrono;
 using namespace synergy::gui::license;
 using License = synergy::license::License;
 
-LicenseHandler &LicenseHandler::instance() {
-  static LicenseHandler instance;
-  return instance;
-}
-
 bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
   m_mainWindow = parent;
   m_appConfig = appConfig;
 
-  const auto serialKeyAction = parent->addAction(
-      "Change serial key", this, &LicenseHandler::onChangeSerialKey);
+  const auto serialKeyAction = new QAction("Change serial key", parent);
+  QObject::connect(
+      serialKeyAction, &QAction::triggered,
+      [this, parent, appConfig] { showActivationDialog(parent, appConfig); });
 
   const auto licenseMenu = new QMenu("License");
   licenseMenu->addAction(serialKeyAction);
@@ -66,21 +64,6 @@ bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
   return showActivationDialog(parent, appConfig);
 }
 
-bool LicenseHandler::showActivationDialog(
-    QMainWindow *parent, AppConfig *appConfig) {
-  ActivationDialog dialog(parent, *appConfig, *this);
-  const auto result = dialog.exec();
-  if (result == QDialog::Accepted) {
-    save();
-    updateMainWindow();
-    qDebug("license activation dialog accepted");
-    return true;
-  } else {
-    qWarning("license activation dialog declined, exiting");
-    return false;
-  }
-}
-
 void LicenseHandler::handleSettings(
     QDialog *parent, QCheckBox *checkBoxEnableTls) const {
 
@@ -94,8 +77,19 @@ void LicenseHandler::handleSettings(
   checkTlsCheckBox(parent, checkBoxEnableTls, false);
 }
 
-void LicenseHandler::onChangeSerialKey() {
-  showActivationDialog(m_mainWindow, m_appConfig);
+bool LicenseHandler::showActivationDialog(
+    QMainWindow *parent, AppConfig *appConfig) {
+  ActivationDialog dialog(parent, *appConfig, *this);
+  const auto result = dialog.exec();
+  if (result == QDialog::Accepted) {
+    save();
+    updateMainWindow();
+    qDebug("license activation dialog accepted");
+    return true;
+  } else {
+    qWarning("license activation dialog declined, exiting");
+    return false;
+  }
 }
 
 void LicenseHandler::updateMainWindow() const {
