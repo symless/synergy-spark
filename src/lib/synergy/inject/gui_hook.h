@@ -20,8 +20,6 @@
 #include "synergy/gui/license/LicenseHandler.h"
 #include "synergy/gui/license/license_utils.h"
 
-using namespace Qt;
-
 namespace synergy::inject {
 
 inline bool onStart(QMainWindow *parent, AppConfig *appConfig) {
