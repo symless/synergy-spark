@@ -30,6 +30,21 @@ using namespace std::chrono;
 using namespace synergy::gui::license;
 using License = synergy::license::License;
 
+void LicenseHandler::load() {
+  m_settings.load();
+
+  const auto serialKey = m_settings.serialKey();
+  if (!serialKey.isEmpty()) {
+    changeSerialKey(m_settings.serialKey());
+  }
+}
+
+void LicenseHandler::save() {
+  const auto hexString = m_license.serialKey().hexString;
+  m_settings.setSerialKey(QString::fromStdString(hexString));
+  m_settings.save();
+}
+
 const synergy::license::License &LicenseHandler::license() const {
   return m_license;
 }

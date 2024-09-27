@@ -20,19 +20,19 @@ macro(configure_deskflow)
   configure_meta()
   configure_dist()
   configure_bin_names()
-  configure_pre_start()
+  configure_gui_hook()
 
 endmacro()
 
-macro(configure_pre_start)
+macro(configure_gui_hook)
 
-  set(DESKFLOW_START_HEADER "synergy/inject/pre_start.h")
-  set(DESKFLOW_START_HOOK
-      "if (!synergy::inject::preStart(&mainWindow, &appConfig)) { return 0; }")
+  set(DESKFLOW_GUI_HOOK_HEADER "synergy/inject/gui_hook.h")
+  set(DESKFLOW_GUI_HOOK_START
+      "if (!synergy::inject::onStart(&mainWindow, &appConfig)) { return 0; }")
 
-  set(DESKFLOW_START_LIB
+  set(DESKFLOW_GUI_HOOK_LIB
       "sgui"
-      CACHE STRING "Pre-start library")
+      CACHE STRING "GUI hook library")
 
   include_directories(${CMAKE_SOURCE_DIR}/src/lib)
 

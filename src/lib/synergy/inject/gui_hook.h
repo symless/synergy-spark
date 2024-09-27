@@ -29,7 +29,7 @@ using namespace Qt;
 
 namespace synergy::inject {
 
-inline bool preStart(QWidget *parent, AppConfig *appConfig) {
+inline bool onStart(QWidget *parent, AppConfig *appConfig) {
 
   // qRegisterMetaType<Edition>("Edition");
 
@@ -40,10 +40,11 @@ inline bool preStart(QWidget *parent, AppConfig *appConfig) {
 
   qDebug("license activation enabled");
   LicenseHandler licenseHandler;
-  const auto &license = licenseHandler.license();
+  licenseHandler.load();
 
+  const auto &license = licenseHandler.license();
   if (license.isValid()) {
-    qInfo("license is valid");
+    qInfo("license is valid, continuing with start");
     return true;
   }
 
@@ -52,6 +53,7 @@ inline bool preStart(QWidget *parent, AppConfig *appConfig) {
 
   const auto result = dialog.exec();
   if (result == QDialog::Accepted) {
+    licenseHandler.save();
     QCoreApplication::setApplicationName(licenseHandler.productName());
     qDebug("license activation dialog accepted");
     return true;

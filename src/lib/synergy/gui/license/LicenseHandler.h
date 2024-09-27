@@ -18,6 +18,7 @@
 #pragma once
 
 #include "synergy/gui/constants.h"
+#include "synergy/gui/license/LicenseSettings.h"
 #include "synergy/gui/license/license_utils.h"
 #include "synergy/license/License.h"
 #include "synergy/license/ProductEdition.h"
@@ -41,6 +42,8 @@ public:
     kExpired,
   };
 
+  void load();
+  void save();
   Edition productEdition() const;
   const License &license() const;
   void validate() const;
@@ -55,4 +58,5 @@ signals:
 private:
   bool m_enabled = synergy::gui::license::isActivationEnabled();
   License m_license = License::invalid();
+  synergy::gui::license::LicenseSettings m_settings;
 };
