@@ -15,8 +15,15 @@
 
 macro(configure_licensing)
 
+  set(DEFAULT_ENABLE_ACTIVATION ON)
+  if("$ENV{SYNERGY_ENABLE_ACTIVATION}" STREQUAL "false")
+    set(DEFAULT_ENABLE_ACTIVATION OFF)
+  endif()
+
   # activation is off by default to make life easier for contributors.
-  option(SYNERGY_ENABLE_ACTIVATION "Enable activation dialog, etc" ON)
+  option(SYNERGY_ENABLE_ACTIVATION "Enable activation dialog, etc"
+         ${DEFAULT_ENABLE_ACTIVATION})
+
   if(SYNERGY_ENABLE_ACTIVATION)
     message(STATUS "License activation is enabled")
     add_definitions(-DSYNERGY_ENABLE_ACTIVATION)

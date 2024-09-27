@@ -44,6 +44,10 @@ macro(configure_meta)
     set(DESKFLOW_PRODUCT_NAME
         $ENV{SYNERGY_PRODUCT_NAME}
         CACHE STRING "Product name")
+  elseif(SYNERGY_PRODUCT_NAME)
+    set(DESKFLOW_PRODUCT_NAME
+        SYNERGY_PRODUCT_NAME
+        CACHE STRING "Product name")
   else()
     set(DESKFLOW_PRODUCT_NAME
         "Synergy"
