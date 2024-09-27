@@ -102,7 +102,7 @@ bool LicenseHandler::showActivationDialog(
     qDebug("license activation dialog accepted");
     return true;
   } else {
-    qWarning("license activation dialog declined, exiting");
+    qWarning("license activation dialog declined");
     return false;
   }
 }

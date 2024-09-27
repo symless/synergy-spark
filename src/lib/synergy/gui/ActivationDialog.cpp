@@ -38,12 +38,6 @@ using namespace deskflow::gui;
 using namespace synergy::gui;
 using namespace synergy::license;
 
-// TODO
-QString serialKey() { return ""; }
-
-// TODO
-bool isAvailableAndEnabled(const TlsUtility &tls) { return false; }
-
 ActivationDialog::ActivationDialog(
     QWidget *parent, AppConfig &appConfig, LicenseHandler &licenseHandler)
     : QDialog(parent),
@@ -70,7 +64,8 @@ void ActivationDialog::refreshSerialKey() {
     m_ui->m_pTextEditSerialKey->setText(envSerialKey);
   } else {
     qDebug("using serial key from config");
-    m_ui->m_pTextEditSerialKey->setText(serialKey());
+    const auto hexString = m_licenseHandler.license().serialKey().hexString;
+    m_ui->m_pTextEditSerialKey->setText(QString::fromStdString(hexString));
   }
 
   m_ui->m_pTextEditSerialKey->setFocus();
@@ -164,8 +159,8 @@ void ActivationDialog::showSuccessDialog() {
   QString message = tr("<p>Thanks for activating %1.</p>")
                         .arg(m_licenseHandler.productName());
 
-  TlsUtility tls(*m_pAppConfig);
-  if (isAvailableAndEnabled(tls)) {
+  const auto tlsAvailable = m_licenseHandler.license().isTlsAvailable();
+  if (tlsAvailable && m_pAppConfig->tlsEnabled()) {
     message +=
         "<p>To ensure that TLS encryption works correctly, "
         "please activate all of your computers with the same serial key.</p>";
