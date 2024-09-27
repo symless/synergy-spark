@@ -1,4 +1,4 @@
-# Deskflow -- mouse and keyboard sharing utility
+# Synergy -- mouse and keyboard sharing utility
 # Copyright (C) 2024 Symless Ltd.
 # Copyright (C) 2009 Nick Bolton
 #
@@ -19,6 +19,24 @@ macro(configure_deskflow)
   configure_meta()
   configure_dist()
   configure_bin_names()
+  #   configure_pre_start()
+
+endmacro()
+
+macro(configure_pre_start)
+
+  set(DESKFLOW_PRE_START_INCLUDE "synergy/pre_start.h")
+  add_definitions(-DSYNERGY_PRE_START_INCLUDE="${DESKFLOW_PRE_START_INCLUDE}")
+
+  set(DESKFLOW_PRE_START_SNIPPET "if (!synergy::preStart()) { return 0; }")
+  add_definitions(-DSYNERGY_PRE_START_SNIPPET="${DESKFLOW_PRE_START_SNIPPET}")
+
+  set(DESKFLOW_PRE_START_LIB
+      "synergy"
+      CACHE STRING "Pre-start library")
+
+  include_directories(${CMAKE_SOURCE_DIR}/src/lib)
+
 endmacro()
 
 macro(configure_meta)
@@ -54,6 +72,10 @@ macro(configure_meta)
   set(DESKFLOW_VERSION_URL
       "https://api.symless.com/version/synergy1"
       CACHE STRING "URL to get the latest version")
+
+  set(DESKFLOW_HELP_TEXT
+      "Get technical support"
+      CACHE STRING "Text label for the help menu item")
 
   set(DESKFLOW_RES_DIR
       "${CMAKE_SOURCE_DIR}/res"

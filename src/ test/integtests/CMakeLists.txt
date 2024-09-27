@@ -1,6 +1,6 @@
-# Synergy -- mouse and keyboard sharing utility
-# Copyright (C) 2024 Symless Ltd.
-# Copyright (C) 2009 Nick Bolton
+# Deskflow -- mouse and keyboard sharing utility
+# Copyright (C) 2012-2024 Symless Ltd.
+# Copyright (C) 2009-2012 Nick Bolton
 #
 # This package is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -14,14 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.8)
-
-project(synergy C CXX)
-
-include(cmake/Deskflow.cmake)
-include(cmake/Licensing.cmake)
-
-configure_deskflow()
-
-add_subdirectory(deskflow)
-add_subdirectory(src)
+config_test()
+set(target ${INTEG_TESTS_BIN})
+add_executable(${target} ${sources})
+target_link_libraries(${target} ${test_libs})

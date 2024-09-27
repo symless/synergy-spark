@@ -14,14 +14,5 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.8)
-
-project(synergy C CXX)
-
-include(cmake/Deskflow.cmake)
-include(cmake/Licensing.cmake)
-
-configure_deskflow()
-
-add_subdirectory(deskflow)
-add_subdirectory(src)
+# activation is off by default to make life easier for contributors.
+option(ENABLE_ACTIVATION "Enable activation dialog, etc" ON)
