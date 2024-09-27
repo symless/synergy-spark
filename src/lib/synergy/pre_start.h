@@ -21,7 +21,7 @@
 
 namespace synergy {
 
-inline bool pre_start() {
+inline bool preStart() {
   std::cout << "test" << std::endl;
   return true;
 }

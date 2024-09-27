@@ -19,17 +19,14 @@ macro(configure_deskflow)
   configure_meta()
   configure_dist()
   configure_bin_names()
-  #   configure_pre_start()
+  configure_pre_start()
 
 endmacro()
 
 macro(configure_pre_start)
 
   set(DESKFLOW_PRE_START_INCLUDE "synergy/pre_start.h")
-  add_definitions(-DSYNERGY_PRE_START_INCLUDE="${DESKFLOW_PRE_START_INCLUDE}")
-
   set(DESKFLOW_PRE_START_SNIPPET "if (!synergy::preStart()) { return 0; }")
-  add_definitions(-DSYNERGY_PRE_START_SNIPPET="${DESKFLOW_PRE_START_SNIPPET}")
 
   set(DESKFLOW_PRE_START_LIB
       "synergy"
