@@ -44,11 +44,6 @@ macro(configure_meta)
     set(DESKFLOW_APP_NAME
         $ENV{SYNERGY_PRODUCT_NAME}
         CACHE STRING "Product name")
-  elseif(SYNERGY_PRODUCT_NAME)
-    message(STATUS "Using product name from command line")
-    set(DESKFLOW_APP_NAME
-        SYNERGY_PRODUCT_NAME
-        CACHE STRING "Product name")
   else()
     message(STATUS "Using default product name")
     set(DESKFLOW_APP_NAME
