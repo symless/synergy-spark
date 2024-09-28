@@ -46,6 +46,10 @@ def main():
     filename_base = get_env("SYNERGY_PACKAGE_PREFIX", default=DEFAULT_PREFIX)
     version = package.get_app_version(VERSION_FILENAME)
 
+    print("Product name: ", product_name)
+    print("Filename base: ", filename_base)
+    print("Version: ", version)
+
     package.package(
         filename_base,
         version,
