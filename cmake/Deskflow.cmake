@@ -41,22 +41,22 @@ macro(configure_meta)
 
   if(NOT "$ENV{SYNERGY_PRODUCT_NAME}" STREQUAL "")
     message(STATUS "Using product name from env var")
-    set(DESKFLOW_PRODUCT_NAME
+    set(DESKFLOW_APP_NAME
         $ENV{SYNERGY_PRODUCT_NAME}
         CACHE STRING "Product name")
   elseif(SYNERGY_PRODUCT_NAME)
     message(STATUS "Using product name from command line")
-    set(DESKFLOW_PRODUCT_NAME
+    set(DESKFLOW_APP_NAME
         SYNERGY_PRODUCT_NAME
         CACHE STRING "Product name")
   else()
     message(STATUS "Using default product name")
-    set(DESKFLOW_PRODUCT_NAME
+    set(DESKFLOW_APP_NAME
         "Synergy"
         CACHE STRING "Product name")
   endif()
 
-  message(STATUS "Product name: ${DESKFLOW_PRODUCT_NAME}")
+  message(STATUS "Product name: ${DESKFLOW_APP_NAME}")
 
   set(DESKFLOW_APP_ID
       "synergy"
