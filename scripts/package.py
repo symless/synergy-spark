@@ -18,6 +18,7 @@
 import os, argparse
 import lib.bootstrap as bootstrap
 
+DEFAULT_PRODUCT_NAME = "Synergy"
 DESKFLOW_SOURCE_DIR = "deskflow"
 DESKFLOW_BUILD_DIR = "build/deskflow"
 DEFAULT_PREFIX = "synergy"
@@ -41,7 +42,7 @@ def main():
 
     import package
 
-    product_name = get_env("SYNERGY_PRODUCT_NAME", required=True)
+    product_name = get_env("SYNERGY_PRODUCT_NAME", default=DEFAULT_PRODUCT_NAME)
     filename_base = get_env("SYNERGY_PACKAGE_PREFIX", default=DEFAULT_PREFIX)
     version = package.get_app_version(VERSION_FILENAME)
 
