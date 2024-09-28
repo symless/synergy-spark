@@ -98,6 +98,9 @@ macro(configure_meta)
       false
       CACHE BOOL "Show developer thanks message")
 
+  add_definitions(-DDESKFLOW_APP_ID="${DESKFLOW_APP_ID}")
+  add_definitions(-DDESKFLOW_APP_NAME="${DESKFLOW_APP_NAME}")
+
 endmacro()
 
 macro(configure_dist)
