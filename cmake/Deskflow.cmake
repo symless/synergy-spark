@@ -41,21 +41,26 @@ macro(configure_meta)
 
   if(NOT "$ENV{SYNERGY_PRODUCT_NAME}" STREQUAL "")
     message(STATUS "Using product name from env var")
-    set(DESKFLOW_APP_NAME
+    set(SYNERGY_PRODUCT_NAME
         $ENV{SYNERGY_PRODUCT_NAME}
         CACHE STRING "Product name")
   else()
     message(STATUS "Using default product name")
-    set(DESKFLOW_APP_NAME
+    set(SYNERGY_PRODUCT_NAME
         "Synergy"
         CACHE STRING "Product name")
   endif()
 
-  message(STATUS "Product name: ${DESKFLOW_APP_NAME}")
+  message(STATUS "Product name: ${SYNERGY_PRODUCT_NAME}")
+  add_definitions(-DSYNERGY_PRODUCT_NAME="${SYNERGY_PRODUCT_NAME}")
 
   set(DESKFLOW_APP_ID
       "synergy"
       CACHE STRING "ID of the app for filenames, etc")
+
+  set(DESKFLOW_APP_NAME
+      "Synergy"
+      CACHE STRING "Name of the app")
 
   set(DESKFLOW_DOMAIN
       "symless.com"

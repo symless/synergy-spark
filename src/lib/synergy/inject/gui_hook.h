@@ -20,6 +20,8 @@
 #include "synergy/gui/license/LicenseHandler.h"
 #include "synergy/gui/license/license_utils.h"
 
+#include <QMainWindow>
+
 namespace synergy::inject {
 
 inline bool onStart(QMainWindow *parent, AppConfig *appConfig) {
@@ -28,6 +30,7 @@ inline bool onStart(QMainWindow *parent, AppConfig *appConfig) {
     return LicenseHandler::instance().handleStart(parent, appConfig);
   } else {
     qDebug("license activation disabled");
+    parent->setWindowTitle(SYNERGY_PRODUCT_NAME);
     return true;
   }
 }
