@@ -167,9 +167,6 @@ jobs:
       - name: Install dependencies
         run: ./scripts/setup.py
 
-      - name: Debug
-        run: ls -R
-
       - name: Get version
         uses: ./deskflow/.github/actions/get-version
 
