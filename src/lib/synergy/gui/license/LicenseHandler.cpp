@@ -67,17 +67,17 @@ bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
   }
 
   if (m_license.isExpired()) {
-    qInfo("license is expired, showing activation dialog");
+    qWarning("license is expired, showing activation dialog");
     return showActivationDialog();
   }
 
   if (m_license.isValid()) {
-    qInfo("license is valid, continuing with start");
+    qDebug("license is valid, continuing with start");
     updateApp();
     return true;
   }
 
-  qInfo("license not valid, showing activation dialog");
+  qDebug("license not valid, showing activation dialog");
   return showActivationDialog();
 }
 
