@@ -21,8 +21,24 @@ macro(configure_build)
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
 
+  warnings_as_errors()
+
   if(APPLE)
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "12.0")
+    configure_apple()
   endif()
 
+endmacro()
+
+macro(configure_apple)
+  set(CMAKE_OSX_DEPLOYMENT_TARGET "12.0")
+endmacro()
+
+macro(warnings_as_errors)
+  if(WIN32)
+    message(STATUS "Enabling warnings as errors (MSVC)")
+    add_compile_options(/WX)
+  elseif(UNIX)
+    message(STATUS "Enabling warnings as errors (GNU/Clang)")
+    add_compile_options(-Werror)
+  endif()
 endmacro()
