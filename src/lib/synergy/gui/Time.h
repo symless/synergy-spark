@@ -18,6 +18,7 @@
 #pragma once
 
 #include <chrono>
+#include <optional>
 
 namespace synergy::gui {
 
