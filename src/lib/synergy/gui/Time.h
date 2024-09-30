@@ -28,7 +28,7 @@ class Time {
 public:
   Time();
   time_point now();
-  bool hasTestTime() const { return m_testStartTime.has_value(); }
+  bool hasTestTime() const;
 
 private:
   std::optional<std::chrono::seconds> m_testStartTime;

@@ -34,6 +34,8 @@ Time::Time() {
   }
 }
 
+bool Time::hasTestTime() const { return m_testStartTime.has_value(); }
+
 system_clock::time_point Time::now() {
   if (m_testStartTime.has_value()) {
     const auto runtime = system_clock::now() - m_realStartTime;
