@@ -19,7 +19,7 @@ on:
     - cron: "0 5 * * *" # 5am UTC
 
 env:
-  GIT_SHA: ${{ github.sha }}
+  GIT_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
   SYNERGY_PRODUCT_NAME: ${{ vars.SYNERGY_PRODUCT_NAME }}
   SYNERGY_PACKAGE_PREFIX: ${{ vars.SYNERGY_PACKAGE_PREFIX }}
   SYNERGY_ENABLE_ACTIVATION: ${{ vars.SYNERGY_ENABLE_ACTIVATION }}
