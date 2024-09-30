@@ -20,6 +20,7 @@
 #include "ActivationDialog.h"
 #include "constants.h"
 #include "dialogs/UpgradeDialog.h"
+#include "gui/config/AppConfig.h"
 #include "synergy/gui/license/license_utils.h"
 #include "synergy/license/Product.h"
 
@@ -56,7 +57,7 @@ bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
 
   if (m_license.isValid()) {
     qInfo("license is valid, continuing with start");
-    updateMainWindow();
+    updateApp();
     return true;
   }
 
@@ -98,7 +99,7 @@ bool LicenseHandler::showActivationDialog(
   const auto result = dialog.exec();
   if (result == QDialog::Accepted) {
     save();
-    updateMainWindow();
+    updateApp();
     qDebug("license activation dialog accepted");
     return true;
   } else {
@@ -107,10 +108,11 @@ bool LicenseHandler::showActivationDialog(
   }
 }
 
-void LicenseHandler::updateMainWindow() const {
+void LicenseHandler::updateApp() const {
   const auto productName = QString::fromStdString(m_license.productName());
   qDebug("updating main window title: %s", qPrintable(productName));
   m_mainWindow->setWindowTitle(m_license.productName().c_str());
+  m_appConfig->setTlsEnabled(m_license.isTlsAvailable());
 }
 
 void LicenseHandler::checkTlsCheckBox(

@@ -67,7 +67,7 @@ signals:
 private:
   void checkTlsCheckBox(
       QDialog *parent, QCheckBox *checkBoxEnableTls, bool showDialog) const;
-  void updateMainWindow() const;
+  void updateApp() const;
   bool showActivationDialog(QMainWindow *parent, AppConfig *appConfig);
 
   bool m_enabled = synergy::gui::license::isActivationEnabled();
