@@ -45,7 +45,7 @@ QString trialLicenseNotice(const License &license) {
   if (license.isExpired()) {
     return QString("<p>Your trial has ended. %1</p>").arg(buyLink);
   } else {
-    auto daysLeft = license.secondsLeft().count();
+    auto daysLeft = license.daysLeft().count();
     if (daysLeft <= 0) {
       return QString("<p>Your trial ends today. %1</p>").arg(buyLink);
     } else {
@@ -63,7 +63,7 @@ QString subscriptionLicenseNotice(const License &license) {
   if (license.isExpired()) {
     return QString("<p>Your license has ended. %1</p>").arg(renewLink);
   } else {
-    auto daysLeft = license.secondsLeft().count();
+    auto daysLeft = license.daysLeft().count();
     if (daysLeft <= 0) {
       return QString("<p>Your license ends today. %1</p>").arg(renewLink);
     } else {

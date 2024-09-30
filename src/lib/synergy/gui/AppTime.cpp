@@ -30,7 +30,7 @@ AppTime::AppTime() {
   m_realStartTime = system_clock::now();
   if (qEnvironmentVariableIsSet(kTestTimeEnvVar)) {
     const auto testTime = qEnvironmentVariable(kTestTimeEnvVar).toLongLong();
-    qDebug("setting test time to %lld", testTime);
+    qDebug("setting test time to: %lld", testTime);
     m_testStartTime = std::chrono::seconds{testTime};
   }
 }

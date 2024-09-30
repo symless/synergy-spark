@@ -84,16 +84,23 @@ bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
 }
 
 void LicenseHandler::handleSettings(
-    QDialog *parent, QCheckBox *checkBoxEnableTls) const {
+    QDialog *parent, QCheckBox *enableTls, QCheckBox *invertConnection) const {
 
-  const auto onTlsToggle = [this, parent, checkBoxEnableTls] {
+  const auto onTlsToggle = [this, parent, enableTls] {
     qDebug("tls checkbox toggled");
-    checkTlsCheckBox(parent, checkBoxEnableTls, true);
+    checkTlsCheckBox(parent, enableTls, true);
   };
+  QObject::connect(enableTls, &QCheckBox::toggled, onTlsToggle);
 
-  QObject::connect(checkBoxEnableTls, &QCheckBox::toggled, onTlsToggle);
+  const auto onInvertConnectionToggle = [this, parent, invertConnection] {
+    qDebug("invert connection checkbox toggled");
+    checkInvertConnectionCheckBox(parent, invertConnection, true);
+  };
+  QObject::connect(
+      invertConnection, &QCheckBox::toggled, onInvertConnectionToggle);
 
-  checkTlsCheckBox(parent, checkBoxEnableTls, false);
+  checkTlsCheckBox(parent, enableTls, false);
+  checkInvertConnectionCheckBox(parent, invertConnection, false);
 }
 
 bool LicenseHandler::loadSettings() {
@@ -157,6 +164,25 @@ void LicenseHandler::checkTlsCheckBox(
   }
 }
 
+void LicenseHandler::checkInvertConnectionCheckBox(
+    QDialog *parent, QCheckBox *checkBoxInvertConnection,
+    bool showDialog) const {
+  if (!m_license.isInvertConnectionAvailable() &&
+      checkBoxInvertConnection->isChecked()) {
+    qDebug("invert connection not available, showing upgrade dialog");
+    checkBoxInvertConnection->setChecked(false);
+
+    if (showDialog) {
+      UpgradeDialog dialog(parent);
+      dialog.showDialog(
+          QString("Invert Connection"),
+          QString(
+              "Please upgrade to %1 to enable the invert connection feature.")
+              .arg(synergy::gui::kBusinessProductName));
+    }
+  }
+}
+
 const synergy::license::License &LicenseHandler::license() const {
   return m_license;
 }
@@ -192,17 +218,17 @@ LicenseHandler::setLicense(const QString &hexString, bool allowExpired) {
     return kInvalid;
   }
 
-  const auto license = License(serialKey);
+  auto license = License(serialKey);
+  if (m_time.hasTestTime()) {
+    license.setNowFunc([this]() { return m_time.now(); });
+  }
+
   if (!allowExpired && license.isExpired()) {
     qDebug("license is expired, ignoring");
     return kExpired;
   }
 
   m_license = license;
-
-  // if (m_time.hasTestTime()) {
-  //   m_license.setNowFunc([this]() { return m_time.now(); });
-  // }
 
   if (!m_license.isExpired() && m_license.isTimeLimited()) {
     auto secondsLeft = m_license.secondsLeft();

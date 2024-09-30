@@ -30,7 +30,8 @@ macro(configure_gui_hook)
   set(DESKFLOW_GUI_HOOK_START
       "if (!synergy::hooks::onStart(&mainWindow, &appConfig)) { return 0; }")
   set(DESKFLOW_GUI_HOOK_SETTINGS
-      "synergy::hooks::onSettings(this, m_pCheckBoxEnableTls);")
+      "synergy::hooks::onSettings(this, m_pCheckBoxEnableTls, m_pInvertConnection);"
+  )
   set(DESKFLOW_GUI_HOOK_LIB "synergy-gui")
 
   include_directories(${CMAKE_SOURCE_DIR}/src/lib)

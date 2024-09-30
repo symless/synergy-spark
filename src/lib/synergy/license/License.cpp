@@ -51,6 +51,11 @@ bool License::isTlsAvailable() const {
   return m_serialKey.product.isFeatureAvailable(Product::Feature::kTls);
 }
 
+bool License::isInvertConnectionAvailable() const {
+  return m_serialKey.product.isFeatureAvailable(
+      Product::Feature::kInvertConnection);
+}
+
 Product::Edition License::productEdition() const {
   return m_serialKey.product.edition();
 }
@@ -89,6 +94,8 @@ seconds License::secondsLeft() const {
   auto timeLeft = expireTime - m_nowFunc();
   return duration_cast<seconds>(timeLeft);
 }
+
+days License::daysLeft() const { return duration_cast<days>(secondsLeft()); }
 
 std::string License::productName() const {
   auto name = m_serialKey.product.name();

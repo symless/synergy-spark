@@ -51,12 +51,14 @@ public:
   }
 
   bool isTlsAvailable() const;
+  bool isInvertConnectionAvailable() const;
   bool isValid() const { return m_serialKey.isValid; }
   bool isExpiringSoon() const;
   bool isExpired() const;
   bool isTrial() const;
   bool isSubscription() const;
   bool isTimeLimited() const;
+  std::chrono::days daysLeft() const;
   std::chrono::seconds secondsLeft() const;
   Product::Edition productEdition() const;
   std::string productName() const;

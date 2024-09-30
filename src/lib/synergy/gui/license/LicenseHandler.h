@@ -51,7 +51,8 @@ public:
   }
 
   bool handleStart(QMainWindow *parent, AppConfig *appConfig);
-  void handleSettings(QDialog *parent, QCheckBox *checkBoxEnableTls) const;
+  void handleSettings(
+      QDialog *parent, QCheckBox *enableTls, QCheckBox *invertConnection) const;
   bool loadSettings();
   void saveSettings();
   const License &license() const;
@@ -63,6 +64,9 @@ public:
 private:
   void checkTlsCheckBox(
       QDialog *parent, QCheckBox *checkBoxEnableTls, bool showDialog) const;
+  void checkInvertConnectionCheckBox(
+      QDialog *parent, QCheckBox *checkBoxInvertConnection,
+      bool showDialog) const;
   void updateWindowTitle() const;
   bool showActivationDialog();
   void validate();

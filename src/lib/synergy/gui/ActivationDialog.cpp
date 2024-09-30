@@ -116,7 +116,7 @@ void ActivationDialog::accept() {
 
 void ActivationDialog::showResultDialog(
     LicenseHandler::SetSerialKeyResult result) {
-  const QString title = "Activation result";
+  const QString title = "Activation";
 
   switch (result) {
     using enum LicenseHandler::SetSerialKeyResult;
@@ -143,7 +143,7 @@ void ActivationDialog::showResultDialog(
         this, title,
         QString(
             "Sorry, that serial key has expired. "
-            R"(Please <a href="%1" style="color: %1">renew</a> your license.)")
+            R"(Please <a href="%1" style="color: %2">renew</a> your license.)")
             .arg(kUrlPurchase)
             .arg(kColorSecondary));
     break;
@@ -168,7 +168,7 @@ void ActivationDialog::showSuccessDialog() {
   }
 
   if (license.isTimeLimited()) {
-    auto daysLeft = license.secondsLeft().count();
+    auto daysLeft = license.daysLeft().count();
     if (license.isTrial()) {
       title = "Trial started";
       message += QString("Your trial will expire in %1 %2.")

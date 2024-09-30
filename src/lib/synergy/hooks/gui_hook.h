@@ -35,9 +35,11 @@ inline bool onStart(QMainWindow *parent, AppConfig *appConfig) {
   }
 }
 
-inline void onSettings(QDialog *parent, QCheckBox *checkBoxEnableTls) {
+inline void
+onSettings(QDialog *parent, QCheckBox *enableTls, QCheckBox *invertConnection) {
   if (synergy::gui::license::isActivationEnabled()) {
-    return LicenseHandler::instance().handleSettings(parent, checkBoxEnableTls);
+    return LicenseHandler::instance().handleSettings(
+        parent, enableTls, invertConnection);
   }
 }
 
