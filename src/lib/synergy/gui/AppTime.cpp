@@ -15,18 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Time.h"
+#include "AppTime.h"
 
 #include <QtCore>
 
 using system_clock = std::chrono::system_clock;
+using time_point = system_clock::time_point;
 
 namespace synergy::gui {
 
 const auto kTestTimeEnvVar = "SYNERGY_TEST_START_TIME";
 
-Time::Time() {
-  m_realStartTime = std::chrono::system_clock::now();
+AppTime::AppTime() {
+  m_realStartTime = system_clock::now();
   if (qEnvironmentVariableIsSet(kTestTimeEnvVar)) {
     const auto testTime = qEnvironmentVariable(kTestTimeEnvVar).toLongLong();
     qDebug("setting test time to %lld", testTime);
@@ -34,12 +35,12 @@ Time::Time() {
   }
 }
 
-bool Time::hasTestTime() const { return m_testStartTime.has_value(); }
+bool AppTime::hasTestTime() const { return m_testStartTime.has_value(); }
 
-system_clock::time_point Time::now() {
+time_point AppTime::now() {
   if (m_testStartTime.has_value()) {
     const auto runtime = system_clock::now() - m_realStartTime;
-    return system_clock::time_point{m_testStartTime.value()} + runtime;
+    return time_point{m_testStartTime.value()} + runtime;
   }
   return system_clock::now();
 }

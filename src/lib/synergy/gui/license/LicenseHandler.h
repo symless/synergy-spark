@@ -17,8 +17,7 @@
 
 #pragma once
 
-#include "synergy/gui/Time.h"
-#include "synergy/gui/constants.h"
+#include "synergy/gui/AppTime.h"
 #include "synergy/gui/license/LicenseSettings.h"
 #include "synergy/license/License.h"
 #include "synergy/license/Product.h"
@@ -72,5 +71,5 @@ private:
   synergy::gui::license::LicenseSettings m_settings;
   QMainWindow *m_mainWindow = nullptr;
   AppConfig *m_appConfig = nullptr;
-  synergy::gui::Time m_time;
+  synergy::gui::AppTime m_time;
 };

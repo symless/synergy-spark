@@ -22,16 +22,16 @@
 
 namespace synergy::gui {
 
-class Time {
+class AppTime {
   using time_point = std::chrono::system_clock::time_point;
 
 public:
-  Time();
+  AppTime();
   time_point now();
   bool hasTestTime() const;
 
 private:
-  std::optional<std::chrono::seconds> m_testStartTime;
+  std::optional<std::chrono::seconds> m_testStartTime = std::nullopt;
   time_point m_realStartTime = std::chrono::system_clock::now();
 };
 

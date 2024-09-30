@@ -58,7 +58,7 @@ ActivationDialog::ActivationDialog(
 
 void ActivationDialog::refreshSerialKey() {
 
-  const QString envSerialKey = ::getenv("SYNERGY_TEST_SERIAL_KEY");
+  const QString envSerialKey = qEnvironmentVariable("SYNERGY_TEST_SERIAL_KEY");
   if (!envSerialKey.isEmpty()) {
     qDebug("using serial key from env var");
     m_ui->m_pTextEditSerialKey->setText(envSerialKey);

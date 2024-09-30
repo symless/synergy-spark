@@ -198,9 +198,9 @@ LicenseHandler::setLicense(const QString &hexString, bool allowExpired) {
 
   m_license = license;
 
-  if (m_time.hasTestTime()) {
-    m_license.setNowFunc([this]() { return m_time.now(); });
-  }
+  // if (m_time.hasTestTime()) {
+  //   m_license.setNowFunc([this]() { return m_time.now(); });
+  // }
 
   if (!m_license.isExpired() && m_license.isTimeLimited()) {
     auto secondsLeft = m_license.secondsLeft();
