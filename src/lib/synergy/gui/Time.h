@@ -23,16 +23,16 @@
 namespace synergy::gui {
 
 class Time {
-  using system_clock = std::chrono::system_clock;
+  using time_point = std::chrono::system_clock::time_point;
 
 public:
   Time();
-  system_clock::time_point now();
+  time_point now();
   bool hasTestTime() const { return m_testStartTime.has_value(); }
 
 private:
   std::optional<std::chrono::seconds> m_testStartTime;
-  system_clock::time_point m_realStartTime = system_clock::now();
+  time_point m_realStartTime = std::chrono::system_clock::now();
 };
 
 } // namespace synergy::gui
