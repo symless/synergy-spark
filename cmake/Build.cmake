@@ -31,7 +31,6 @@ endmacro()
 
 macro(configure_apple)
   set(CMAKE_OSX_DEPLOYMENT_TARGET "12.0")
-  set(CMAKE_CXX_FLAGS "--sysroot ${CMAKE_OSX_SYSROOT} ${CMAKE_CXX_FLAGS}")
 endmacro()
 
 macro(warnings_as_errors)
