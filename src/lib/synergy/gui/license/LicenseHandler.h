@@ -17,9 +17,9 @@
 
 #pragma once
 
+#include "synergy/gui/Time.h"
 #include "synergy/gui/constants.h"
 #include "synergy/gui/license/LicenseSettings.h"
-#include "synergy/gui/license/license_utils.h"
 #include "synergy/license/License.h"
 #include "synergy/license/Product.h"
 
@@ -38,7 +38,7 @@ class LicenseHandler : public QObject {
   using SerialKey = synergy::license::SerialKey;
 
 public:
-  enum class ChangeSerialKeyResult {
+  enum class SetSerialKeyResult {
     kSuccess,
     kFatal,
     kUnchanged,
@@ -53,26 +53,24 @@ public:
 
   bool handleStart(QMainWindow *parent, AppConfig *appConfig);
   void handleSettings(QDialog *parent, QCheckBox *checkBoxEnableTls) const;
-  void load();
-  void save();
+  bool loadSettings();
+  void saveSettings();
   const License &license() const;
   Product::Edition productEdition() const;
   QString productName() const;
-  ChangeSerialKeyResult changeSerialKey(const QString &hexString);
-
-signals:
-  void serialKeyChanged(const QString &serialKey) const;
-  void invalidLicense() const;
+  SetSerialKeyResult
+  setLicense(const QString &hexString, bool allowExpired = false);
 
 private:
   void checkTlsCheckBox(
       QDialog *parent, QCheckBox *checkBoxEnableTls, bool showDialog) const;
   void updateApp() const;
-  bool showActivationDialog(QMainWindow *parent, AppConfig *appConfig);
+  bool showActivationDialog();
+  void validate();
 
-  bool m_enabled = synergy::gui::license::isActivationEnabled();
   License m_license = License::invalid();
   synergy::gui::license::LicenseSettings m_settings;
   QMainWindow *m_mainWindow = nullptr;
   AppConfig *m_appConfig = nullptr;
+  synergy::gui::Time m_time;
 };

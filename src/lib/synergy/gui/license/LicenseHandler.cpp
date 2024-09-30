@@ -34,7 +34,8 @@
 #include <QObject>
 #include <QProcessEnvironment>
 #include <QTimer>
-#include <QtGlobal>
+#include <QtCore>
+#include <chrono>
 
 using namespace std::chrono;
 using namespace synergy::gui::license;
@@ -44,16 +45,31 @@ bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
   m_mainWindow = parent;
   m_appConfig = appConfig;
 
+  if (m_mainWindow == nullptr) {
+    qFatal("main window not set");
+  }
+
+  if (m_appConfig == nullptr) {
+    qFatal("app config not set");
+  }
+
   const auto serialKeyAction = new QAction("Change serial key", parent);
   QObject::connect(
-      serialKeyAction, &QAction::triggered,
-      [this, parent, appConfig] { showActivationDialog(parent, appConfig); });
+      serialKeyAction, &QAction::triggered, [this] { showActivationDialog(); });
 
   const auto licenseMenu = new QMenu("License");
   licenseMenu->addAction(serialKeyAction);
   parent->menuBar()->addAction(licenseMenu->menuAction());
 
-  load();
+  if (!loadSettings()) {
+    qCritical("failed to load license settings");
+    return false;
+  }
+
+  if (m_license.isExpired()) {
+    qInfo("license is expired, showing activation dialog");
+    return showActivationDialog();
+  }
 
   if (m_license.isValid()) {
     qInfo("license is valid, continuing with start");
@@ -62,7 +78,7 @@ bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
   }
 
   qInfo("license not valid, showing activation dialog");
-  return showActivationDialog(parent, appConfig);
+  return showActivationDialog();
 }
 
 void LicenseHandler::handleSettings(
@@ -78,27 +94,35 @@ void LicenseHandler::handleSettings(
   checkTlsCheckBox(parent, checkBoxEnableTls, false);
 }
 
-void LicenseHandler::load() {
+bool LicenseHandler::loadSettings() {
+  using enum SetSerialKeyResult;
+
   m_settings.load();
 
   const auto serialKey = m_settings.serialKey();
   if (!serialKey.isEmpty()) {
-    changeSerialKey(m_settings.serialKey());
+    const auto result = setLicense(m_settings.serialKey(), true);
+    if (result != SetSerialKeyResult::kSuccess) {
+      qWarning("set serial key failed, showing activation dialog");
+      showActivationDialog();
+      return false;
+    }
   }
+
+  return true;
 }
 
-void LicenseHandler::save() {
+void LicenseHandler::saveSettings() {
   const auto hexString = m_license.serialKey().hexString;
   m_settings.setSerialKey(QString::fromStdString(hexString));
   m_settings.save();
 }
 
-bool LicenseHandler::showActivationDialog(
-    QMainWindow *parent, AppConfig *appConfig) {
-  ActivationDialog dialog(parent, *appConfig, *this);
+bool LicenseHandler::showActivationDialog() {
+  ActivationDialog dialog(m_mainWindow, *m_appConfig, *this);
   const auto result = dialog.exec();
   if (result == QDialog::Accepted) {
-    save();
+    saveSettings();
     updateApp();
     qDebug("license activation dialog accepted");
     return true;
@@ -117,7 +141,7 @@ void LicenseHandler::updateApp() const {
 
 void LicenseHandler::checkTlsCheckBox(
     QDialog *parent, QCheckBox *checkBoxEnableTls, bool showDialog) const {
-  if (!m_license.isTlsAvailable() && checkBoxEnableTls->isChecked()) {
+  if (m_license.isTlsAvailable() && checkBoxEnableTls->isChecked()) {
     qDebug("tls not available, showing upgrade dialog");
     checkBoxEnableTls->setChecked(false);
 
@@ -143,13 +167,11 @@ QString LicenseHandler::productName() const {
   return QString::fromStdString(m_license.productName());
 }
 
-LicenseHandler::ChangeSerialKeyResult
-LicenseHandler::changeSerialKey(const QString &hexString) {
-  using enum LicenseHandler::ChangeSerialKeyResult;
-
-  if (!m_enabled) {
-    qFatal("cannot set serial key, licensing is disabled");
-  }
+/// @param allowExpired If true, allow expired licenses to be set.
+///     Useful for passing an expired license to the activation dialog.
+LicenseHandler::SetSerialKeyResult
+LicenseHandler::setLicense(const QString &hexString, bool allowExpired) {
+  using enum LicenseHandler::SetSerialKeyResult;
 
   if (hexString.isEmpty()) {
     qFatal("serial key is empty");
@@ -169,23 +191,43 @@ LicenseHandler::changeSerialKey(const QString &hexString) {
   }
 
   const auto license = License(serialKey);
-  if (license.isExpired()) {
+  if (!allowExpired && license.isExpired()) {
     qDebug("license is expired, ignoring");
     return kExpired;
   }
 
   m_license = license;
-  emit serialKeyChanged(hexString);
 
-  if (m_license.isSubscription()) {
-    auto daysLeft = m_license.daysLeft();
-    auto msLeft = duration_cast<milliseconds>(daysLeft);
-    if (msLeft.count() < INT_MAX) {
-      QTimer::singleShot(msLeft, this, SLOT(validateLicense()));
+  if (m_time.hasTestTime()) {
+    m_license.setNowFunc([this]() { return m_time.now(); });
+  }
+
+  if (!m_license.isExpired() && m_license.isTimeLimited()) {
+    auto secondsLeft = m_license.secondsLeft();
+    if (secondsLeft.count() < INT_MAX) {
+      const auto validateAt = secondsLeft + seconds{1};
+      const auto interval = duration_cast<milliseconds>(validateAt);
+      QTimer::singleShot(interval, this, &LicenseHandler::validate);
     } else {
       qDebug("license expiry too distant to schedule timer");
     }
   }
 
   return kSuccess;
+}
+
+void LicenseHandler::validate() {
+  if (!m_license.isValid()) {
+    qDebug("license validation failed, license invalid");
+    showActivationDialog();
+    return;
+  }
+
+  if (m_license.isExpired()) {
+    qDebug("license validation failed, license expired");
+    showActivationDialog();
+    return;
+  }
+
+  qDebug("license validation succeeded");
 }

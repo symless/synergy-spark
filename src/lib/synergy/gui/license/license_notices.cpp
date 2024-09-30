@@ -43,13 +43,13 @@ QString licenseNotice(const License &license) {
 QString trialLicenseNotice(const License &license) {
   const QString buyLink = QString(kLinkBuy).arg(kUrlPurchase).arg(kColorWhite);
   if (license.isExpired()) {
-    return QString("<p>Your trial has expired. %1</p>").arg(buyLink);
+    return QString("<p>Your trial has ended. %1</p>").arg(buyLink);
   } else {
-    auto daysLeft = license.daysLeft().count();
+    auto daysLeft = license.secondsLeft().count();
     if (daysLeft <= 0) {
-      return QString("<p>Your trial expires today. %1</p>").arg(buyLink);
+      return QString("<p>Your trial ends today. %1</p>").arg(buyLink);
     } else {
-      return QString("<p>Your trial expires in %1 %2. %3</p>")
+      return QString("<p>Your trial ends in %1 %2. %3</p>")
           .arg(daysLeft)
           .arg((daysLeft == 1) ? "day" : "days")
           .arg(buyLink);
@@ -61,13 +61,13 @@ QString subscriptionLicenseNotice(const License &license) {
   const QString renewLink =
       QString(kLinkRenew).arg(kUrlPurchase).arg(kColorWhite);
   if (license.isExpired()) {
-    return QString("<p>Your license has expired. %1</p>").arg(renewLink);
+    return QString("<p>Your license has ended. %1</p>").arg(renewLink);
   } else {
-    auto daysLeft = license.daysLeft().count();
+    auto daysLeft = license.secondsLeft().count();
     if (daysLeft <= 0) {
-      return QString("<p>Your license expires today. %1</p>").arg(renewLink);
+      return QString("<p>Your license ends today. %1</p>").arg(renewLink);
     } else {
-      return QString("<p>Your license expires in %1 %2. %3</p>")
+      return QString("<p>Your license ends in %1 %2. %3</p>")
           .arg(daysLeft)
           .arg((daysLeft == 1) ? "day" : "days")
           .arg(renewLink);

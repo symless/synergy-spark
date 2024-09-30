@@ -24,9 +24,15 @@ class Product {
   friend bool operator==(Product const &, Product const &) = default;
 
 public:
-  class InvalidType : public std::runtime_error {
+  class InvalidProductEdition : public std::runtime_error {
   public:
-    explicit InvalidType() : std::runtime_error("invalid product type") {}
+    explicit InvalidProductEdition()
+        : std::runtime_error("invalid product edition") {}
+  };
+
+  class InvalidFeature : public std::runtime_error {
+  public:
+    explicit InvalidFeature() : std::runtime_error("invalid feature") {}
   };
 
   enum class Edition {
@@ -36,6 +42,11 @@ public:
     kBusiness = 4,
   };
 
+  enum class Feature {
+    kTls = 0,
+    kInvertConnection = 1,
+  };
+
   /**
    * @brief Product edition IDs found in a decoded serial key.
    */
@@ -43,7 +54,7 @@ public:
   public:
     static const std::string Basic;
     static const std::string Pro;
-    static const std::string Buisiness;
+    static const std::string Business;
   };
 
   Product() = default;
@@ -54,11 +65,14 @@ public:
   Edition edition() const;
   std::string serialKeyId() const;
   std::string name() const;
-  bool isTlsAvailable() const;
+  bool isFeatureAvailable(Feature feature) const;
 
   void setEdition(Edition type);
   void setEdition(const std::string &serialKeyId);
 
 private:
+  bool isTlsAvailable() const;
+  bool isInvertConnectionAvailable() const;
+
   Edition m_edition = Edition::kUnregistered;
 };

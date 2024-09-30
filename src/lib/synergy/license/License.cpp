@@ -48,7 +48,7 @@ bool License::isTimeLimited() const {
 }
 
 bool License::isTlsAvailable() const {
-  return m_serialKey.product.isTlsAvailable();
+  return m_serialKey.product.isFeatureAvailable(Product::Feature::kTls);
 }
 
 Product::Edition License::productEdition() const {
@@ -79,7 +79,7 @@ bool License::isExpired() const {
   return m_nowFunc() >= m_serialKey.expireTime.value();
 }
 
-days License::daysLeft() const {
+seconds License::secondsLeft() const {
   if (!m_serialKey.expireTime.has_value()) {
     throw NoTimeLimitError();
   }
@@ -87,7 +87,7 @@ days License::daysLeft() const {
   auto expireTime = m_serialKey.expireTime.value();
 
   auto timeLeft = expireTime - m_nowFunc();
-  return duration_cast<days>(timeLeft);
+  return duration_cast<seconds>(timeLeft);
 }
 
 std::string License::productName() const {

@@ -33,7 +33,7 @@ TEST(ProductTests, equal_operator) {
 }
 
 TEST(ProductTests, ctor_businessName_isValid) {
-  Product product(Product::SerialKeyEditionID::Buisiness);
+  Product product(Product::SerialKeyEditionID::Business);
 
   EXPECT_EQ(kBusiness, product.edition());
   EXPECT_TRUE(product.isValid());
@@ -78,6 +78,6 @@ TEST(ProductTests, setEdition_business_isValid) {
   product.setEdition(kBusiness);
 
   EXPECT_EQ(kBusiness, product.edition());
-  EXPECT_EQ(Product::SerialKeyEditionID::Buisiness, product.serialKeyId());
+  EXPECT_EQ(Product::SerialKeyEditionID::Business, product.serialKeyId());
   EXPECT_EQ("Deskflow Business", product.name());
 }

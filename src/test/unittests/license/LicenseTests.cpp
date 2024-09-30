@@ -127,7 +127,7 @@ TEST_F(LicenseTests, daysLeft_validExactlyOneDayV2TrialBasicSerial_returnOne) {
                   "F6D70616E79206E616D653B303B38363430307D");
   setNow(license, 0);
 
-  EXPECT_EQ(1, license.daysLeft().count());
+  EXPECT_EQ(1, license.secondsLeft().count());
 }
 
 TEST_F(LicenseTests, daysLeft_validWithinOneDayV2TrialBasicSerial_returnOne) {
@@ -136,7 +136,7 @@ TEST_F(LicenseTests, daysLeft_validWithinOneDayV2TrialBasicSerial_returnOne) {
                   "F6D70616E79206E616D653B303B38363430307D");
   setNow(license, 0);
 
-  EXPECT_EQ(1, license.daysLeft().count());
+  EXPECT_EQ(1, license.secondsLeft().count());
 }
 
 TEST_F(LicenseTests, daysLeft_expiredV2TrialBasicSerial_returnZero) {
@@ -145,7 +145,7 @@ TEST_F(LicenseTests, daysLeft_expiredV2TrialBasicSerial_returnZero) {
                   "F6D70616E79206E616D653B303B38363430307D");
   setNow(license, 86401);
 
-  EXPECT_EQ(0, license.daysLeft().count());
+  EXPECT_EQ(0, license.secondsLeft().count());
 }
 
 // Subscription license tests

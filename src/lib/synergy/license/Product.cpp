@@ -25,14 +25,14 @@ const char *const kLicensedProductName = "Synergy";
 
 const std::string SKE::Pro = "pro";
 const std::string SKE::Basic = "basic";
-const std::string SKE::Buisiness = "business";
+const std::string SKE::Business = "business";
 
 using Edition = Product::Edition;
 
 const std::map<std::string, Edition, std::less<>> kSerialKeyEditions{
     {SKE::Basic, Edition::kBasic},
     {SKE::Pro, Edition::kPro},
-    {SKE::Buisiness, Edition::kBusiness},
+    {SKE::Business, Edition::kBusiness},
 };
 
 Product::Product(Edition edition) : m_edition(edition) {}
@@ -54,10 +54,10 @@ std::string Product::serialKeyId() const {
     return SKE::Basic;
 
   case kBusiness:
-    return SKE::Buisiness;
+    return SKE::Business;
 
   default:
-    throw InvalidType();
+    throw InvalidProductEdition();
   }
 }
 
@@ -80,7 +80,7 @@ std::string Product::name() const {
     return nameBase + " Business";
 
   default:
-    throw InvalidType();
+    throw InvalidProductEdition();
   }
 }
 
@@ -92,7 +92,7 @@ void Product::setEdition(const std::string &name) {
   if (pType != kSerialKeyEditions.end()) {
     m_edition = pType->second;
   } else {
-    throw InvalidType();
+    throw InvalidProductEdition();
   }
 }
 
@@ -116,6 +116,38 @@ bool Product::isTlsAvailable() const {
     return false;
 
   default:
-    throw InvalidType();
+    throw InvalidProductEdition();
+  }
+}
+
+bool Product::isInvertConnectionAvailable() const {
+  switch (edition()) {
+    using enum Edition;
+
+  case kBusiness:
+    return true;
+
+  case kBasic:
+  case kPro:
+  case kUnregistered:
+    return false;
+
+  default:
+    throw InvalidProductEdition();
+  }
+}
+
+bool Product::isFeatureAvailable(Product::Feature feature) const {
+  switch (feature) {
+    using enum Product::Feature;
+
+  case kTls:
+    return isTlsAvailable();
+
+  case kInvertConnection:
+    return isInvertConnectionAvailable();
+
+  default:
+    throw InvalidFeature();
   }
 }

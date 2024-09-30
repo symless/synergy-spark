@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-set(target sgui)
+set(target synergy-gui)
 
 set(res_dir ${GUI_RES_DIR})
 set(qrc_file ${GUI_QRC_FILE})

@@ -49,7 +49,7 @@ protected:
   void refreshSerialKey();
 
 private:
-  void showResultDialog(LicenseHandler::ChangeSerialKeyResult result);
+  void showResultDialog(LicenseHandler::SetSerialKeyResult result);
   void showSuccessDialog();
   void showErrorDialog(const QString &message);
 

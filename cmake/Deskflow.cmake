@@ -26,12 +26,12 @@ endmacro()
 
 macro(configure_gui_hook)
 
-  set(DESKFLOW_GUI_HOOK_HEADER "synergy/inject/gui_hook.h")
+  set(DESKFLOW_GUI_HOOK_HEADER "synergy/hooks/gui_hook.h")
   set(DESKFLOW_GUI_HOOK_START
-      "if (!synergy::inject::onStart(&mainWindow, &appConfig)) { return 0; }")
+      "if (!synergy::hooks::onStart(&mainWindow, &appConfig)) { return 0; }")
   set(DESKFLOW_GUI_HOOK_SETTINGS
-      "synergy::inject::onSettings(this, m_pCheckBoxEnableTls);")
-  set(DESKFLOW_GUI_HOOK_LIB "sgui")
+      "synergy::hooks::onSettings(this, m_pCheckBoxEnableTls);")
+  set(DESKFLOW_GUI_HOOK_LIB "synergy-gui")
 
   include_directories(${CMAKE_SOURCE_DIR}/src/lib)
 

@@ -22,7 +22,7 @@
 
 #include <QMainWindow>
 
-namespace synergy::inject {
+namespace synergy::hooks {
 
 inline bool onStart(QMainWindow *parent, AppConfig *appConfig) {
   if (synergy::gui::license::isActivationEnabled()) {
@@ -41,4 +41,4 @@ inline void onSettings(QDialog *parent, QCheckBox *checkBoxEnableTls) {
   }
 }
 
-} // namespace synergy::inject
+} // namespace synergy::hooks

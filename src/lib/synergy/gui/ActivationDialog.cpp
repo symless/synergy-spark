@@ -82,7 +82,8 @@ ActivationDialog::~ActivationDialog() { delete m_ui; }
 void ActivationDialog::reject() {
   // don't show the cancel confirmation dialog if they've already registered,
   // since it's not relevant to customers who are changing their serial key.
-  if (m_licenseHandler.productEdition() != Product::Edition::kUnregistered) {
+  const auto &license = m_licenseHandler.license();
+  if (license.isValid() && !license.isExpired()) {
     QDialog::reject();
     return;
   }
@@ -95,7 +96,7 @@ void ActivationDialog::reject() {
 }
 
 void ActivationDialog::accept() {
-  using Result = LicenseHandler::ChangeSerialKeyResult;
+  using Result = LicenseHandler::SetSerialKeyResult;
   auto serialKey = m_ui->m_pTextEditSerialKey->toPlainText();
 
   if (serialKey.isEmpty()) {
@@ -103,7 +104,7 @@ void ActivationDialog::accept() {
     return;
   }
 
-  const auto result = m_licenseHandler.changeSerialKey(serialKey);
+  const auto result = m_licenseHandler.setLicense(serialKey);
   if (result != Result::kSuccess) {
     showResultDialog(result);
     return;
@@ -114,11 +115,11 @@ void ActivationDialog::accept() {
 }
 
 void ActivationDialog::showResultDialog(
-    LicenseHandler::ChangeSerialKeyResult result) {
+    LicenseHandler::SetSerialKeyResult result) {
   const QString title = "Activation result";
 
   switch (result) {
-    using enum LicenseHandler::ChangeSerialKeyResult;
+    using enum LicenseHandler::SetSerialKeyResult;
 
   case kUnchanged:
     QMessageBox::information(
@@ -167,7 +168,7 @@ void ActivationDialog::showSuccessDialog() {
   }
 
   if (license.isTimeLimited()) {
-    auto daysLeft = license.daysLeft().count();
+    auto daysLeft = license.secondsLeft().count();
     if (license.isTrial()) {
       title = "Trial started";
       message += QString("Your trial will expire in %1 %2.")

@@ -1,6 +1,6 @@
 /*
- * Synergy -- mouse and keyboard sharing utility
- * Copyright (C) 2016 Symless Ltd.
+ * synergy -- mouse and keyboard sharing utility
+ * Copyright (C) 2024 Symless Ltd.
  *
  * This package is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,16 +17,21 @@
 
 #pragma once
 
-class Server;
-class LicenseHandler;
-class LicenseTests;
+#include <chrono>
 
-namespace synergy::license {
+namespace synergy::gui {
 
-class ILicense {
+class Time {
+  using system_clock = std::chrono::system_clock;
+
 public:
-  virtual ~ILicense() = default;
-  virtual bool isTlsAvailable() const = 0;
+  Time();
+  system_clock::time_point now();
+  bool hasTestTime() const { return m_testStartTime.has_value(); }
+
+private:
+  std::optional<std::chrono::seconds> m_testStartTime;
+  system_clock::time_point m_realStartTime = system_clock::now();
 };
 
-} // namespace synergy::license
+} // namespace synergy::gui
