@@ -63,7 +63,7 @@ public:
 private:
   void checkTlsCheckBox(
       QDialog *parent, QCheckBox *checkBoxEnableTls, bool showDialog) const;
-  void updateApp() const;
+  void updateWindowTitle() const;
   bool showActivationDialog();
   void validate();
 

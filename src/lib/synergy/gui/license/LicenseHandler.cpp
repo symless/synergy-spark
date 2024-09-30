@@ -53,6 +53,8 @@ bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
     qFatal("app config not set");
   }
 
+  updateWindowTitle();
+
   const auto serialKeyAction = new QAction("Change serial key", parent);
   QObject::connect(
       serialKeyAction, &QAction::triggered, [this] { showActivationDialog(); });
@@ -73,7 +75,7 @@ bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
 
   if (m_license.isValid()) {
     qDebug("license is valid, continuing with start");
-    updateApp();
+    updateWindowTitle();
     return true;
   }
 
@@ -123,7 +125,8 @@ bool LicenseHandler::showActivationDialog() {
   const auto result = dialog.exec();
   if (result == QDialog::Accepted) {
     saveSettings();
-    updateApp();
+    updateWindowTitle();
+    m_appConfig->setTlsEnabled(m_license.isTlsAvailable());
     qDebug("license activation dialog accepted");
     return true;
   } else {
@@ -132,16 +135,15 @@ bool LicenseHandler::showActivationDialog() {
   }
 }
 
-void LicenseHandler::updateApp() const {
+void LicenseHandler::updateWindowTitle() const {
   const auto productName = QString::fromStdString(m_license.productName());
   qDebug("updating main window title: %s", qPrintable(productName));
-  m_mainWindow->setWindowTitle(m_license.productName().c_str());
-  m_appConfig->setTlsEnabled(m_license.isTlsAvailable());
+  m_mainWindow->setWindowTitle(productName);
 }
 
 void LicenseHandler::checkTlsCheckBox(
     QDialog *parent, QCheckBox *checkBoxEnableTls, bool showDialog) const {
-  if (m_license.isTlsAvailable() && checkBoxEnableTls->isChecked()) {
+  if (!m_license.isTlsAvailable() && checkBoxEnableTls->isChecked()) {
     qDebug("tls not available, showing upgrade dialog");
     checkBoxEnableTls->setChecked(false);
 
