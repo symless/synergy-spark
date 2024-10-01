@@ -34,7 +34,7 @@
       "generator": "Unix Makefiles"
     },
     {
-      "name": "mac",
+      "name": "macos",
       "hidden": true,
       "inherits": "base",
       "generator": "Unix Makefiles"
@@ -68,15 +68,15 @@
       }
     },
     {
-      "name": "mac-debug",
-      "inherits": "mac",
+      "name": "macos-debug",
+      "inherits": "macos",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       }
     },
     {
-      "name": "mac-release",
-      "inherits": "mac",
+      "name": "macos-release",
+      "inherits": "macos",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       }
