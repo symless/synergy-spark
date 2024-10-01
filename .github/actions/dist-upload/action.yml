@@ -57,7 +57,6 @@ runs:
       with:
         name: ${{ inputs.github-target-filename }}
         path: ./dist
-        retention-days: 3
 
     - name: Upload to Google Drive
       if: ${{ inputs.use_gdrive == 'true' }}
