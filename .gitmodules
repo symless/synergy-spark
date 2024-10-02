@@ -1,4 +1,4 @@
 [submodule "deskflow"]
 	path = deskflow
-	url = git@github.com:deskflow/deskflow.git
-	branch = decommercialize
+	url = git@github.com:symless/deskflow.git
+	branch = master-1.16
