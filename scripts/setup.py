@@ -47,6 +47,11 @@ def setup_deskflow():
             ]
         )
 
+    # HACK: This proves why we should not be using Meson, and should only use CMake.
+    args = sys.argv[1:]
+    if "--build-dir" not in args:
+        args += ["--build-dir", "../build/deskflow"]
+
     current_dir = os.getcwd()
     try:
         os.chdir(DESKFLOW_DIR)
