@@ -33,22 +33,33 @@ runs:
   using: "composite"
 
   steps:
-    - if: ${{ inputs.use_gdrive == inputs.use-github }}
-      run: |
-        echo "Either 'use-github' or 'use_gdrive' must be true (and not both)"
-        exit 1
-      shell: bash
-
-    - if: ${{ inputs.use_gdrive == 'true' && !inputs.package-version }}
-      run: |
-        echo "Input 'package-version' is required when uploading to Google Drive"
-        exit 1
-      shell: bash
-
-    - if: ${{ inputs.use_gdrive == 'true' }}
-      run: |
-        SHORT_VERSION=$(echo "${{ inputs.package-version }}" | cut -d'-' -f1 | cut -d'+' -f1)
-        echo "SHORT_VERSION=$SHORT_VERSION" >> $GITHUB_ENV
+    - run: |
+        if [[ ${{ inputs.use-github }} == 'true' && ${{ inputs.use-gdrive }} == 'true' ]]; then
+          echo "Either 'use-github' or 'use-gdrive' must be true (and not both)"
+          exit 1
+        fi
+        if [[ ${{ inputs.use-github }} == 'false' && ${{ inputs.use-gdrive }} == 'false' ]]; then
+          echo "Either 'use-github' or 'use-gdrive' must be true"
+          exit 1
+        fi
+        if [[ ${{ inputs.use-gdrive }} == 'true' ]]; then
+          if [[ -z ${{ inputs.package-version }} ]]; then
+            echo "Input 'package-version' is required when uploading to Google Drive"
+            exit 1
+          fi
+          if [[ -z ${{ inputs.gdrive-target-base-dir }} ]]; then
+            echo "Input 'gdrive-target-base-dir' is required when uploading to Google Drive"
+            exit 1
+          fi
+          if [[ -z ${{ inputs.gdrive-secret-key }} ]]; then
+            echo "Input 'gdrive-secret-key' is required when uploading to Google Drive"
+            exit 1
+          fi
+          if [[ -z ${{ inputs.gdrive-parent-folder-id }} ]]; then
+            echo "Input 'gdrive-parent-folder-id' is required when uploading to Google Drive"
+            exit 1
+          fi
+        fi
       shell: bash
 
     - name: Upload to GitHub
@@ -60,14 +71,16 @@ runs:
 
     - name: Google Drive vars
       id: google-drive
-      if: ${{ inputs.use_gdrive == 'true' }}
+      if: ${{ inputs.use-gdrive == 'true' }}
       shell: bash
       run: |
-        dir="Packages/${{ inputs.gdrive-target-base-dir }}/${{ env.SHORT_VERSION }}/${{ inputs.package-version }}"
+        short_version=$(echo "${{ inputs.package-version }}" | cut -d'-' -f1 | cut -d'+' -f1)
+        base_dir="${{ inputs.gdrive-target-base-dir }}"
+        dir="Packages/$base_dir/$short_version/${{ inputs.package-version }}"
         echo "dir=$dir" | tee -a $GITHUB_OUTPUT
 
     - name: Upload to Google Drive
-      if: ${{ inputs.use_gdrive == 'true' }}
+      if: ${{ inputs.use-gdrive == 'true' }}
       uses: symless/gdrive-upload@target-glob
       with:
         credentials: ${{ inputs.gdrive-secret-key }}

@@ -31,7 +31,7 @@ jobs:
         if:
         uses: ./.github/actions/dist-upload
         with:
-          use_gdrive: true
+          use-gdrive: true
           gdrive-target-base-dir: "test"
           gdrive-secret-key: ${{ secrets.GOOGLE_DRIVE_KEY }}
           gdrive-parent-folder-id: ${{ secrets.GOOGLE_DRIVE_TECH_DRIVE }}
