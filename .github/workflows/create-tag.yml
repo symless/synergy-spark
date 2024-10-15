@@ -20,6 +20,7 @@ jobs:
         with:
           # Fetch all tags
           fetch-depth: 0
+          submodules: true
 
       - name: Read version file
         run: echo "CURRENT_VERSION=$(cat deskflow/VERSION)" >> $GITHUB_ENV
