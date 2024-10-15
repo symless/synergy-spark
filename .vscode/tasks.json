@@ -1,0 +1,75 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "setup.py",
+      "type": "shell",
+      "command": "./scripts/setup.py"
+    },
+    {
+      "label": "setup.py --skip-system",
+      "type": "shell",
+      "command": "./scripts/setup.py",
+      "args": ["--skip-system"]
+    },
+    {
+      "label": "build",
+      "type": "cmake",
+      "command": "build",
+      "targets": ["all"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "gui",
+      "type": "process",
+      "command": "${workspaceFolder}/build/deskflow/bin/synergy",
+      "dependsOn": ["build", "kill"],
+      "problemMatcher": [],
+      "windows": {
+        "command": "${workspaceFolder}/build/deskflow/bin/synergy.exe"
+      }
+    },
+    {
+      "label": "kill-build",
+      "dependsOn": ["kill", "build"],
+      "problemMatcher": []
+    },
+    {
+      "label": "kill",
+      "type": "shell",
+      "command": "killall synergy; killall synergy-client; killall synergy-server || true",
+      "windows": {
+        "command": "taskkill /F /IM synergy.exe /IM synergy-client.exe /IM synergy-server.exe; $true"
+      },
+      "presentation": {
+        "reveal": "silent"
+      }
+    },
+    {
+      "label": "reinstall daemon",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "scripts/daemon.py",
+        "--reinstall",
+        "--bin-name",
+        "synergy-daemon",
+        "--source-dir",
+        "../build/deskflow/temp/bin",
+        "--target-dir",
+        "../build/deskflow/bin",
+        "--service-id",
+        "synergy",
+        "--ignore-processes",
+        "synergy.exe"
+      ],
+      "dependsOn": ["build"],
+      "options": {
+        "cwd": "${workspaceFolder}/deskflow"
+      }
+    }
+  ]
+}

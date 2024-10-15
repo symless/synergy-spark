@@ -1,0 +1,39 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "setup",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "scripts/setup.py",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "package",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "scripts/package.py",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "unix - gui",
+      "type": "lldb",
+      "cwd": "${workspaceRoot}",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/deskflow/bin/synergy",
+      "preLaunchTask": "kill-build"
+    },
+    {
+      "name": "windows - gui",
+      "type": "cppvsdbg",
+      "cwd": "${workspaceRoot}",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/deskflow/bin/synergy",
+      "internalConsoleOptions": "openOnSessionStart",
+      "preLaunchTask": "kill-build"
+    }
+  ]
+}
