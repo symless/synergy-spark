@@ -272,7 +272,6 @@ jobs:
       - name: Package
         if: ${{ env.PACKAGE_BUILD == 'true' }}
         env:
-          LINUX_EXTRA_PACKAGES: ${{ matrix.distro.extra-packages }}
           LINUX_PACKAGE_USER: ${{ matrix.distro.package-user }}
         run: ./scripts/package.py
 
