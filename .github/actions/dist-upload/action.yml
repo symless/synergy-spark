@@ -60,6 +60,7 @@ runs:
 
     - name: Google Drive vars
       id: google-drive
+      if: ${{ inputs.use_gdrive == 'true' }}
       shell: bash
       run: |
         dir="Packages/${{ inputs.gdrive-target-base-dir }}/${{ env.SHORT_VERSION }}/${{ inputs.package-version }}"
