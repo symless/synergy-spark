@@ -34,28 +34,28 @@ runs:
 
   steps:
     - run: |
-        if [[ ${{ inputs.use-github }} == 'true' && ${{ inputs.use-gdrive }} == 'true' ]]; then
+        if [[ "${{ inputs.use-github }}" == 'true' && "${{ inputs.use-gdrive }}" == 'true' ]]; then
           echo "Either 'use-github' or 'use-gdrive' must be true (and not both)"
           exit 1
         fi
-        if [[ ${{ inputs.use-github }} == 'false' && ${{ inputs.use-gdrive }} == 'false' ]]; then
+        if [[ "${{ inputs.use-github }}" == 'false' && "${{ inputs.use-gdrive }}" == 'false' ]]; then
           echo "Either 'use-github' or 'use-gdrive' must be true"
           exit 1
         fi
-        if [[ ${{ inputs.use-gdrive }} == 'true' ]]; then
-          if [[ -z ${{ inputs.package-version }} ]]; then
+        if [[ "${{ inputs.use-gdrive }}" == 'true' ]]; then
+          if [[ -z "${{ inputs.package-version }}" ]]; then
             echo "Input 'package-version' is required when uploading to Google Drive"
             exit 1
           fi
-          if [[ -z ${{ inputs.gdrive-target-base-dir }} ]]; then
+          if [[ -z "${{ inputs.gdrive-target-base-dir }}" ]]; then
             echo "Input 'gdrive-target-base-dir' is required when uploading to Google Drive"
             exit 1
           fi
-          if [[ -z ${{ inputs.gdrive-secret-key }} ]]; then
+          if [[ -z "${{ inputs.gdrive-secret-key }}" ]]; then
             echo "Input 'gdrive-secret-key' is required when uploading to Google Drive"
             exit 1
           fi
-          if [[ -z ${{ inputs.gdrive-parent-folder-id }} ]]; then
+          if [[ -z "${{ inputs.gdrive-parent-folder-id }}" ]]; then
             echo "Input 'gdrive-parent-folder-id' is required when uploading to Google Drive"
             exit 1
           fi
