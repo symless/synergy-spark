@@ -58,6 +58,13 @@ runs:
         name: ${{ inputs.github-target-filename }}
         path: ./dist
 
+    - name: Google Drive vars
+      id: google-drive
+      shell: bash
+      run: |
+        dir="Packages/${{ inputs.gdrive-target-base-dir }}/${{ env.SHORT_VERSION }}/${{ inputs.package-version }}"
+        echo "dir=$dir" | tee -a $GITHUB_OUTPUT
+
     - name: Upload to Google Drive
       if: ${{ inputs.use_gdrive == 'true' }}
       uses: symless/gdrive-upload@target-glob
@@ -65,4 +72,4 @@ runs:
         credentials: ${{ inputs.gdrive-secret-key }}
         target: "./dist/*"
         parent_folder_id: ${{ inputs.gdrive-parent-folder-id }}
-        child_folder: Packages/${{ inputs.gdrive-target-base-dir }}/${{ env.SHORT_VERSION }}/${{ inputs.package-version }}
+        child_folder: ${{ steps.google-drive.outputs.dir }}
