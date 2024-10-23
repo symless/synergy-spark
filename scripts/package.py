@@ -20,10 +20,10 @@ import lib.bootstrap as bootstrap
 
 APP_NAME = "Synergy"
 DESKFLOW_SOURCE_DIR = "odin"
-DESKFLOW_BUILD_DIR = "build/odin"
+DESKFLOW_BUILD_DIR = f"build/{DESKFLOW_SOURCE_DIR}"
+VERSION_FILENAME = f"{DESKFLOW_SOURCE_DIR}/VERSION"
 DEFAULT_PREFIX = "synergy"
 DIST_DIR = "dist"
-VERSION_FILENAME = "odin/VERSION"
 TEST_CMD = "synergy-server --version"
 PACKAGE_NAME = "synergy"
 
