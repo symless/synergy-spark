@@ -19,9 +19,7 @@ import subprocess
 import sys
 import os
 import lib.bootstrap as bootstrap
-
-DESKFLOW_DIR = "deskflow"
-
+import lib.config as config
 
 def main():
     bootstrap.ensure_in_venv(__file__)
@@ -54,7 +52,7 @@ def setup_deskflow():
 
     current_dir = os.getcwd()
     try:
-        os.chdir(DESKFLOW_DIR)
+        os.chdir(config.ODIN_DIR)
         subprocess.run([sys.executable, "scripts/install_deps.py"] + sys.argv[1:])
     finally:
         os.chdir(current_dir)

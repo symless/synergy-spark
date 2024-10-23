@@ -16,13 +16,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys, os, subprocess, venv
+import lib.config as config
 
 VENV_DIR = ".venv"
-ODIN_DIR = "odin"
 
 
 def add_odin_path(script):
-    path = os.path.abspath(os.path.join(os.path.dirname(script), f"../{ODIN_DIR}/scripts"))
+    path = os.path.abspath(os.path.join(os.path.dirname(script), f"../{config.ODIN_DIR}/scripts"))
     if not os.path.exists(path):
         raise RuntimeError(f"Path does not exist: {path}")
 
