@@ -1,3 +1,4 @@
 [submodule "synergy-odin"]
 	path = odin
 	url = git@github.com:symless/synergy-odin.git
+	branch = master-1.17
