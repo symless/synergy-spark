@@ -17,13 +17,13 @@
 
 import os, argparse
 import lib.bootstrap as bootstrap
+import lib.config as config
 
 APP_NAME = "Synergy"
-DESKFLOW_SOURCE_DIR = "deskflow"
-DESKFLOW_BUILD_DIR = "build/deskflow"
+ODIN_BUILD_DIR = f"build/{config.ODIN_DIR}"
+VERSION_FILENAME = f"{config.ODIN_DIR}/VERSION"
 DEFAULT_PREFIX = "synergy"
 DIST_DIR = "dist"
-VERSION_FILENAME = "deskflow/VERSION"
 TEST_CMD = "synergy-server --version"
 PACKAGE_NAME = "synergy"
 
@@ -38,7 +38,7 @@ def main():
     args = parser.parse_args()
 
     bootstrap.ensure_in_venv(__file__)
-    bootstrap.add_deskflow_path(__file__)
+    bootstrap.add_odin_path(__file__)
 
     import package
 
@@ -51,12 +51,12 @@ def main():
     package.package(
         filename_base,
         version,
-        DESKFLOW_BUILD_DIR,
+        ODIN_BUILD_DIR,
         DIST_DIR,
         TEST_CMD,
         APP_NAME,
         PACKAGE_NAME,
-        source_dir=DESKFLOW_SOURCE_DIR,
+        source_dir=config.ODIN_DIR,
         leave_test_installed=args.leave_test_installed,
     )
 
