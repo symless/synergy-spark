@@ -39,16 +39,14 @@ def setup_deskflow():
                 "submodule",
                 "update",
                 "--init",
-                "--recursive",
-                "--remote",
-                "--merge",
+                "--recursive"
             ]
         )
 
     # HACK: This proves why we should not be using Meson, and should only use CMake.
     args = sys.argv[1:]
     if "--build-dir" not in args:
-        args += ["--build-dir", "../build/deskflow"]
+        args += ["--build-dir", f"../build/{config.ODIN_DIR}"]
 
     current_dir = os.getcwd()
     try:
