@@ -39,7 +39,8 @@ def setup_deskflow():
                 "submodule",
                 "update",
                 "--init",
-                "--recursive"
+                "--recursive",
+                "--remote"
             ]
         )
 
