@@ -17,15 +17,15 @@ cmake_minimum_required(VERSION 3.8)
 
 project(synergy C CXX)
 
-include(cmake/Deskflow.cmake)
+include(cmake/Odin.cmake)
 include(cmake/Licensing.cmake)
 include(cmake/Build.cmake)
 include(cmake/Libraries.cmake)
 
-configure_deskflow()
+configure_odin()
 configure_licensing()
 configure_build()
 configure_libs()
 
-add_subdirectory(deskflow)
+add_subdirectory(odin)
 add_subdirectory(src)
