@@ -23,7 +23,7 @@
       "type": "lldb",
       "cwd": "${workspaceRoot}",
       "request": "launch",
-      "program": "${workspaceFolder}/build/deskflow/bin/synergy",
+      "program": "${workspaceFolder}/build/odin/bin/synergy",
       "preLaunchTask": "kill-build"
     },
     {
@@ -31,7 +31,7 @@
       "type": "cppvsdbg",
       "cwd": "${workspaceRoot}",
       "request": "launch",
-      "program": "${workspaceFolder}/build/deskflow/bin/synergy",
+      "program": "${workspaceFolder}/build/odin/bin/synergy",
       "internalConsoleOptions": "openOnSessionStart",
       "preLaunchTask": "kill-build"
     }

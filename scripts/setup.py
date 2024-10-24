@@ -19,9 +19,7 @@ import subprocess
 import sys
 import os
 import lib.bootstrap as bootstrap
-
-DESKFLOW_DIR = "deskflow"
-
+import lib.config as config
 
 def main():
     bootstrap.ensure_in_venv(__file__)
@@ -42,19 +40,18 @@ def setup_deskflow():
                 "update",
                 "--init",
                 "--recursive",
-                "--remote",
-                "--merge",
+                "--remote"
             ]
         )
 
     # HACK: This proves why we should not be using Meson, and should only use CMake.
     args = sys.argv[1:]
     if "--build-dir" not in args:
-        args += ["--build-dir", "../build/deskflow"]
+        args += ["--build-dir", f"../build/{config.ODIN_DIR}"]
 
     current_dir = os.getcwd()
     try:
-        os.chdir(DESKFLOW_DIR)
+        os.chdir(config.ODIN_DIR)
         subprocess.run([sys.executable, "scripts/install_deps.py"] + sys.argv[1:])
     finally:
         os.chdir(current_dir)

@@ -13,9 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-macro(configure_deskflow)
+# Synergy Odin is our fork of Deskflow.
+macro(configure_odin)
 
-  set(DESKFLOW_SOURCE_DIR ${CMAKE_SOURCE_DIR}/deskflow)
+  set(DESKFLOW_SOURCE_DIR ${CMAKE_SOURCE_DIR}/odin)
 
   configure_meta()
   configure_dist()

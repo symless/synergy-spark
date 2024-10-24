@@ -16,14 +16,19 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys, os, subprocess, venv
+import lib.config as config
 
 VENV_DIR = ".venv"
 
 
-def add_deskflow_path(script):
+def add_odin_path(script):
+    path = os.path.abspath(os.path.join(os.path.dirname(script), f"../{config.ODIN_DIR}/scripts"))
+    if not os.path.exists(path):
+        raise RuntimeError(f"Path does not exist: {path}")
+
     sys.path.insert(
         0,
-        os.path.abspath(os.path.join(os.path.dirname(script), "../deskflow/scripts")),
+        os.path.abspath(path),
     )
 
 

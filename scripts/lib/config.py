@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Synergy -- mouse and keyboard sharing utility
 # Copyright (C) 2024 Symless Ltd.
 #
@@ -13,19 +15,5 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.8)
+ODIN_DIR = "odin"
 
-project(synergy C CXX)
-
-include(cmake/Odin.cmake)
-include(cmake/Licensing.cmake)
-include(cmake/Build.cmake)
-include(cmake/Libraries.cmake)
-
-configure_odin()
-configure_licensing()
-configure_build()
-configure_libs()
-
-add_subdirectory(odin)
-add_subdirectory(src)
