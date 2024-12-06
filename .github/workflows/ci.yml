@@ -246,7 +246,7 @@ jobs:
         run : |
             if [ "${{ matrix.distro.like }}" == "debian" ]; then
               apt update
-              apt install git
+              apt install -y git
             elif [ "${{ matrix.distro.like }}" == "fedora" ]; then
               dnf install -y git
             elif [ "${{ matrix.distro.like }}" == "suse" ]; then
