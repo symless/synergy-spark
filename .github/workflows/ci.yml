@@ -221,7 +221,7 @@ jobs:
       - name: Get JSON file
         id: get
         run: |
-          json_file="./odin/.github/workflows/ci-linux.json"
+          json_file=".github/workflows/ci-linux.json"
           json=$(cat $json_file)
           echo "json=$(echo $json)" >> $GITHUB_OUTPUT
 
@@ -239,6 +239,25 @@ jobs:
       matrix: ${{fromJson(needs.linux-matrix.outputs.json-matrix)}}
 
     steps:
+      - name: Install Git
+        shell: bash
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run : |
+            if [ "${{ matrix.distro.like }}" == "debian" ]; then
+              apt update
+              apt install git
+            elif [ "${{ matrix.distro.like }}" == "fedora" ]; then
+              dnf install -y git
+            elif [ "${{ matrix.distro.like }}" == "suse" ]; then
+              zypper refresh
+              zypper install -y --force-resolution git
+            elif [ "${{ matrix.distro.like }}" == "arch" ]; then
+              pacman -Syu --noconfirm git
+            else
+              echo "Unknown: ${{ matrix.distro.like }}"
+            fi
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
