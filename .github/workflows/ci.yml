@@ -239,7 +239,7 @@ jobs:
       matrix: ${{fromJson(needs.linux-matrix.outputs.json-matrix)}}
 
     steps:
-      - name: Install Git and Python
+      - name: Setup distro and deps
         shell: bash
         env:
           DEBIAN_FRONTEND: noninteractive
@@ -254,6 +254,7 @@ jobs:
             zypper install -y --force-resolution git python3
           elif [ "${{ matrix.distro.like }}" == "arch" ]; then
             pacman -Syu --noconfirm git python sudo
+            useradd -m build
           else
             echo "Unknown: ${{ matrix.distro.like }}"
           fi
