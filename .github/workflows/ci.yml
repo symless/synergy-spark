@@ -90,7 +90,7 @@ jobs:
         run: python ./scripts/setup.py
 
       - name: Get version
-        uses: ./odin/.github/actions/get-version
+        uses: ./.github/actions/get-version
 
       - name: Configure
         run: cmake -B build --preset=windows-release
@@ -99,7 +99,7 @@ jobs:
         run: cmake --build build -j8
 
       - name: Tests
-        uses: ./odin/.github/actions/run-tests
+        uses: ./.github/actions/run-tests
         timeout-minutes: 2
         with:
           job: ${{ matrix.target.name }}
@@ -168,7 +168,7 @@ jobs:
         run: ./scripts/setup.py
 
       - name: Get version
-        uses: ./odin/.github/actions/get-version
+        uses: ./.github/actions/get-version
 
       - name: Configure
         run: cmake -B build --preset=macos-release
@@ -177,7 +177,7 @@ jobs:
         run: cmake --build build -j8
 
       - name: Tests
-        uses: ./odin/.github/actions/run-tests
+        uses: ./.github/actions/run-tests
         timeout-minutes: 2
         with:
           job: ${{ matrix.target.name }}
@@ -273,7 +273,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
 
       - name: Get version
-        uses: ./odin/.github/actions/get-version
+        uses: ./.github/actions/get-version
 
       - name: Configure
         run: cmake -B build --preset=linux-release ${{ matrix.distro.extra-cmake-args }}
@@ -282,7 +282,7 @@ jobs:
         run: cmake --build build -j8
 
       - name: Tests
-        uses: ./odin/.github/actions/run-tests
+        uses: ./.github/actions/run-tests
         timeout-minutes: 2
         with:
           job: linux-${{ matrix.distro.name }}
