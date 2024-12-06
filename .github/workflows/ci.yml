@@ -90,7 +90,7 @@ jobs:
         run: python ./scripts/setup.py
 
       - name: Get version
-        uses: ./odin/.github/actions/get-version
+        uses: ./.github/actions/get-version
 
       - name: Configure
         run: cmake -B build --preset=windows-release
@@ -99,7 +99,7 @@ jobs:
         run: cmake --build build -j8
 
       - name: Tests
-        uses: ./odin/.github/actions/run-tests
+        uses: ./.github/actions/run-tests
         timeout-minutes: 2
         with:
           job: ${{ matrix.target.name }}
@@ -168,7 +168,7 @@ jobs:
         run: ./scripts/setup.py
 
       - name: Get version
-        uses: ./odin/.github/actions/get-version
+        uses: ./.github/actions/get-version
 
       - name: Configure
         run: cmake -B build --preset=macos-release
@@ -177,7 +177,7 @@ jobs:
         run: cmake --build build -j8
 
       - name: Tests
-        uses: ./odin/.github/actions/run-tests
+        uses: ./.github/actions/run-tests
         timeout-minutes: 2
         with:
           job: ${{ matrix.target.name }}
@@ -221,7 +221,7 @@ jobs:
       - name: Get JSON file
         id: get
         run: |
-          json_file="./odin/.github/workflows/ci-linux.json"
+          json_file=".github/workflows/ci-linux.json"
           json=$(cat $json_file)
           echo "json=$(echo $json)" >> $GITHUB_OUTPUT
 
@@ -239,6 +239,26 @@ jobs:
       matrix: ${{fromJson(needs.linux-matrix.outputs.json-matrix)}}
 
     steps:
+      - name: Setup distro and deps
+        shell: bash
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run : |
+          if [ "${{ matrix.distro.like }}" == "debian" ]; then
+            apt update
+            apt install -y git python3 python3-venv
+          elif [ "${{ matrix.distro.like }}" == "fedora" ]; then
+            dnf install -y git python3
+          elif [ "${{ matrix.distro.like }}" == "suse" ]; then
+            zypper refresh
+            zypper install -y --force-resolution git python3
+          elif [ "${{ matrix.distro.like }}" == "arch" ]; then
+            pacman -Syu --noconfirm git python sudo
+            useradd -m build
+          else
+            echo "Unknown: ${{ matrix.distro.like }}"
+          fi
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -254,7 +274,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
 
       - name: Get version
-        uses: ./odin/.github/actions/get-version
+        uses: ./.github/actions/get-version
 
       - name: Configure
         run: cmake -B build --preset=linux-release ${{ matrix.distro.extra-cmake-args }}
@@ -263,7 +283,7 @@ jobs:
         run: cmake --build build -j8
 
       - name: Tests
-        uses: ./odin/.github/actions/run-tests
+        uses: ./.github/actions/run-tests
         timeout-minutes: 2
         with:
           job: linux-${{ matrix.distro.name }}
