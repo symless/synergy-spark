@@ -89,12 +89,6 @@
       "runs-on": "ubuntu-latest"
     },
     {
-      "name": "opensuse-leap-amd64",
-      "like": "suse",
-      "container": "opensuse/leap:latest",
-      "runs-on": "ubuntu-latest"
-    },
-    {
       "name": "rockylinux-9-amd64",
       "like": "fedora",
       "container": "rockylinux:9",
