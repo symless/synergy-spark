@@ -23,7 +23,7 @@ jobs:
           submodules: true
 
       - name: Read version file
-        run: echo "CURRENT_VERSION=$(cat deskflow/VERSION)" >> $GITHUB_ENV
+        run: echo "CURRENT_VERSION=$(cat odin/VERSION)" >> $GITHUB_ENV
 
       - name: Override stage
         if: ${{ !startsWith(github.ref, 'refs/heads/release') }}
