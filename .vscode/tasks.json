@@ -25,11 +25,11 @@
     {
       "label": "gui",
       "type": "process",
-      "command": "${workspaceFolder}/build/deskflow/bin/synergy",
+      "command": "${workspaceFolder}/build/odin/bin/synergy",
       "dependsOn": ["build", "kill"],
       "problemMatcher": [],
       "windows": {
-        "command": "${workspaceFolder}/build/deskflow/bin/synergy.exe"
+        "command": "${workspaceFolder}/build/odin/bin/synergy.exe"
       }
     },
     {
@@ -55,12 +55,14 @@
       "args": [
         "scripts/daemon.py",
         "--reinstall",
-        "--bin-name",
+        "--source-bin",
+        "synergy-daemon",
+        "--target-bin",
         "synergy-daemon",
         "--source-dir",
-        "../build/deskflow/temp/bin",
+        "../build/odin/temp/bin",
         "--target-dir",
-        "../build/deskflow/bin",
+        "../build/odin/bin",
         "--service-id",
         "synergy",
         "--ignore-processes",
@@ -68,7 +70,7 @@
       ],
       "dependsOn": ["build"],
       "options": {
-        "cwd": "${workspaceFolder}/deskflow"
+        "cwd": "${workspaceFolder}/odin"
       }
     }
   ]
