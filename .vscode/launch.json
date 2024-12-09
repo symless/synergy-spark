@@ -24,7 +24,7 @@
       "cwd": "${workspaceRoot}",
       "request": "launch",
       "program": "${workspaceFolder}/build/odin/bin/synergy",
-      "preLaunchTask": "kill-build"
+      "preLaunchTask": "build"
     },
     {
       "name": "windows - gui",
