@@ -52,7 +52,7 @@ def setup_deskflow():
     current_dir = os.getcwd()
     try:
         os.chdir(config.ODIN_DIR)
-        subprocess.run([sys.executable, "scripts/install_deps.py"] + sys.argv[1:])
+        subprocess.run([sys.executable, "scripts/install_deps.py"] + args)
     finally:
         os.chdir(current_dir)
 
