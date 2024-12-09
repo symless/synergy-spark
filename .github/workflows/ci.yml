@@ -26,7 +26,7 @@ env:
   PACKAGE_BUILD: ${{ !github.event.pull_request.draft }}
   PACKAGE_UPLOAD: ${{ !github.event.pull_request.draft }}
   UPLOAD_TO_GITHUB: ${{ github.event_name == 'pull_request' && !github.event.pull_request.draft }}
-  UPLOAD_TO_GDRIVE: ${{ github.event_name != 'pull_request' }}
+  UPLOAD_TO_GDRIVE: ${{ github.event_name != 'pull_request' && github.event_name != 'schedule' }}
 
 jobs:
   # Quality gate to allow PR merge, used in the branch protection rules.
