@@ -214,7 +214,7 @@ LicenseHandler::setLicense(const QString &hexString, bool allowExpired) {
   }
 
   if (!serialKey.isValid) {
-    qDebug() << "invalid serial key, ignoring";
+    qWarning() << "invalid serial key, ignoring";
     return kInvalid;
   }
 

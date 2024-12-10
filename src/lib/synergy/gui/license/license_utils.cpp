@@ -21,7 +21,7 @@
 #include "synergy/license/parse_serial_key.h"
 
 #include <QString>
-#include <QtGlobal>
+#include <QtCore>
 
 namespace synergy::gui::license {
 
@@ -43,11 +43,11 @@ synergy::license::SerialKey parseSerialKey(const QString &hexString) {
   try {
     return synergy::license::parseSerialKey(hexString.toStdString());
   } catch (const std::exception &e) {
-    qFatal("failed to parse serial key: %s", e.what());
-    abort();
+    qWarning("failed to parse serial key: %s", e.what());
+    return synergy::license::SerialKey::invalid();
   } catch (...) {
-    qFatal("failed to parse serial key, unknown error");
-    abort();
+    qWarning("failed to parse serial key, unknown error");
+    return synergy::license::SerialKey::invalid();
   }
 }
 
