@@ -40,31 +40,30 @@ SerialKey parseV2(const std::string &hexString, const Parts &parts);
 std::optional<time_point> parseDate(const std::string &unixTimeString);
 
 SerialKey parseSerialKey(const std::string &hexString) {
-  const auto &plainText = decode(hexString);
+  const auto &trimmed = deskflow::utils::trim(hexString);
+  const auto &plainText = decode(trimmed);
   const auto &parts = tokenize(plainText);
   const auto &version = parts.at(0);
 
   if (version == "v1") {
-    return parseV1(hexString, parts);
+    return parseV1(trimmed, parts);
   } else if (version == "v2") {
-    return parseV2(hexString, parts);
+    return parseV2(trimmed, parts);
   } else {
     throw InvalidSerialKeyVersion(version);
   }
 }
 
 std::string decode(const std::string &hexString) {
-  std::string trimmed = deskflow::utils::trim(hexString);
-
-  if (trimmed.length() % 2 != 0) {
+  if (hexString.length() % 2 != 0) {
     throw InvalidHexString();
   }
 
   std::string plainText;
-  plainText.reserve(trimmed.length() / 2);
+  plainText.reserve(hexString.length() / 2);
 
-  for (size_t i = 0; i < trimmed.length(); i += 2) {
-    std::string byteString = trimmed.substr(i, 2);
+  for (size_t i = 0; i < hexString.length(); i += 2) {
+    std::string byteString = hexString.substr(i, 2);
     auto byte = static_cast<char>(std::stoi(byteString, nullptr, 16));
     plainText.push_back(byte);
   }
