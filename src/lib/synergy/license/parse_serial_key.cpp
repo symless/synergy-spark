@@ -21,7 +21,6 @@
 #include "SerialKeyType.h"
 #include "utils/string_utils.h"
 
-#include <QtCore>
 #include <exception>
 #include <optional>
 #include <sstream>
@@ -41,12 +40,7 @@ SerialKey parseV2(const std::string &hexString, const Parts &parts);
 std::optional<time_point> parseDate(const std::string &unixTimeString);
 
 SerialKey parseSerialKey(const std::string &hexString) {
-  std::string trimmed = deskflow::utils::trim(hexString);
-  if (trimmed.length() % 2 != 0) {
-    qWarning() << "invalid hex string:" << trimmed;
-    return SerialKey::invalid();
-  }
-
+  const auto &trimmed = deskflow::utils::trim(hexString);
   const auto &plainText = decode(trimmed);
   const auto &parts = tokenize(plainText);
   const auto &version = parts.at(0);
