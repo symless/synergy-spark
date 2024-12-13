@@ -25,12 +25,13 @@ jobs:
       - name: Read version file
         run: echo "CURRENT_VERSION=$(cat odin/VERSION)" >> $GITHUB_ENV
 
-      - name: Override stage
+      - name: Set stage to snapshot
         if: ${{ !startsWith(github.ref, 'refs/heads/release') }}
         run: echo "OVERRIDE_STAGE=snapshot" >> $GITHUB_ENV
 
-      - name: Get next version
+      - name: Get next snapshot version
         id: next-version
+        if: ${{ !startsWith(github.ref, 'refs/heads/release') }}
         uses: symless/actions/next-version@master
         with:
           current-version: ${{ env.CURRENT_VERSION }}
