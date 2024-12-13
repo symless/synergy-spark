@@ -76,7 +76,14 @@ runs:
       run: |
         short_version=$(echo "${{ inputs.package-version }}" | cut -d'-' -f1 | cut -d'+' -f1)
         base_dir="${{ inputs.gdrive-target-base-dir }}"
-        dir="Packages/$base_dir/$short_version/${{ inputs.package-version }}"
+
+        if [[ "${{ inputs.package-version }}" =~ snapshot ]]; then
+          sub_dir="snapshot"
+        else
+          sub_dir="release"
+        fi
+
+        dir="Packages/$base_dir/$short_version/$sub_dir/${{ inputs.package-version }}"
         echo "dir=$dir" | tee -a $GITHUB_OUTPUT
 
     - name: Upload to Google Drive
