@@ -74,9 +74,17 @@ runs:
       if: ${{ inputs.use-gdrive == 'true' }}
       shell: bash
       run: |
+        # Remove stage (pre-release version) and version metadata (has build number)
         short_version=$(echo "${{ inputs.package-version }}" | cut -d'-' -f1 | cut -d'+' -f1)
+
+        if [[ "${{ inputs.package-version }}" =~ snapshot ]]; then
+          sub_dir="snapshot"
+        else
+          sub_dir="release"
+        fi
+
         base_dir="${{ inputs.gdrive-target-base-dir }}"
-        dir="Packages/$base_dir/$short_version/${{ inputs.package-version }}"
+        dir="Packages/$base_dir/$short_version/$sub_dir/${{ inputs.package-version }}"
         echo "dir=$dir" | tee -a $GITHUB_OUTPUT
 
     - name: Upload to Google Drive
