@@ -23,24 +23,36 @@ jobs:
           submodules: true
 
       - name: Read version file
-        run: echo "CURRENT_VERSION=$(cat odin/VERSION)" >> $GITHUB_ENV
+        id: current-version
+        run: echo "value=$(cat odin/VERSION)" | tee $GITHUB_OUTPUT
 
       - name: Set stage to snapshot
+        id: override-stage
         if: ${{ !startsWith(github.ref, 'refs/heads/release') }}
-        run: echo "OVERRIDE_STAGE=snapshot" >> $GITHUB_ENV
+        run: echo "value=snapshot" | tee $GITHUB_OUTPUT
 
       - name: Get next snapshot version
         id: next-version
         if: ${{ !startsWith(github.ref, 'refs/heads/release') }}
         uses: symless/actions/next-version@master
         with:
-          current-version: ${{ env.CURRENT_VERSION }}
-          override-stage: ${{ env.OVERRIDE_STAGE }}
+          current-version: ${{ steps.current-version.outputs.value }}
+          override-stage: ${{ steps.override-stage.outputs.value }}
+
+      - name: Get version
+        id: version
+        run: |
+          if [[ -z "${{ steps.next-version.outputs.next-version }}" ]]; then
+            echo "value=${{ steps.current-version.outputs.value }}" | tee $GITHUB_OUTPUT
+          else
+            echo "value=${{ steps.next-version.outputs.next-version }}" | tee $GITHUB_OUTPUT
+          fi
+        shell: bash
 
       - name: Create and push Git tag
         run: |
-          git tag ${{ steps.next-version.outputs.next-version }}
-          git push origin ${{ steps.next-version.outputs.next-version }}
+          git tag ${{ steps.version.outputs.value }}
+          git push origin ${{ steps.version.outputs.value }}
         shell: bash
 
       - name: Trigger CI workflow
@@ -51,5 +63,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               workflow_id: 'ci.yml',
-              ref: '${{ steps.next-version.outputs.next-version }}'
+              ref: '${{ steps.version.outputs.value }}'
             });
