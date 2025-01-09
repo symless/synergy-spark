@@ -21,3 +21,4 @@ deskflow-config.toml
 /scripts/*.egg-info
 /*.user
 *.ui.autosave
+synergy-config.toml
