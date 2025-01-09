@@ -27,6 +27,48 @@
       "preLaunchTask": "build"
     },
     {
+      "name": "unix - unittests",
+      "type": "lldb",
+      "cwd": "${workspaceRoot}",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/odin/bin/unittests",
+      "args": [ "${input:gtest-args}" ],
+      "preLaunchTask": "build"
+    },
+    {
+      "name": "unix - integtests",
+      "type": "lldb",
+      "cwd": "${workspaceRoot}",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/odin/bin/integtests",
+      "args": [ "${input:gtest-args}" ],
+      "preLaunchTask": "build",
+    },
+    {
+      "name": "unix - server",
+      "type": "lldb",
+      "cwd": "${workspaceRoot}",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/odin/bin/synergy-server",
+      "args": ["--config-toml", "synergy-config.toml"],
+      "preLaunchTask": "build"
+    },
+    {
+      "name": "unix - client",
+      "type": "lldb",
+      "cwd": "${workspaceRoot}",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/odin/bin/synergy-client",
+      "args": ["--config-toml", "synergy-config.toml"],
+      "preLaunchTask": "build"
+    },
+    {
+      "name": "unix - attach",
+      "type": "lldb",
+      "request": "attach",
+      "pid": "${command:pickProcess}"
+    },
+    {
       "name": "windows - gui",
       "type": "cppvsdbg",
       "cwd": "${workspaceRoot}",
@@ -34,6 +76,62 @@
       "program": "${workspaceFolder}/build/odin/bin/synergy",
       "internalConsoleOptions": "openOnSessionStart",
       "preLaunchTask": "kill-build"
-    }
+    },
+    {
+      "name": "windows - unittests",
+      "type": "cppvsdbg",
+      "cwd": "${workspaceRoot}",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/odin/bin/unittests",
+      "args": [ "${input:gtest-args}" ],
+      "internalConsoleOptions": "openOnSessionStart",
+      "preLaunchTask": "build"
+    },
+    {
+      "name": "windows - integtests",
+      "type": "cppvsdbg",
+      "cwd": "${workspaceRoot}",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/odin/bin/integtests",
+      "args": [ "${input:gtest-args}" ],
+      "internalConsoleOptions": "openOnSessionStart",
+      "preLaunchTask": "build"
+    },
+    {
+      "name": "windows - server",
+      "type": "cppvsdbg",
+      "cwd": "${workspaceRoot}",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/odin/bin/synergy-server",
+      "args": ["--config-toml", "synergy-config.toml"],
+      "internalConsoleOptions": "openOnSessionStart",
+      "preLaunchTask": "build"
+    },
+    {
+      "name": "windows - client",
+      "type": "cppvsdbg",
+      "cwd": "${workspaceRoot}",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/odin/bin/synergy-client",
+      "args": ["--config-toml", "synergy-config.toml"],
+      "internalConsoleOptions": "openOnSessionStart",
+      "preLaunchTask": "build"
+    },
+    {
+      "name": "windows - daemon",
+      "type": "cppvsdbg",
+      "cwd": "${workspaceRoot}",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/odin/bin/synergy-daemon",
+      "args": ["-f"],
+      "internalConsoleOptions": "openOnSessionStart",
+      "preLaunchTask": "build"
+    },
+    {
+      "name": "windows - attach",
+      "type": "cppvsdbg",
+      "request": "attach",
+      "processId": "${command:pickProcess}"
+    },
   ]
 }
