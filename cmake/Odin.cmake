@@ -28,12 +28,17 @@ endmacro()
 macro(configure_gui_hook)
 
   set(DESKFLOW_GUI_HOOK_HEADER "synergy/hooks/gui_hook.h")
-  set(DESKFLOW_GUI_HOOK_START
-      "if (!synergy::hooks::onStart(&mainWindow, &appConfig)) { return 0; }")
-  set(DESKFLOW_GUI_HOOK_SETTINGS
-      "synergy::hooks::onSettings(this, m_pCheckBoxEnableTls, m_pCheckBoxInvertConnection);"
-  )
   set(DESKFLOW_GUI_HOOK_LIB "synergy-gui")
+
+  set(DESKFLOW_GUI_HOOK_START
+    "if (!synergy::hooks::onStart(&mainWindow, &appConfig)) { return 0; }"
+  )
+  set(DESKFLOW_GUI_HOOK_SETTINGS
+    "synergy::hooks::onSettings(this, m_pCheckBoxEnableTls, m_pCheckBoxInvertConnection);"
+  )
+  set(DESKFLOW_GUI_HOOK_VERSION
+    "synergy::hooks::onVersionCheck(url);"
+  )
 
   include_directories(${CMAKE_SOURCE_DIR}/src/lib)
 
@@ -55,6 +60,9 @@ macro(configure_meta)
 
   message(STATUS "Product name: ${SYNERGY_PRODUCT_NAME}")
   add_definitions(-DSYNERGY_PRODUCT_NAME="${SYNERGY_PRODUCT_NAME}")
+
+  message(STATUS "Edition type: ${SYNERGY_EDITION_TYPE}")
+add_definitions(-DSYNERGY_EDITION_TYPE="${SYNERGY_EDITION_TYPE}")
 
   set(DESKFLOW_APP_ID
       "synergy"

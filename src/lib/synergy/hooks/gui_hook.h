@@ -43,4 +43,14 @@ onSettings(QDialog *parent, QCheckBox *enableTls, QCheckBox *invertConnection) {
   }
 }
 
+inline void onVersionCheck(QString &versionUrl) {
+  if (synergy::gui::license::isActivationEnabled()) {
+    qDebug("license activation enabled");
+    return LicenseHandler::instance().handleVersionCheck(versionUrl);
+  } else {
+    qDebug("license activation disabled");
+    versionUrl = QString(SYNERGY_EDITION_TYPE);
+  }
+}
+
 } // namespace synergy::hooks

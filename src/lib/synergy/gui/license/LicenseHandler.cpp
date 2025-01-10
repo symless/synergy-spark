@@ -103,6 +103,15 @@ void LicenseHandler::handleSettings(
   checkInvertConnectionCheckBox(parent, invertConnection, false);
 }
 
+void LicenseHandler::handleVersionCheck(QString &versionUrl) {
+  const auto edition = license().productEdition();
+  if (edition == Product::Edition::kBusiness) {
+    versionUrl.append("/business");
+  } else {
+    versionUrl.append("/personal");
+  }
+}
+
 bool LicenseHandler::loadSettings() {
   using enum SetSerialKeyResult;
 
