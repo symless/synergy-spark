@@ -279,7 +279,8 @@ jobs:
 
       - name: Configure
         run: |
-          cmake -B build --preset=linux-release ${{ matrix.distro.extra-cmake-args }}
+          cmake -B build \
+          --preset=linux-release ${{ matrix.distro.extra-cmake-args }} \
           -DUSE_TOMLPLUSPLUS=OFF -DUSE_CLI11=OFF
 
       - name: Build
