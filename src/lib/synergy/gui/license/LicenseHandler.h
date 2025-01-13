@@ -53,6 +53,7 @@ public:
   bool handleStart(QMainWindow *parent, AppConfig *appConfig);
   void handleSettings(
       QDialog *parent, QCheckBox *enableTls, QCheckBox *invertConnection) const;
+  void handleVersionCheck(QString &versionUrl);
   bool loadSettings();
   void saveSettings();
   const License &license() const;
