@@ -95,9 +95,9 @@ jobs:
 
       - name: Configure
         run: |
-          cmake -B build ^
-          --preset=windows-release ^
-          -DUSE_TOMLPLUSPLUS=OFF ^
+          cmake -B build `
+          --preset=windows-release `
+          -DUSE_TOMLPLUSPLUS=OFF `
           -DUSE_CLI11=OFF
 
       - name: Build
