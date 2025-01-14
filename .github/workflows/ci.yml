@@ -94,7 +94,11 @@ jobs:
         uses: ./.github/actions/get-version
 
       - name: Configure
-        run: cmake -B build --preset=windows-release
+        run: |
+          cmake -B build `
+          --preset=windows-release `
+          -DUSE_TOMLPLUSPLUS=OFF `
+          -DUSE_CLI11=OFF
 
       - name: Build
         run: cmake --build build -j8
@@ -172,7 +176,11 @@ jobs:
         uses: ./.github/actions/get-version
 
       - name: Configure
-        run: cmake -B build --preset=macos-release
+        run: |
+          cmake -B build \
+          --preset=macos-release \
+          -DUSE_TOMLPLUSPLUS=OFF \
+          -DUSE_CLI11=OFF
 
       - name: Build
         run: cmake --build build -j8
