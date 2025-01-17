@@ -98,7 +98,8 @@ jobs:
           cmake -B build `
           --preset=windows-release `
           -DUSE_TOMLPLUSPLUS=OFF `
-          -DUSE_CLI11=OFF
+          -DUSE_CLI11=OFF `
+          -DSYNERGY_VERSION_CHECK=${{ vars.SYNERGY_VERSION_CHECK }}
 
       - name: Build
         run: cmake --build build -j8
@@ -180,7 +181,8 @@ jobs:
           cmake -B build \
           --preset=macos-release \
           -DUSE_TOMLPLUSPLUS=OFF \
-          -DUSE_CLI11=OFF
+          -DUSE_CLI11=OFF \
+          -DSYNERGY_VERSION_CHECK=${{ vars.SYNERGY_VERSION_CHECK }}
 
       - name: Build
         run: cmake --build build -j8
@@ -290,7 +292,8 @@ jobs:
           cmake -B build \
           --preset=linux-release ${{ matrix.distro.extra-cmake-args }} \
           -DUSE_TOMLPLUSPLUS=OFF \
-          -DUSE_CLI11=OFF
+          -DUSE_CLI11=OFF \
+          -DSYNERGY_VERSION_CHECK=${{ vars.SYNERGY_VERSION_CHECK }}
 
       - name: Build
         run: cmake --build build -j8
