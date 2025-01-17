@@ -17,6 +17,11 @@ cmake_minimum_required(VERSION 3.8)
 
 project(synergy C CXX)
 
+option(SYNERGY_VERSION_CHECK "Enable version check" ON)
+if (SYNERGY_VERSION_CHECK)
+  add_definitions(-DSYNERGY_VERSION_CHECK)
+endif()
+
 include(cmake/Odin.cmake)
 include(cmake/Licensing.cmake)
 include(cmake/Build.cmake)
