@@ -302,15 +302,20 @@ void LicenseHandler::validate() {
 void LicenseHandler::clampFeatures() {
   if (m_appConfig->tlsEnabled() && !m_license.isTlsAvailable()) {
     qWarning("tls not available, disabling tls");
+    m_appConfig->setTlsEnabled(false);
   }
 
   if (m_appConfig->invertConnection() &&
       !m_license.isInvertConnectionAvailable()) {
     qWarning("invert connection not available, disabling invert connection");
+    m_appConfig->setInvertConnection(false);
   }
 
-  m_appConfig->setInvertConnection(m_license.isInvertConnectionAvailable());
-  m_appConfig->setTlsEnabled(m_license.isTlsAvailable());
+  if (m_appConfig->isActiveScopeSystem() &&
+      !m_license.isSettingsScopeAvailable()) {
+    qWarning("settings scope not available, disabling system scope");
+    m_appConfig->setLoadFromSystemScope(false);
+  }
 
   qDebug("committing default feature settings");
   m_appConfig->commit();
