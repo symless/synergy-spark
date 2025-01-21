@@ -76,6 +76,7 @@ bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
   if (m_license.isValid()) {
     qDebug("license is valid, continuing with start");
     updateWindowTitle();
+    clampFeatures();
     return true;
   }
 
@@ -122,8 +123,7 @@ bool LicenseHandler::loadSettings() {
     const auto result = setLicense(m_settings.serialKey(), true);
     if (result != SetSerialKeyResult::kSuccess) {
       qWarning("set serial key failed, showing activation dialog");
-      showActivationDialog();
-      return false;
+      return showActivationDialog();
     }
   }
 
@@ -142,7 +142,8 @@ bool LicenseHandler::showActivationDialog() {
   if (result == QDialog::Accepted) {
     saveSettings();
     updateWindowTitle();
-    m_appConfig->setTlsEnabled(m_license.isTlsAvailable());
+    clampFeatures();
+
     qDebug("license activation dialog accepted");
     return true;
   } else {
@@ -217,14 +218,14 @@ LicenseHandler::setLicense(const QString &hexString, bool allowExpired) {
   qDebug() << "changing serial key to:" << hexString;
   auto serialKey = parseSerialKey(hexString);
 
-  if (serialKey == m_license.serialKey()) {
-    qDebug("serial key did not change, ignoring");
-    return kUnchanged;
-  }
-
   if (!serialKey.isValid) {
     qWarning() << "invalid serial key, ignoring:" << hexString;
     return kInvalid;
+  }
+
+  if (serialKey == m_license.serialKey()) {
+    qDebug("serial key did not change, ignoring");
+    return kUnchanged;
   }
 
   auto license = License(serialKey);
@@ -267,4 +268,21 @@ void LicenseHandler::validate() {
   }
 
   qDebug("license validation succeeded");
+}
+
+void LicenseHandler::clampFeatures() {
+  if (m_appConfig->tlsEnabled() && !m_license.isTlsAvailable()) {
+    qWarning("tls not available, disabling tls");
+  }
+
+  if (m_appConfig->invertConnection() &&
+      !m_license.isInvertConnectionAvailable()) {
+    qWarning("invert connection not available, disabling invert connection");
+  }
+
+  m_appConfig->setInvertConnection(m_license.isInvertConnectionAvailable());
+  m_appConfig->setTlsEnabled(m_license.isTlsAvailable());
+
+  qDebug("committing default feature settings");
+  m_appConfig->commit();
 }

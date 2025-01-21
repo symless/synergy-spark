@@ -61,6 +61,7 @@ public:
   QString productName() const;
   SetSerialKeyResult
   setLicense(const QString &hexString, bool allowExpired = false);
+  void clampFeatures();
 
 private:
   void checkTlsCheckBox(
