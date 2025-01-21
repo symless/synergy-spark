@@ -56,6 +56,11 @@ bool License::isInvertConnectionAvailable() const {
       Product::Feature::kInvertConnection);
 }
 
+bool License::isSettingsScopeAvailable() const {
+  return m_serialKey.product.isFeatureAvailable(
+      Product::Feature::kSettingsScope);
+}
+
 Product::Edition License::productEdition() const {
   return m_serialKey.product.edition();
 }

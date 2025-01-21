@@ -137,6 +137,23 @@ bool Product::isInvertConnectionAvailable() const {
   }
 }
 
+bool Product::isSettingsScopeAvailable() const {
+  switch (edition()) {
+    using enum Edition;
+
+  case kBusiness:
+    return true;
+
+  case kBasic:
+  case kPro:
+  case kUnregistered:
+    return false;
+
+  default:
+    throw InvalidProductEdition();
+  }
+}
+
 bool Product::isFeatureAvailable(Product::Feature feature) const {
   switch (feature) {
     using enum Product::Feature;
@@ -146,6 +163,9 @@ bool Product::isFeatureAvailable(Product::Feature feature) const {
 
   case kInvertConnection:
     return isInvertConnectionAvailable();
+
+  case kSettingsScope:
+    return isSettingsScopeAvailable();
 
   default:
     throw InvalidFeature();

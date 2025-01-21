@@ -27,13 +27,14 @@ UpgradeDialog::UpgradeDialog(QWidget *parent) : QMessageBox(parent) {
   m_upgrade = addButton("Upgrade", QMessageBox::AcceptRole);
 }
 
-void UpgradeDialog::showDialog(const QString &title, const QString &body) {
+void UpgradeDialog::showDialog(
+    const QString &title, const QString &body, const QString &link) {
   setWindowTitle(title);
   setText(body);
   exec();
 
   if (clickedButton() == m_upgrade) {
-    const auto url = QUrl(synergy::gui::kUrlUpgrade);
+    const auto url = QUrl(link);
     if (QDesktopServices::openUrl(url)) {
       qDebug("opened url: %s", qUtf8Printable(url.toString()));
     } else {

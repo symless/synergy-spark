@@ -23,7 +23,8 @@
 class UpgradeDialog : public QMessageBox {
 public:
   explicit UpgradeDialog(QWidget *parent = nullptr);
-  void showDialog(const QString &title, const QString &body);
+  void
+  showDialog(const QString &title, const QString &body, const QString &link);
 
 private:
   QPushButton *m_upgrade = nullptr;

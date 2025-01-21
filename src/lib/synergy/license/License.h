@@ -52,6 +52,7 @@ public:
 
   bool isTlsAvailable() const;
   bool isInvertConnectionAvailable() const;
+  bool isSettingsScopeAvailable() const;
   bool isValid() const { return m_serialKey.isValid; }
   bool isExpiringSoon() const;
   bool isExpired() const;

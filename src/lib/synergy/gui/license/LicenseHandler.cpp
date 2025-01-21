@@ -33,6 +33,7 @@
 #include <QMenuBar>
 #include <QObject>
 #include <QProcessEnvironment>
+#include <QRadioButton>
 #include <QTimer>
 #include <QtCore>
 #include <chrono>
@@ -85,7 +86,8 @@ bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
 }
 
 void LicenseHandler::handleSettings(
-    QDialog *parent, QCheckBox *enableTls, QCheckBox *invertConnection) const {
+    QDialog *parent, QCheckBox *enableTls, QCheckBox *invertConnection,
+    QRadioButton *systemScope, QRadioButton *userScope) const {
 
   const auto onTlsToggle = [this, parent, enableTls] {
     qDebug("tls checkbox toggled");
@@ -100,8 +102,15 @@ void LicenseHandler::handleSettings(
   QObject::connect(
       invertConnection, &QCheckBox::toggled, onInvertConnectionToggle);
 
+  const auto onSystemScopeToggle = [this, parent, systemScope, userScope] {
+    qDebug("system scope radio button toggled");
+    checkSettingsScopeRadioButton(parent, systemScope, userScope, true);
+  };
+  QObject::connect(systemScope, &QRadioButton::toggled, onSystemScopeToggle);
+
   checkTlsCheckBox(parent, enableTls, false);
   checkInvertConnectionCheckBox(parent, invertConnection, false);
+  checkSettingsScopeRadioButton(parent, systemScope, userScope, false);
 }
 
 void LicenseHandler::handleVersionCheck(QString &versionUrl) {
@@ -169,7 +178,8 @@ void LicenseHandler::checkTlsCheckBox(
       dialog.showDialog(
           QString("TLS Encryption"),
           QString("Please upgrade to %1 to enable TLS encryption.")
-              .arg(synergy::gui::kProProductName));
+              .arg(synergy::gui::kProProductName),
+          synergy::gui::kUrlPersonalUpgrade);
     }
   }
 }
@@ -188,7 +198,26 @@ void LicenseHandler::checkInvertConnectionCheckBox(
           QString("Invert Connection"),
           QString(
               "Please upgrade to %1 to enable the invert connection feature.")
-              .arg(synergy::gui::kBusinessProductName));
+              .arg(synergy::gui::kBusinessProductName),
+          synergy::gui::kUrlContact);
+    }
+  }
+}
+
+void LicenseHandler::checkSettingsScopeRadioButton(
+    QDialog *parent, QRadioButton *systemScope, QRadioButton *userScope,
+    bool showDialog) const {
+  if (!m_license.isSettingsScopeAvailable() && systemScope->isChecked()) {
+    qDebug("settings scope not available, showing upgrade dialog");
+    userScope->setChecked(true);
+
+    if (showDialog) {
+      UpgradeDialog dialog(parent);
+      dialog.showDialog(
+          QString("Settings Scope"),
+          QString("Please upgrade to %1 to enable the settings scope feature.")
+              .arg(synergy::gui::kBusinessProductName),
+          synergy::gui::kUrlContact);
     }
   }
 }
