@@ -26,6 +26,7 @@ class AppConfig;
 class QMainWindow;
 class QDialog;
 class QCheckBox;
+class QRadioButton;
 
 /**
  * @brief A convenience wrapper for `License` that provides Qt signals, etc.
@@ -52,7 +53,8 @@ public:
 
   bool handleStart(QMainWindow *parent, AppConfig *appConfig);
   void handleSettings(
-      QDialog *parent, QCheckBox *enableTls, QCheckBox *invertConnection) const;
+      QDialog *parent, QCheckBox *enableTls, QCheckBox *invertConnection,
+      QRadioButton *systemScope, QRadioButton *userScope) const;
   void handleVersionCheck(QString &versionUrl);
   bool loadSettings();
   void saveSettings();
@@ -68,6 +70,9 @@ private:
       QDialog *parent, QCheckBox *checkBoxEnableTls, bool showDialog) const;
   void checkInvertConnectionCheckBox(
       QDialog *parent, QCheckBox *checkBoxInvertConnection,
+      bool showDialog) const;
+  void checkSettingsScopeRadioButton(
+      QDialog *parent, QRadioButton *systemScope, QRadioButton *userScope,
       bool showDialog) const;
   void updateWindowTitle() const;
   bool showActivationDialog();

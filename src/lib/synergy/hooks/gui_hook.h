@@ -20,7 +20,10 @@
 #include "synergy/gui/license/LicenseHandler.h"
 #include "synergy/gui/license/license_utils.h"
 
+#include <QCheckBox>
+#include <QDialog>
 #include <QMainWindow>
+#include <QRadioButton>
 
 namespace synergy::hooks {
 
@@ -35,11 +38,12 @@ inline bool onStart(QMainWindow *parent, AppConfig *appConfig) {
   }
 }
 
-inline void
-onSettings(QDialog *parent, QCheckBox *enableTls, QCheckBox *invertConnection) {
+inline void onSettings(
+    QDialog *parent, QCheckBox *enableTls, QCheckBox *invertConnection,
+    QRadioButton *systemScope, QRadioButton *userScope) {
   if (synergy::gui::license::isActivationEnabled()) {
     return LicenseHandler::instance().handleSettings(
-        parent, enableTls, invertConnection);
+        parent, enableTls, invertConnection, systemScope, userScope);
   }
 }
 

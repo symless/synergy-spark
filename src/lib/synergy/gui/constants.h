@@ -33,7 +33,7 @@ const auto kLinkDownload = R"(<a href="%1" style="color: %2">Download now</a>)";
 
 const auto kUrlPurchase =
     QString("%1/purchase?%2").arg(kUrlWebsite, kUrlSourceQuery);
-const auto kUrlUpgrade =
+const auto kUrlPersonalUpgrade =
     QString("%1/purchase/upgrade?%2").arg(kUrlWebsite, kUrlSourceQuery);
 const auto kUrlContact =
     QString("%1/contact?%2").arg(kUrlWebsite, kUrlSourceQuery);

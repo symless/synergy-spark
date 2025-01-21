@@ -34,7 +34,9 @@ macro(configure_gui_hook)
     "if (!synergy::hooks::onStart(&mainWindow, &appConfig)) { return 0; }"
   )
   set(DESKFLOW_GUI_HOOK_SETTINGS
-    "synergy::hooks::onSettings(this, m_pCheckBoxEnableTls, m_pCheckBoxInvertConnection);"
+    "synergy::hooks::onSettings(\
+        this, m_pCheckBoxEnableTls, m_pCheckBoxInvertConnection, \
+        m_pRadioSystemScope, m_pRadioUserScope);"
   )
   set(DESKFLOW_GUI_HOOK_VERSION
     "synergy::hooks::onVersionCheck(url);"
