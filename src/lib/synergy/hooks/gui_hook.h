@@ -20,8 +20,10 @@
 #include "synergy/gui/license/LicenseHandler.h"
 #include "synergy/gui/license/license_utils.h"
 
+#include <QCheckBox>
+#include <QDialog>
 #include <QMainWindow>
-#include <qradiobutton.h>
+#include <QRadioButton>
 
 namespace synergy::hooks {
 
