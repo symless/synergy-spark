@@ -77,7 +77,7 @@ bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
   if (m_license.isValid()) {
     qDebug("license is valid, continuing with start");
     updateWindowTitle();
-    clampFeatures();
+    clampFeatures(false);
     return true;
   }
 
@@ -151,7 +151,7 @@ bool LicenseHandler::showActivationDialog() {
   if (result == QDialog::Accepted) {
     saveSettings();
     updateWindowTitle();
-    clampFeatures();
+    clampFeatures(true);
 
     qDebug("license activation dialog accepted");
     return true;
@@ -299,8 +299,11 @@ void LicenseHandler::validate() {
   qDebug("license validation succeeded");
 }
 
-void LicenseHandler::clampFeatures() {
-  if (m_appConfig->tlsEnabled() && !m_license.isTlsAvailable()) {
+void LicenseHandler::clampFeatures(bool enableTlsIfAvailable) {
+  if (enableTlsIfAvailable && m_license.isTlsAvailable()) {
+    qDebug("tls available, enabling tls");
+    m_appConfig->setTlsEnabled(true);
+  } else if (m_appConfig->tlsEnabled() && !m_license.isTlsAvailable()) {
     qWarning("tls not available, disabling tls");
     m_appConfig->setTlsEnabled(false);
   }
