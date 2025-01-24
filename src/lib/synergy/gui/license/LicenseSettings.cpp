@@ -17,8 +17,8 @@
 
 #include "LicenseSettings.h"
 
+#include <QSettings>
 #include <QtCore>
-#include <qsettings.h>
 
 namespace synergy::gui::license {
 
