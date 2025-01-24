@@ -22,9 +22,6 @@
 
 namespace synergy::gui::license {
 
-const auto kAppName = DESKFLOW_APP_NAME;
-const auto kLegacyOrgDomain = "http-symless-com";
-const auto kSystemConfigFilename = "SystemConfig.ini";
 const auto kSerialKeySettingKey = "serialKey";
 
 #if defined(Q_OS_UNIX)
