@@ -31,7 +31,7 @@ const auto kUnixSystemConfigPath = "/usr/local/etc/";
 QString getSystemSettingsBaseDir();
 
 LicenseSettings::LicenseSettings() {
-  m_pUserSettings = new QSettings(QSettings::Scope::UserScope);
+  m_pUserSettings = new QSettings(QSettings::Scope::UserScope, this);
   qDebug().noquote() << "user license settings path:"
                      << m_pUserSettings->fileName();
 
@@ -40,8 +40,8 @@ LicenseSettings::LicenseSettings() {
       getSystemSettingsBaseDir());
   m_pSystemSettings = new QSettings(
       QSettings::Format::IniFormat, QSettings::Scope::SystemScope,
-      QCoreApplication::organizationName(),
-      QCoreApplication::applicationName());
+      QCoreApplication::organizationName(), QCoreApplication::applicationName(),
+      this);
   qDebug().noquote() << "system license settings path:"
                      << m_pSystemSettings->fileName();
 }
