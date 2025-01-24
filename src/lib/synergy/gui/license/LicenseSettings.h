@@ -19,12 +19,14 @@
 
 #include <QSettings>
 #include <QString>
+#include <qsettings.h>
 
 namespace synergy::gui::license {
 
-class LicenseSettings : public QSettings {
+class LicenseSettings : QObject {
+  Q_OBJECT
 public:
-  LicenseSettings() = default;
+  LicenseSettings();
   virtual ~LicenseSettings() = default;
   void load();
   void save();
@@ -34,6 +36,8 @@ public:
 
 private:
   QString m_serialKey;
+  QSettings *m_pUserSettings;
+  QSettings *m_pSystemSettings;
 };
 
 } // namespace synergy::gui::license
