@@ -32,7 +32,7 @@ QString getSystemSettingsBaseDir();
 
 LicenseSettings::LicenseSettings() {
   m_pUserSettings = new QSettings(QSettings::Scope::UserScope);
-  qDebug().noquote() << "user license settings path: "
+  qDebug().noquote() << "user license settings path:"
                      << m_pUserSettings->fileName();
 
   QSettings::setPath(
@@ -42,7 +42,7 @@ LicenseSettings::LicenseSettings() {
       QSettings::Format::IniFormat, QSettings::Scope::SystemScope,
       QCoreApplication::organizationName(),
       QCoreApplication::applicationName());
-  qDebug().noquote() << "system license settings path: "
+  qDebug().noquote() << "system license settings path:"
                      << m_pSystemSettings->fileName();
 }
 
