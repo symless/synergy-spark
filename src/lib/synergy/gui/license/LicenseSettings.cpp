@@ -17,13 +17,76 @@
 
 #include "LicenseSettings.h"
 
+#include <QSettings>
+#include <QtCore>
+
 namespace synergy::gui::license {
 
-void LicenseSettings::load() { m_serialKey = value("serialKey").toString(); }
+const auto kSerialKeySettingKey = "serialKey";
+
+#if defined(Q_OS_UNIX)
+const auto kUnixSystemConfigPath = "/usr/local/etc/";
+#endif
+
+QString getSystemSettingsBaseDir();
+
+LicenseSettings::LicenseSettings() {
+  m_pUserSettings = new QSettings(QSettings::Scope::UserScope, this);
+  qDebug().noquote() << "user license settings path:"
+                     << m_pUserSettings->fileName();
+
+  QSettings::setPath(
+      QSettings::Format::IniFormat, QSettings::Scope::SystemScope,
+      getSystemSettingsBaseDir());
+  m_pSystemSettings = new QSettings(
+      QSettings::Format::IniFormat, QSettings::Scope::SystemScope,
+      QCoreApplication::organizationName(), QCoreApplication::applicationName(),
+      this);
+  qDebug().noquote() << "system license settings path:"
+                     << m_pSystemSettings->fileName();
+}
+
+void LicenseSettings::load() {
+  if (m_pSystemSettings->contains(kSerialKeySettingKey)) {
+    qDebug("loading serial key from system settings");
+    m_serialKey = m_pSystemSettings->value(kSerialKeySettingKey).toString();
+  } else if (m_pUserSettings->contains(kSerialKeySettingKey)) {
+    qDebug("loading serial key from user settings");
+    m_serialKey = m_pUserSettings->value(kSerialKeySettingKey).toString();
+  } else {
+    qDebug("no serial key found in settings");
+  }
+}
 
 void LicenseSettings::save() {
-  setValue("serialKey", m_serialKey);
-  sync();
+
+  if (m_pSystemSettings->isWritable()) {
+    qDebug("saving serial key to system settings");
+    m_pSystemSettings->setValue(kSerialKeySettingKey, m_serialKey);
+    m_pSystemSettings->sync();
+  } else {
+    qWarning("not saving serial key to system settings, not writable");
+  }
+
+  qDebug("saving serial key to user settings");
+  m_pUserSettings->setValue(kSerialKeySettingKey, m_serialKey);
+  m_pUserSettings->sync();
+}
+
+/**
+ * Important: Cloned from upstream `QSettingsProxy.cpp`
+ */
+QString getSystemSettingsBaseDir() {
+#if defined(Q_OS_WIN)
+  return QCoreApplication::applicationDirPath();
+#elif defined(Q_OS_UNIX)
+  // Qt already adds application and filename to the end of the path.
+  // On macOS, it would be nice to use /Library dir, but qt has no elevate
+  // system.
+  return kUnixSystemConfigPath;
+#else
+#error "unsupported platform"
+#endif
 }
 
 } // namespace synergy::gui::license
