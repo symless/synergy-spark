@@ -22,7 +22,7 @@
 
 namespace synergy::gui::license {
 
-class LicenseSettings : QObject {
+class LicenseSettings : public QObject {
   Q_OBJECT
 public:
   LicenseSettings();
