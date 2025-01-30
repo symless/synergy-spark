@@ -252,11 +252,6 @@ LicenseHandler::setLicense(const QString &hexString, bool allowExpired) {
     return kInvalid;
   }
 
-  if (serialKey == m_license.serialKey()) {
-    qDebug("serial key did not change, ignoring");
-    return kUnchanged;
-  }
-
   auto license = License(serialKey);
   if (m_time.hasTestTime()) {
     license.setNowFunc([this]() { return m_time.now(); });
@@ -278,6 +273,11 @@ LicenseHandler::setLicense(const QString &hexString, bool allowExpired) {
     } else {
       qDebug("license expiry too distant to schedule timer");
     }
+  }
+
+  if (serialKey == m_license.serialKey()) {
+    qDebug("serial key did not change, ignoring");
+    return kUnchanged;
   }
 
   return kSuccess;
