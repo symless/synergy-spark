@@ -130,7 +130,7 @@ bool LicenseHandler::loadSettings() {
   const auto serialKey = m_settings.serialKey();
   if (!serialKey.isEmpty()) {
     const auto result = setLicense(m_settings.serialKey(), true);
-    if (result != SetSerialKeyResult::kSuccess) {
+    if (result != kSuccess && result != kUnchanged) {
       qWarning("set serial key failed, showing activation dialog");
       return showActivationDialog();
     }
@@ -262,8 +262,15 @@ LicenseHandler::setLicense(const QString &hexString, bool allowExpired) {
     return kExpired;
   }
 
+  // Condition must run *just before* the license member is set.
+  if (serialKey == m_license.serialKey()) {
+    qDebug("serial key did not change, ignoring");
+    return kUnchanged;
+  }
+
   m_license = license;
 
+  // Condition must run *after* the license member is set.
   if (!m_license.isExpired() && m_license.isTimeLimited()) {
     auto secondsLeft = m_license.secondsLeft();
     if (secondsLeft.count() < INT_MAX) {
@@ -273,11 +280,6 @@ LicenseHandler::setLicense(const QString &hexString, bool allowExpired) {
     } else {
       qDebug("license expiry too distant to schedule timer");
     }
-  }
-
-  if (serialKey == m_license.serialKey()) {
-    qDebug("serial key did not change, ignoring");
-    return kUnchanged;
   }
 
   return kSuccess;
