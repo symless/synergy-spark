@@ -68,6 +68,16 @@ jobs:
             odin/vcpkg_installed
           key: vcpkg-${{ runner.os }}-${{ hashFiles('odin/vcpkg.json', 'odin/vcpkg-configuration.json') }}
 
+      # Install Qt with an action instead of AQT, which seems broken on Windows CI.
+      - name: Install Qt
+        if: ${{runner.os == 'Windows'}}
+        uses: jurplel/install-qt-action@v4
+        with:
+          dir: "C:"
+          version: 6.7
+          cache: true
+          cache-key-prefix: windows-qt-6.7
+
       - name: Cache deps dir
         uses: actions/cache@v4
         with:
