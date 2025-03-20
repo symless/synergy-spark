@@ -43,7 +43,6 @@ runs:
         path: dist
         
     - name: AWS credentials
-      if: ${{ inputs.use-aws-s3 == 'true' }}
       uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-access-key-id: ${{ inputs.aws-access-key-id }}
@@ -51,7 +50,6 @@ runs:
         aws-region: ${{ inputs.aws-region }}
 
     - name: Upload to AWS S3
-      if: ${{ inputs.use-aws-s3 == 'true' }}
       run: |
         source_dir="./dist/"
 
