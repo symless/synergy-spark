@@ -116,11 +116,6 @@ runs:
         url="s3://${{ inputs.aws-s3-bucket }}/$target_dir"
 
         echo "Uploading to AWS S3: $url"
-        aws s3 cp $source_dir $url
-
-        if [[ $? -ne 0 ]]; then
-          echo "Failed to upload to AWS S3" >&2
-          exit 1
-        fi
+        aws s3 cp $source_dir $url --recursive
 
       shell: bash
