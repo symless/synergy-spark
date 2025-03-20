@@ -21,11 +21,10 @@ jobs:
           echo "test" > dist/test
 
       - name: Upload to GitHub
-        if:
-        uses: ./.github/actions/dist-upload
+        uses: actions/upload-artifact@v4
         with:
-          use-github: true
-          github-target-filename: "test"
+          name: "test"
+          path: ./dist
 
       - name: Upload to AWS S3
         if:
