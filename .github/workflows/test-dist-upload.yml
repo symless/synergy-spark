@@ -31,8 +31,8 @@ jobs:
         if:
         uses: ./.github/actions/dist-upload
         with:
-          use-gdrive: true
-          gdrive-target-base-dir: "test"
-          gdrive-secret-key: ${{ secrets.GOOGLE_DRIVE_KEY }}
-          gdrive-parent-folder-id: ${{ secrets.GOOGLE_DRIVE_TECH_DRIVE }}
-          package-version: 1.0.0-test
+          use-aws-s3: true
+          aws-s3-target-dir: "test"
+          aws-s3-package-version: 1.0.0-test
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

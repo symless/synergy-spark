@@ -5,28 +5,39 @@ inputs:
     description: "Whether to upload to GitHub artifacts"
     required: true
 
-  use-gdrive:
-    description: "Whether to upload to Google Drive"
+  use-aws-s3:
+    description: "Whether to upload to AWS S3"
     required: true
 
   github-target-filename:
-    description: "Filename to upload (GitHub artifacts)"
+    description: "Target filename in GitHub artifacts"
     required: true
 
-  gdrive-target-base-dir:
-    description: "Base directory to upload (Google Drive)"
+  aws-s3-target-dir:
+    description: "Target directory in AWS S3"
+    default: "synergy-1"
     required: true
 
-  gdrive-secret-key:
-    description: "Google Drive secret key"
+  aws-s3-package-version:
+    description: "Package version to use in the AWS S3 path"
     required: true
 
-  gdrive-parent-folder-id:
-    description: "Google Drive parent folder ID"
+  aws-access-key-id:
+    description: "AWS access key ID"
+    required: true
+  
+  aws-secret-access-key:
+    description: "AWS secret access key"
     required: true
 
-  package-version:
-    description: "Package version appended to the Google Drive dir"
+  aws-region:
+    description: "AWS region"
+    default: "us-east-2"
+    required: true
+
+  aws-s3-bucket:
+    description: "AWS S3 bucket name"
+    default: muskoka-packages
     required: true
 
 runs:
@@ -34,29 +45,35 @@ runs:
 
   steps:
     - run: |
-        if [[ "${{ inputs.use-github }}" == 'true' && "${{ inputs.use-gdrive }}" == 'true' ]]; then
-          echo "Either 'use-github' or 'use-gdrive' must be true (and not both)"
+        if [[ "${{ inputs.use-github }}" == 'true' && "${{ inputs.use-aws-s3 }}" == 'true' ]]; then
+          echo "Either 'use-github' or 'use-aws-s3' must be true (and not both)"
           exit 1
         fi
-        if [[ "${{ inputs.use-github }}" == 'false' && "${{ inputs.use-gdrive }}" == 'false' ]]; then
-          echo "Either 'use-github' or 'use-gdrive' must be true"
+
+        if [[ "${{ inputs.use-github }}" == 'false' && "${{ inputs.use-aws-s3 }}" == 'false' ]]; then
+          echo "Either 'use-github' or 'use-aws-s3' must be true"
           exit 1
         fi
-        if [[ "${{ inputs.use-gdrive }}" == 'true' ]]; then
-          if [[ -z "${{ inputs.package-version }}" ]]; then
-            echo "Input 'package-version' is required when uploading to Google Drive"
+
+        if [[ "${{ inputs.use-aws-s3 }}" == 'true' ]]; then
+          if [[ -z "${{ inputs.aws-s3-target-dir }}" ]]; then
+            echo "Input 'aws-s3-target-dir' is required when uploading to AWS S3"
             exit 1
           fi
-          if [[ -z "${{ inputs.gdrive-target-base-dir }}" ]]; then
-            echo "Input 'gdrive-target-base-dir' is required when uploading to Google Drive"
+          if [[ -z "${{ inputs.aws-access-key-id }}" ]]; then
+            echo "Input 'aws-access-key-id' is required when uploading to AWS S3"
             exit 1
           fi
-          if [[ -z "${{ inputs.gdrive-secret-key }}" ]]; then
-            echo "Input 'gdrive-secret-key' is required when uploading to Google Drive"
+          if [[ -z "${{ inputs.aws-secret-access-key }}" ]]; then
+            echo "Input 'aws-secret-access-key' is required when uploading to AWS S3"
             exit 1
           fi
-          if [[ -z "${{ inputs.gdrive-parent-folder-id }}" ]]; then
-            echo "Input 'gdrive-parent-folder-id' is required when uploading to Google Drive"
+          if [[ -z "${{ inputs.aws-region }}" ]]; then
+            echo "Input 'aws-region' is required when uploading to AWS S3"
+            exit 1
+          fi
+          if [[ -z "${{ inputs.aws-s3-package-version }}" ]]; then
+            echo "Input 'aws-s3-package-version' is required when uploading to Google Drive"
             exit 1
           fi
         fi
@@ -68,30 +85,42 @@ runs:
       with:
         name: ${{ inputs.github-target-filename }}
         path: ./dist
+    
+    - name: AWS credentials
+      if: ${{ inputs.use-aws-s3 == 'true' }}
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ inputs.aws-access-key-id }}
+        aws-secret-access-key: ${{ inputs.aws-secret-access-key }}
+        aws-region: ${{ inputs.aws-region }}
 
-    - name: Google Drive vars
-      id: google-drive
-      if: ${{ inputs.use-gdrive == 'true' }}
-      shell: bash
+    - name: Upload to AWS S3
+      if: ${{ inputs.use-aws-s3 == 'true' }}
       run: |
-        # Remove stage (pre-release version) and version metadata (has build number)
-        short_version=$(echo "${{ inputs.package-version }}" | cut -d'-' -f1 | cut -d'+' -f1)
+        source_dir="./dist/"
 
-        if [[ "${{ inputs.package-version }}" =~ snapshot ]]; then
+        # Should be the product name
+        base_dir="${{ inputs.aws-s3-target-dir }}"
+
+        # Separate snapshot and release versions for easier navigation
+        if [[ "${{ inputs.aws-s3-package-version }}" =~ snapshot ]]; then
           sub_dir="snapshot"
         else
           sub_dir="release"
         fi
 
-        base_dir="${{ inputs.gdrive-target-base-dir }}"
-        dir="Packages/$base_dir/$short_version/$sub_dir/${{ inputs.package-version }}"
-        echo "dir=$dir" | tee -a $GITHUB_OUTPUT
+        # Organize by major.minor.patch dir (i.e. v1.0.0/v1.0.0-foobar+r123)
+        short_version=$(echo "${{ inputs.aws-s3-package-version }}" | cut -d'-' -f1 | cut -d'+' -f1)
 
-    - name: Upload to Google Drive
-      if: ${{ inputs.use-gdrive == 'true' }}
-      uses: symless/gdrive-upload@target-glob
-      with:
-        credentials: ${{ inputs.gdrive-secret-key }}
-        target: "./dist/*"
-        parent_folder_id: ${{ inputs.gdrive-parent-folder-id }}
-        child_folder: ${{ steps.google-drive.outputs.dir }}
+        target_dir="$base_dir/$sub_dir/$short_version/${{ inputs.aws-s3-package-version }}"
+        url="s3://${{ inputs.aws-s3-bucket }}/$target_dir"
+
+        echo "Uploading to AWS S3: $url"
+        aws s3 cp $source_dir $url
+
+        if [[ $? -ne 0 ]]; then
+          echo "Failed to upload to AWS S3" >&2
+          exit 1
+        fi
+
+      shell: bash
