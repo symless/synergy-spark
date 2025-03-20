@@ -31,7 +31,7 @@ jobs:
         if:
         uses: ./.github/actions/dist-upload
         with:
-          use-aws-s3: true
+          asset-name-pattern: "test"
           aws-s3-target-dir: "test"
           aws-s3-package-version: 1.0.0-test
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}

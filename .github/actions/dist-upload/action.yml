@@ -1,6 +1,10 @@
 name: "Upload to AWS S3"
 description: "Uploads the package from the dist dir to AWS S3"
 inputs:
+  asset-name-pattern:
+    description: "Pattern to match the asset name"
+    default: "package-*"
+
   aws-s3-target-dir:
     description: "Target directory in AWS S3"
     default: "synergy-1"
@@ -32,6 +36,12 @@ runs:
   using: "composite"
 
   steps:
+    - name: Download assets
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.asset-name-pattern }}
+        path: dist
+        
     - name: AWS credentials
       if: ${{ inputs.use-aws-s3 == 'true' }}
       uses: aws-actions/configure-aws-credentials@v4

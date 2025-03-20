@@ -45,12 +45,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Download assets
-        uses: actions/download-artifact@v4
-        with:
-          name: package-*
-          path: dist
-
       - name: Set version env var
         uses: ./.github/actions/get-version
 
