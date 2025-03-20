@@ -36,10 +36,11 @@ runs:
   using: "composite"
 
   steps:
-    - name: Download assets
+    - name: Download packages
       uses: actions/download-artifact@v4
       with:
-        name: ${{ inputs.asset-name-pattern }}
+        pattern: ${{ inputs.asset-name-pattern }}
+        merge-multiple: true
         path: dist
         
     - name: AWS credentials
