@@ -39,20 +39,22 @@ runs:
     # If a required field is empty, the action does not fail, so we have to implement this.
     - run: |
         check_input() {
-          if [[ -z "${{ inputs.$1 }}" ]]; then
-            echo "Input '$1' is required"
+          input_name="$1"
+          input_value="$2"
+          if [[ -z "$input_value" ]]; then
+            echo "Input $input_name is required"
             exit 1
           fi
         }
 
-        check_input "asset-name-pattern"
-        check_input "aws-s3-target-dir"
-        check_input "aws-s3-package-version"
-        check_input "aws-access-key-id"
-        check_input "aws-secret-access-key"
-        check_input "aws-region"
-        check_input "aws-s3-bucket"
-        
+        check_input "asset-name-pattern" "${{ inputs.asset-name-pattern }}"
+        check_input "aws-s3-target-dir" "${{ inputs.aws-s3-target-dir }}"
+        check_input "aws-s3-package-version" "${{ inputs.aws-s3-package-version }}"
+        check_input "aws-access-key-id" "${{ inputs.aws-access-key-id }}"
+        check_input "aws-secret-access-key" "${{ inputs.aws-secret-access-key }}"
+        check_input "aws-region" "${{ inputs.aws-region }}"
+        check_input "aws-s3-bucket" "${{ inputs.aws-s3-bucket }}"
+
       shell: bash
 
     - name: Download packages
