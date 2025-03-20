@@ -7,7 +7,6 @@ inputs:
 
   aws-s3-target-dir:
     description: "Target directory in AWS S3"
-    default: "synergy-1"
     required: true
 
   aws-s3-package-version:
