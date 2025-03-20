@@ -1,21 +1,12 @@
-name: "Distribute upload"
-description: "Uploads the package from the dist dir to GitHub artifacts or AWS S3"
+name: "Upload to AWS S3"
+description: "Uploads the package from the dist dir to AWS S3"
 inputs:
-  use-github:
-    description: "Whether to upload to GitHub artifacts"
-    required: true
-
-  use-aws-s3:
-    description: "Whether to upload to AWS S3"
-    required: true
-
-  github-target-filename:
-    description: "Target filename in GitHub artifacts"
-    required: true
+  asset-name-pattern:
+    description: "Pattern to match the asset name"
+    default: "package-*"
 
   aws-s3-target-dir:
     description: "Target directory in AWS S3"
-    default: "synergy-1"
     required: true
 
   aws-s3-package-version:
@@ -44,50 +35,35 @@ runs:
   using: "composite"
 
   steps:
+    # If a required field is empty, the action does not fail, so we have to implement this.
     - run: |
-        if [[ "${{ inputs.use-github }}" == 'true' && "${{ inputs.use-aws-s3 }}" == 'true' ]]; then
-          echo "Either 'use-github' or 'use-aws-s3' must be true (and not both)"
-          exit 1
-        fi
+        check_input() {
+          input_name="$1"
+          input_value="$2"
+          if [[ -z "$input_value" ]]; then
+            echo "Input $input_name is required"
+            exit 1
+          fi
+        }
 
-        if [[ "${{ inputs.use-github }}" == 'false' && "${{ inputs.use-aws-s3 }}" == 'false' ]]; then
-          echo "Either 'use-github' or 'use-aws-s3' must be true"
-          exit 1
-        fi
+        check_input "asset-name-pattern" "${{ inputs.asset-name-pattern }}"
+        check_input "aws-s3-target-dir" "${{ inputs.aws-s3-target-dir }}"
+        check_input "aws-s3-package-version" "${{ inputs.aws-s3-package-version }}"
+        check_input "aws-access-key-id" "${{ inputs.aws-access-key-id }}"
+        check_input "aws-secret-access-key" "${{ inputs.aws-secret-access-key }}"
+        check_input "aws-region" "${{ inputs.aws-region }}"
+        check_input "aws-s3-bucket" "${{ inputs.aws-s3-bucket }}"
 
-        if [[ "${{ inputs.use-aws-s3 }}" == 'true' ]]; then
-          if [[ -z "${{ inputs.aws-s3-target-dir }}" ]]; then
-            echo "Input 'aws-s3-target-dir' is required when uploading to AWS S3"
-            exit 1
-          fi
-          if [[ -z "${{ inputs.aws-access-key-id }}" ]]; then
-            echo "Input 'aws-access-key-id' is required when uploading to AWS S3"
-            exit 1
-          fi
-          if [[ -z "${{ inputs.aws-secret-access-key }}" ]]; then
-            echo "Input 'aws-secret-access-key' is required when uploading to AWS S3"
-            exit 1
-          fi
-          if [[ -z "${{ inputs.aws-region }}" ]]; then
-            echo "Input 'aws-region' is required when uploading to AWS S3"
-            exit 1
-          fi
-          if [[ -z "${{ inputs.aws-s3-package-version }}" ]]; then
-            echo "Input 'aws-s3-package-version' is required when uploading to AWS S3"
-            exit 1
-          fi
-        fi
       shell: bash
 
-    - name: Upload to GitHub
-      if: ${{ inputs.use-github == 'true' }}
-      uses: actions/upload-artifact@v4
+    - name: Download packages
+      uses: actions/download-artifact@v4
       with:
-        name: ${{ inputs.github-target-filename }}
-        path: ./dist
-    
+        pattern: ${{ inputs.asset-name-pattern }}
+        merge-multiple: true
+        path: dist
+        
     - name: AWS credentials
-      if: ${{ inputs.use-aws-s3 == 'true' }}
       uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-access-key-id: ${{ inputs.aws-access-key-id }}
@@ -95,7 +71,6 @@ runs:
         aws-region: ${{ inputs.aws-region }}
 
     - name: Upload to AWS S3
-      if: ${{ inputs.use-aws-s3 == 'true' }}
       run: |
         source_dir="./dist/"
 

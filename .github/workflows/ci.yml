@@ -26,8 +26,6 @@ env:
   SYNERGY_ENABLE_ACTIVATION: ${{ vars.SYNERGY_ENABLE_ACTIVATION }}
   PACKAGE_BUILD: ${{ !github.event.pull_request.draft }}
   PACKAGE_UPLOAD: ${{ !github.event.pull_request.draft }}
-  UPLOAD_TO_GITHUB: ${{ github.event_name == 'pull_request' && !github.event.pull_request.draft }}
-  UPLOAD_TO_AWS_S3: ${{ github.event_name != 'pull_request' && github.event_name != 'schedule' }}
 
 jobs:
   # Quality gate to allow PR merge, used in the branch protection rules.
@@ -37,6 +35,26 @@ jobs:
 
     steps:
       - run: echo "✅ CI passed" > $GITHUB_STEP_SUMMARY
+
+  aws-s3-upload:
+    runs-on: ubuntu-latest
+    needs: [windows, macos, linux]
+    if: ${{ github.event_name != 'pull_request' && github.event_name != 'schedule' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set version env var
+        uses: ./.github/actions/get-version
+
+      - name: Upload to AWS S3
+        uses: ./.github/actions/dist-upload
+        with:
+          aws-s3-target-dir: ${{ vars.AWS_S3_UPLOAD_DIR }}
+          aws-s3-package-version: ${{ env.SYNERGY_VERSION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   windows:
     name: ${{ matrix.target.name }}
@@ -128,16 +146,11 @@ jobs:
           WINDOWS_PFX_CERTIFICATE: ${{ secrets.WINDOWS_PFX }}
           WINDOWS_PFX_PASSWORD: ${{ secrets.WINDOWS_PFX_PASS }}
 
-      - name: Upload
-        if: ${{ env.PACKAGE_UPLOAD == 'true' }}
-        uses: ./.github/actions/dist-upload
+      - name: Upload to GitHub
+        uses: actions/upload-artifact@v4
         with:
-          use-github: ${{ env.UPLOAD_TO_GITHUB }}
-          use-aws-s3: ${{ env.UPLOAD_TO_AWS_S3 }}
-          github-target-filename: "${{ env.SYNERGY_PACKAGE_PREFIX }}-${{ matrix.target.name }}"
-          aws-s3-package-version: ${{ env.SYNERGY_VERSION }}
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          name: "package-${{ env.SYNERGY_PACKAGE_PREFIX }}-${{ matrix.target.name }}"
+          path: ./dist
 
   macos:
     name: ${{ matrix.target.name }}
@@ -214,16 +227,11 @@ jobs:
           APPLE_NOTARY_PASSWORD: ${{ secrets.APPLE_NOTARY_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
 
-      - name: Upload
-        if: ${{ env.PACKAGE_UPLOAD == 'true' }}
-        uses: ./.github/actions/dist-upload
+      - name: Upload to GitHub
+        uses: actions/upload-artifact@v4
         with:
-          use-github: ${{ env.UPLOAD_TO_GITHUB }}
-          use-aws-s3: ${{ env.UPLOAD_TO_AWS_S3 }}
-          github-target-filename: "${{ env.SYNERGY_PACKAGE_PREFIX }}-${{ matrix.target.name }}"
-          aws-s3-package-version: ${{ env.SYNERGY_VERSION }}
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          name: "package-${{ env.SYNERGY_PACKAGE_PREFIX }}-${{ matrix.target.name }}"
+          path: ./dist
 
   linux-matrix:
     runs-on: ubuntu-latest
@@ -265,14 +273,14 @@ jobs:
         run : |
           if [ "${{ matrix.distro.like }}" == "debian" ]; then
             apt update
-            apt install -y git python3 python3-venv awscli
+            apt install -y git python3 python3-venv
           elif [ "${{ matrix.distro.like }}" == "fedora" ]; then
-            dnf install -y git python3 awscli
+            dnf install -y git python3
           elif [ "${{ matrix.distro.like }}" == "suse" ]; then
             zypper refresh
-            zypper install -y --force-resolution git python3 aws-cli
+            zypper install -y --force-resolution git python3
           elif [ "${{ matrix.distro.like }}" == "arch" ]; then
-            pacman -Syu --noconfirm git python sudo aws-cli
+            pacman -Syu --noconfirm git python sudo
             useradd -m build
           else
             echo "Unknown: ${{ matrix.distro.like }}"
@@ -319,13 +327,8 @@ jobs:
           LINUX_PACKAGE_USER: ${{ matrix.distro.package-user }}
         run: ./scripts/package.py
 
-      - name: Upload
-        if: ${{ env.PACKAGE_UPLOAD == 'true' }}
-        uses: ./.github/actions/dist-upload
+      - name: Upload to GitHub
+        uses: actions/upload-artifact@v4
         with:
-          use-github: ${{ env.UPLOAD_TO_GITHUB }}
-          use-aws-s3: ${{ env.UPLOAD_TO_AWS_S3 }}
-          github-target-filename: "${{ env.SYNERGY_PACKAGE_PREFIX }}-${{ matrix.distro.name }}"
-          aws-s3-package-version: ${{ env.SYNERGY_VERSION }}
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          name: "package-${{ env.SYNERGY_PACKAGE_PREFIX }}-${{ matrix.distro.name }}"
+          path: ./dist
