@@ -27,7 +27,7 @@ env:
   PACKAGE_BUILD: ${{ !github.event.pull_request.draft }}
   PACKAGE_UPLOAD: ${{ !github.event.pull_request.draft }}
   UPLOAD_TO_GITHUB: ${{ github.event_name == 'pull_request' && !github.event.pull_request.draft }}
-  UPLOAD_TO_GDRIVE: ${{ github.event_name != 'pull_request' && github.event_name != 'schedule' }}
+  UPLOAD_TO_AWS_S3: ${{ github.event_name != 'pull_request' && github.event_name != 'schedule' }}
 
 jobs:
   # Quality gate to allow PR merge, used in the branch protection rules.
@@ -133,12 +133,11 @@ jobs:
         uses: ./.github/actions/dist-upload
         with:
           use-github: ${{ env.UPLOAD_TO_GITHUB }}
-          use-gdrive: ${{ env.UPLOAD_TO_GDRIVE }}
+          use-aws-s3: ${{ env.UPLOAD_TO_AWS_S3 }}
           github-target-filename: "${{ env.SYNERGY_PACKAGE_PREFIX }}-${{ matrix.target.name }}"
-          gdrive-target-base-dir: ${{ vars.GDRIVE_TARGET_BASE_DIR }}
-          gdrive-secret-key: ${{ secrets.GOOGLE_DRIVE_KEY }}
-          gdrive-parent-folder-id: ${{ secrets.GOOGLE_DRIVE_TECH_DRIVE }}
-          package-version: ${{ env.SYNERGY_VERSION }}
+          aws-s3-package-version: ${{ env.SYNERGY_VERSION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   macos:
     name: ${{ matrix.target.name }}
@@ -220,12 +219,11 @@ jobs:
         uses: ./.github/actions/dist-upload
         with:
           use-github: ${{ env.UPLOAD_TO_GITHUB }}
-          use-gdrive: ${{ env.UPLOAD_TO_GDRIVE }}
+          use-aws-s3: ${{ env.UPLOAD_TO_AWS_S3 }}
           github-target-filename: "${{ env.SYNERGY_PACKAGE_PREFIX }}-${{ matrix.target.name }}"
-          gdrive-target-base-dir: ${{ vars.GDRIVE_TARGET_BASE_DIR }}
-          gdrive-secret-key: ${{ secrets.GOOGLE_DRIVE_KEY }}
-          gdrive-parent-folder-id: ${{ secrets.GOOGLE_DRIVE_TECH_DRIVE }}
-          package-version: ${{ env.SYNERGY_VERSION }}
+          aws-s3-package-version: ${{ env.SYNERGY_VERSION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   linux-matrix:
     runs-on: ubuntu-latest
@@ -326,9 +324,8 @@ jobs:
         uses: ./.github/actions/dist-upload
         with:
           use-github: ${{ env.UPLOAD_TO_GITHUB }}
-          use-gdrive: ${{ env.UPLOAD_TO_GDRIVE }}
+          use-aws-s3: ${{ env.UPLOAD_TO_AWS_S3 }}
           github-target-filename: "${{ env.SYNERGY_PACKAGE_PREFIX }}-${{ matrix.distro.name }}"
-          gdrive-target-base-dir: ${{ vars.GDRIVE_TARGET_BASE_DIR }}
-          gdrive-secret-key: ${{ secrets.GOOGLE_DRIVE_KEY }}
-          gdrive-parent-folder-id: ${{ secrets.GOOGLE_DRIVE_TECH_DRIVE }}
-          package-version: ${{ env.SYNERGY_VERSION }}
+          aws-s3-package-version: ${{ env.SYNERGY_VERSION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
