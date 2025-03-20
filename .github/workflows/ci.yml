@@ -279,14 +279,14 @@ jobs:
         run : |
           if [ "${{ matrix.distro.like }}" == "debian" ]; then
             apt update
-            apt install -y git python3 python3-venv awscli
+            apt install -y git python3 python3-venv
           elif [ "${{ matrix.distro.like }}" == "fedora" ]; then
-            dnf install -y git python3 awscli
+            dnf install -y git python3
           elif [ "${{ matrix.distro.like }}" == "suse" ]; then
             zypper refresh
-            zypper install -y --force-resolution git python3 aws-cli
+            zypper install -y --force-resolution git python3
           elif [ "${{ matrix.distro.like }}" == "arch" ]; then
-            pacman -Syu --noconfirm git python sudo aws-cli
+            pacman -Syu --noconfirm git python sudo
             useradd -m build
           else
             echo "Unknown: ${{ matrix.distro.like }}"
