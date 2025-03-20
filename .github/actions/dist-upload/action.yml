@@ -36,6 +36,25 @@ runs:
   using: "composite"
 
   steps:
+    # If a required field is empty, the action does not fail, so we have to implement this.
+    - run: |
+        check_input() {
+          if [[ -z "${{ inputs.$1 }}" ]]; then
+            echo "Input '$1' is required"
+            exit 1
+          fi
+        }
+
+        check_input "asset-name-pattern"
+        check_input "aws-s3-target-dir"
+        check_input "aws-s3-package-version"
+        check_input "aws-access-key-id"
+        check_input "aws-secret-access-key"
+        check_input "aws-region"
+        check_input "aws-s3-bucket"
+        
+      shell: bash
+
     - name: Download packages
       uses: actions/download-artifact@v4
       with:
