@@ -27,7 +27,7 @@ jobs:
           use-github: true
           github-target-filename: "test"
 
-      - name: Upload to Google Drive
+      - name: Upload to AWS S3
         if:
         uses: ./.github/actions/dist-upload
         with:

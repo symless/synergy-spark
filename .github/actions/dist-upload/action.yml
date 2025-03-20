@@ -1,5 +1,5 @@
 name: "Distribute upload"
-description: "Uploads the package from the dist dir to GitHub artifacts or Google Drive"
+description: "Uploads the package from the dist dir to GitHub artifacts or AWS S3"
 inputs:
   use-github:
     description: "Whether to upload to GitHub artifacts"
@@ -73,7 +73,7 @@ runs:
             exit 1
           fi
           if [[ -z "${{ inputs.aws-s3-package-version }}" ]]; then
-            echo "Input 'aws-s3-package-version' is required when uploading to Google Drive"
+            echo "Input 'aws-s3-package-version' is required when uploading to AWS S3"
             exit 1
           fi
         fi
