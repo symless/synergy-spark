@@ -30,23 +30,21 @@ const auto kUnixSystemConfigPath = "/usr/local/etc/";
 
 QString getSystemSettingsBaseDir();
 
-LicenseSettings::LicenseSettings() {
+LicenseSettings::LicenseSettings()
+{
   m_pUserSettings = new QSettings(QSettings::Scope::UserScope, this);
-  qDebug().noquote() << "user license settings path:"
-                     << m_pUserSettings->fileName();
+  qDebug().noquote() << "user license settings path:" << m_pUserSettings->fileName();
 
-  QSettings::setPath(
-      QSettings::Format::IniFormat, QSettings::Scope::SystemScope,
-      getSystemSettingsBaseDir());
+  QSettings::setPath(QSettings::Format::IniFormat, QSettings::Scope::SystemScope, getSystemSettingsBaseDir());
   m_pSystemSettings = new QSettings(
-      QSettings::Format::IniFormat, QSettings::Scope::SystemScope,
-      QCoreApplication::organizationName(), QCoreApplication::applicationName(),
-      this);
-  qDebug().noquote() << "system license settings path:"
-                     << m_pSystemSettings->fileName();
+      QSettings::Format::IniFormat, QSettings::Scope::SystemScope, QCoreApplication::organizationName(),
+      QCoreApplication::applicationName(), this
+  );
+  qDebug().noquote() << "system license settings path:" << m_pSystemSettings->fileName();
 }
 
-void LicenseSettings::load() {
+void LicenseSettings::load()
+{
   if (m_pSystemSettings->contains(kSerialKeySettingKey)) {
     qDebug("loading serial key from system settings");
     m_serialKey = m_pSystemSettings->value(kSerialKeySettingKey).toString();
@@ -58,7 +56,8 @@ void LicenseSettings::load() {
   }
 }
 
-void LicenseSettings::save() {
+void LicenseSettings::save()
+{
 
   if (m_pSystemSettings->isWritable()) {
     qDebug("saving serial key to system settings");
@@ -76,7 +75,8 @@ void LicenseSettings::save() {
 /**
  * Important: Cloned from upstream `QSettingsProxy.cpp`
  */
-QString getSystemSettingsBaseDir() {
+QString getSystemSettingsBaseDir()
+{
 #if defined(Q_OS_WIN)
   return QCoreApplication::applicationDirPath();
 #elif defined(Q_OS_UNIX)

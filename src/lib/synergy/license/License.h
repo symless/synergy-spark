@@ -30,7 +30,8 @@ class LicenseTests;
 
 namespace synergy::license {
 
-class License {
+class License
+{
   friend class ::Server;
   friend class ::LicenseHandler;
   friend class ::LicenseTests;
@@ -46,14 +47,18 @@ public:
   explicit License(const std::string &hexString);
   ~License() = default;
 
-  friend bool operator==(License const &lhs, License const &rhs) {
+  friend bool operator==(License const &lhs, License const &rhs)
+  {
     return lhs.m_serialKey == rhs.m_serialKey;
   }
 
   bool isTlsAvailable() const;
   bool isInvertConnectionAvailable() const;
   bool isSettingsScopeAvailable() const;
-  bool isValid() const { return m_serialKey.isValid; }
+  bool isValid() const
+  {
+    return m_serialKey.isValid;
+  }
   bool isExpiringSoon() const;
   bool isExpired() const;
   bool isTrial() const;
@@ -63,22 +68,36 @@ public:
   std::chrono::seconds secondsLeft() const;
   Product::Edition productEdition() const;
   std::string productName() const;
-  const SerialKey &serialKey() const { return m_serialKey; }
-  void invalidate() { m_serialKey = SerialKey::invalid(); }
+  const SerialKey &serialKey() const
+  {
+    return m_serialKey;
+  }
+  void invalidate()
+  {
+    m_serialKey = SerialKey::invalid();
+  }
 
-  class InvalidSerialKey : public LicenseError {
+  class InvalidSerialKey : public LicenseError
+  {
   public:
-    explicit InvalidSerialKey() : LicenseError("invalid serial key") {}
+    explicit InvalidSerialKey() : LicenseError("invalid serial key")
+    {
+    }
   };
 
-  class NoTimeLimitError : public LicenseError {
+  class NoTimeLimitError : public LicenseError
+  {
   public:
-    explicit NoTimeLimitError()
-        : LicenseError("serial key has no time limit") {}
+    explicit NoTimeLimitError() : LicenseError("serial key has no time limit")
+    {
+    }
   };
 
 protected:
-  void setNowFunc(const NowFunc &nowFunc) { m_nowFunc = nowFunc; }
+  void setNowFunc(const NowFunc &nowFunc)
+  {
+    m_nowFunc = nowFunc;
+  }
 
 private:
   // for intentionality, force use of `invalid()` static function.
@@ -88,7 +107,10 @@ private:
   License(const License &) = default;
   License &operator=(const License &) = default;
 
-  static License invalid() { return License(); }
+  static License invalid()
+  {
+    return License();
+  }
 
   SerialKey m_serialKey = SerialKey::invalid();
   NowFunc m_nowFunc = []() { return system_clock::now(); };

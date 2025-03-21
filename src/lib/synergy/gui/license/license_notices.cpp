@@ -29,7 +29,8 @@ namespace synergy::gui {
 QString trialLicenseNotice(const License &license);
 QString subscriptionLicenseNotice(const License &license);
 
-QString licenseNotice(const License &license) {
+QString licenseNotice(const License &license)
+{
   if (license.isTrial()) {
     return trialLicenseNotice(license);
   } else if (license.isSubscription()) {
@@ -40,7 +41,8 @@ QString licenseNotice(const License &license) {
   }
 }
 
-QString trialLicenseNotice(const License &license) {
+QString trialLicenseNotice(const License &license)
+{
   const QString buyLink = QString(kLinkBuy).arg(kUrlPurchase).arg(kColorWhite);
   if (license.isExpired()) {
     return QString("<p>Your trial has ended. %1</p>").arg(buyLink);
@@ -57,9 +59,9 @@ QString trialLicenseNotice(const License &license) {
   }
 }
 
-QString subscriptionLicenseNotice(const License &license) {
-  const QString renewLink =
-      QString(kLinkRenew).arg(kUrlPurchase).arg(kColorWhite);
+QString subscriptionLicenseNotice(const License &license)
+{
+  const QString renewLink = QString(kLinkRenew).arg(kUrlPurchase).arg(kColorWhite);
   if (license.isExpired()) {
     return QString("<p>Your license has ended. %1</p>").arg(renewLink);
   } else {

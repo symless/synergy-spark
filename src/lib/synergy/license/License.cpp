@@ -28,44 +28,54 @@ using namespace std::chrono;
 
 namespace synergy::license {
 
-License::License(const std::string &hexString)
-    : m_serialKey(parseSerialKey(hexString)) {}
+License::License(const std::string &hexString) : m_serialKey(parseSerialKey(hexString))
+{
+}
 
-License::License(const SerialKey &serialKey) : m_serialKey(serialKey) {
+License::License(const SerialKey &serialKey) : m_serialKey(serialKey)
+{
   if (!m_serialKey.isValid) {
     throw InvalidSerialKey();
   }
 }
 
-bool License::isTrial() const { return m_serialKey.type.isTrial(); }
+bool License::isTrial() const
+{
+  return m_serialKey.type.isTrial();
+}
 
-bool License::isSubscription() const {
+bool License::isSubscription() const
+{
   return m_serialKey.type.isSubscription();
 }
 
-bool License::isTimeLimited() const {
+bool License::isTimeLimited() const
+{
   return m_serialKey.type.isSubscription() || m_serialKey.type.isTrial();
 }
 
-bool License::isTlsAvailable() const {
+bool License::isTlsAvailable() const
+{
   return m_serialKey.product.isFeatureAvailable(Product::Feature::kTls);
 }
 
-bool License::isInvertConnectionAvailable() const {
-  return m_serialKey.product.isFeatureAvailable(
-      Product::Feature::kInvertConnection);
+bool License::isInvertConnectionAvailable() const
+{
+  return m_serialKey.product.isFeatureAvailable(Product::Feature::kInvertConnection);
 }
 
-bool License::isSettingsScopeAvailable() const {
-  return m_serialKey.product.isFeatureAvailable(
-      Product::Feature::kSettingsScope);
+bool License::isSettingsScopeAvailable() const
+{
+  return m_serialKey.product.isFeatureAvailable(Product::Feature::kSettingsScope);
 }
 
-Product::Edition License::productEdition() const {
+Product::Edition License::productEdition() const
+{
   return m_serialKey.product.edition();
 }
 
-bool License::isExpiringSoon() const {
+bool License::isExpiringSoon() const
+{
   if (!isTimeLimited()) {
     return false;
   }
@@ -77,7 +87,8 @@ bool License::isExpiringSoon() const {
   return m_nowFunc() >= m_serialKey.warnTime.value();
 }
 
-bool License::isExpired() const {
+bool License::isExpired() const
+{
   if (!isTimeLimited()) {
     return false;
   }
@@ -89,7 +100,8 @@ bool License::isExpired() const {
   return m_nowFunc() >= m_serialKey.expireTime.value();
 }
 
-seconds License::secondsLeft() const {
+seconds License::secondsLeft() const
+{
   if (!m_serialKey.expireTime.has_value()) {
     throw NoTimeLimitError();
   }
@@ -100,9 +112,13 @@ seconds License::secondsLeft() const {
   return duration_cast<seconds>(timeLeft);
 }
 
-days License::daysLeft() const { return duration_cast<days>(secondsLeft()); }
+days License::daysLeft() const
+{
+  return duration_cast<days>(secondsLeft());
+}
 
-std::string License::productName() const {
+std::string License::productName() const
+{
   auto name = m_serialKey.product.name();
   if (m_serialKey.type.isTrial()) {
     name += " (Trial)";

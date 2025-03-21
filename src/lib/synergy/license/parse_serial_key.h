@@ -22,35 +22,46 @@
 
 namespace synergy::license {
 
-class SerialKeyParseError : public std::runtime_error {
+class SerialKeyParseError : public std::runtime_error
+{
 public:
-  explicit SerialKeyParseError(const std::string &message)
-      : std::runtime_error(message) {}
-};
-
-class InvalidHexString : public SerialKeyParseError {
-public:
-  explicit InvalidHexString() : SerialKeyParseError("invalid hex string") {}
-};
-
-class InvalidSerialKeyFormat : public SerialKeyParseError {
-public:
-  explicit InvalidSerialKeyFormat()
-      : SerialKeyParseError("invalid serial key format") {}
-};
-
-class InvalidSerialKeyDate : public SerialKeyParseError {
-public:
-  explicit InvalidSerialKeyDate(
-      const std::string &date, const std::string &cause)
-      : SerialKeyParseError("invalid serial key date: " + date + "\n" + cause) {
+  explicit SerialKeyParseError(const std::string &message) : std::runtime_error(message)
+  {
   }
 };
 
-class InvalidSerialKeyVersion : public SerialKeyParseError {
+class InvalidHexString : public SerialKeyParseError
+{
+public:
+  explicit InvalidHexString() : SerialKeyParseError("invalid hex string")
+  {
+  }
+};
+
+class InvalidSerialKeyFormat : public SerialKeyParseError
+{
+public:
+  explicit InvalidSerialKeyFormat() : SerialKeyParseError("invalid serial key format")
+  {
+  }
+};
+
+class InvalidSerialKeyDate : public SerialKeyParseError
+{
+public:
+  explicit InvalidSerialKeyDate(const std::string &date, const std::string &cause)
+      : SerialKeyParseError("invalid serial key date: " + date + "\n" + cause)
+  {
+  }
+};
+
+class InvalidSerialKeyVersion : public SerialKeyParseError
+{
 public:
   explicit InvalidSerialKeyVersion(const std::string &version)
-      : SerialKeyParseError("invalid serial key version: " + version) {}
+      : SerialKeyParseError("invalid serial key version: " + version)
+  {
+  }
 };
 
 SerialKey parseSerialKey(const std::string &hexString);

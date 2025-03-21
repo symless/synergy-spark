@@ -25,33 +25,38 @@
 
 using enum Product::Edition;
 
-TEST(ProductTests, equal_operator) {
+TEST(ProductTests, equal_operator)
+{
   Product product1(kPro);
   Product product2(kPro);
 
   EXPECT_EQ(product1, product2);
 }
 
-TEST(ProductTests, ctor_businessName_isValid) {
+TEST(ProductTests, ctor_businessName_isValid)
+{
   Product product(Product::SerialKeyEditionID::Business);
 
   EXPECT_EQ(kBusiness, product.edition());
   EXPECT_TRUE(product.isValid());
 }
 
-TEST(ProductTests, ctor_basicType_isValid) {
+TEST(ProductTests, ctor_basicType_isValid)
+{
   Product product(kBasic);
 
   EXPECT_TRUE(product.isValid());
 }
 
-TEST(ProductTests, setEdition_invalidType_throws) {
+TEST(ProductTests, setEdition_invalidType_throws)
+{
   Product product;
 
   EXPECT_THROW(product.setEdition("test"), Product::InvalidType);
 }
 
-TEST(ProductTests, setEdition_pro_isValid) {
+TEST(ProductTests, setEdition_pro_isValid)
+{
   Product product;
 
   product.setEdition(kPro);
@@ -62,7 +67,8 @@ TEST(ProductTests, setEdition_pro_isValid) {
   EXPECT_TRUE(product.isValid());
 }
 
-TEST(ProductTests, setEdition_basic_isValid) {
+TEST(ProductTests, setEdition_basic_isValid)
+{
   Product product;
 
   product.setEdition(kBasic);
@@ -72,7 +78,8 @@ TEST(ProductTests, setEdition_basic_isValid) {
   EXPECT_EQ("Deskflow Basic", product.name());
 }
 
-TEST(ProductTests, setEdition_business_isValid) {
+TEST(ProductTests, setEdition_business_isValid)
+{
   Product product;
 
   product.setEdition(kBusiness);

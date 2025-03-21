@@ -27,22 +27,29 @@
 
 namespace synergy::license {
 
-struct SerialKey {
+struct SerialKey
+{
   using time_point = std::chrono::system_clock::time_point;
 
-  friend bool operator==(const SerialKey &lhs, const SerialKey &rhs) {
-    return (lhs.hexString == rhs.hexString) && (lhs.warnTime == rhs.warnTime) &&
-           (lhs.expireTime == rhs.expireTime) && (lhs.product == rhs.product) &&
-           (lhs.type == rhs.type);
+  friend bool operator==(const SerialKey &lhs, const SerialKey &rhs)
+  {
+    return (lhs.hexString == rhs.hexString) && (lhs.warnTime == rhs.warnTime) && (lhs.expireTime == rhs.expireTime) &&
+           (lhs.product == rhs.product) && (lhs.type == rhs.type);
   }
 
-  explicit SerialKey(const std::string &key) : hexString(key) {}
+  explicit SerialKey(const std::string &key) : hexString(key)
+  {
+  }
 
-  static SerialKey invalid() {
+  static SerialKey invalid()
+  {
     return SerialKey(Product::Edition::kUnregistered);
   }
 
-  const std::string &toString() const { return hexString; }
+  const std::string &toString() const
+  {
+    return hexString;
+  }
 
   bool isValid = false;
   std::string hexString = "";
@@ -52,7 +59,9 @@ struct SerialKey {
   std::optional<time_point> expireTime = std::nullopt;
 
 private:
-  explicit SerialKey(Product::Edition edition) : product(edition) {}
+  explicit SerialKey(Product::Edition edition) : product(edition)
+  {
+  }
 };
 
 } // namespace synergy::license

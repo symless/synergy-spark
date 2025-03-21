@@ -27,18 +27,20 @@ class ActivationDialog;
 
 class AppConfig;
 
-class ActivationDialog : public QDialog {
+class ActivationDialog : public QDialog
+{
   Q_OBJECT
 
 public:
-  ActivationDialog(
-      QWidget *parent, AppConfig &appConfig, LicenseHandler &licenseHandler);
+  ActivationDialog(QWidget *parent, AppConfig &appConfig, LicenseHandler &licenseHandler);
   ~ActivationDialog() override;
 
-  class ActivationMessageError : public std::runtime_error {
+  class ActivationMessageError : public std::runtime_error
+  {
   public:
-    ActivationMessageError()
-        : std::runtime_error("could not show activation message") {}
+    ActivationMessageError() : std::runtime_error("could not show activation message")
+    {
+    }
   };
 
 public slots:

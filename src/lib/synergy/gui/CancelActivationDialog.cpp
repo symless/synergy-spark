@@ -21,13 +21,15 @@
 
 #include "QPushButton"
 
-CancelActivationDialog::CancelActivationDialog(QWidget *parent)
-    : QDialog(parent),
-      ui(new Ui::CancelActivationDialog) {
+CancelActivationDialog::CancelActivationDialog(QWidget *parent) : QDialog(parent), ui(new Ui::CancelActivationDialog)
+{
   ui->setupUi(this);
 
   ui->m_pButtonBox->button(QDialogButtonBox::Cancel)->setText("&Back");
   ui->m_pButtonBox->button(QDialogButtonBox::Ok)->setText("&Exit");
 }
 
-CancelActivationDialog::~CancelActivationDialog() { delete ui; }
+CancelActivationDialog::~CancelActivationDialog()
+{
+  delete ui;
+}
