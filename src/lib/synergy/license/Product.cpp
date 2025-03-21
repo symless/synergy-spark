@@ -35,15 +35,22 @@ const std::map<std::string, Edition, std::less<>> kSerialKeyEditions{
     {SKE::Business, Edition::kBusiness},
 };
 
-Product::Product(Edition edition) : m_edition(edition) {}
+Product::Product(Edition edition) : m_edition(edition)
+{
+}
 
-Product::Product(const std::string &serialKeyEditionID) {
+Product::Product(const std::string &serialKeyEditionID)
+{
   setEdition(serialKeyEditionID);
 }
 
-Edition Product::edition() const { return m_edition; }
+Edition Product::edition() const
+{
+  return m_edition;
+}
 
-std::string Product::serialKeyId() const {
+std::string Product::serialKeyId() const
+{
   switch (edition()) {
     using enum Edition;
 
@@ -61,7 +68,8 @@ std::string Product::serialKeyId() const {
   }
 }
 
-std::string Product::name() const {
+std::string Product::name() const
+{
 
   const std::string nameBase = kLicensedProductName;
   switch (edition()) {
@@ -84,9 +92,13 @@ std::string Product::name() const {
   }
 }
 
-void Product::setEdition(Edition edition) { m_edition = edition; }
+void Product::setEdition(Edition edition)
+{
+  m_edition = edition;
+}
 
-void Product::setEdition(const std::string &name) {
+void Product::setEdition(const std::string &name)
+{
   const auto &pType = kSerialKeyEditions.find(name);
 
   if (pType != kSerialKeyEditions.end()) {
@@ -96,14 +108,16 @@ void Product::setEdition(const std::string &name) {
   }
 }
 
-bool Product::isValid() const {
+bool Product::isValid() const
+{
   if (m_edition == Edition::kUnregistered) {
     return false;
   }
   return kSerialKeyEditions.contains(serialKeyId());
 }
 
-bool Product::isTlsAvailable() const {
+bool Product::isTlsAvailable() const
+{
   switch (edition()) {
     using enum Edition;
 
@@ -120,7 +134,8 @@ bool Product::isTlsAvailable() const {
   }
 }
 
-bool Product::isInvertConnectionAvailable() const {
+bool Product::isInvertConnectionAvailable() const
+{
   switch (edition()) {
     using enum Edition;
 
@@ -137,7 +152,8 @@ bool Product::isInvertConnectionAvailable() const {
   }
 }
 
-bool Product::isSettingsScopeAvailable() const {
+bool Product::isSettingsScopeAvailable() const
+{
   switch (edition()) {
     using enum Edition;
 
@@ -154,7 +170,8 @@ bool Product::isSettingsScopeAvailable() const {
   }
 }
 
-bool Product::isFeatureAvailable(Product::Feature feature) const {
+bool Product::isFeatureAvailable(Product::Feature feature) const
+{
   switch (feature) {
     using enum Product::Feature;
 

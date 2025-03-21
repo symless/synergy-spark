@@ -26,7 +26,8 @@ using namespace std::chrono;
 const auto kPast = system_clock::now() - hours(1);
 const auto kFuture = system_clock::now() + hours(1);
 
-TEST(LicenseHandlerTests, changeSerialKey_validExpiredLicense_returnsTrue) {
+TEST(LicenseHandlerTests, changeSerialKey_validExpiredLicense_returnsTrue)
+{
   LicenseHandler licenseHandler;
   licenseHandler.setEnabled(true);
   auto hexString = //

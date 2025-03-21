@@ -31,7 +31,8 @@ const bool kEnableActivation = true;
 const bool kEnableActivation = false;
 #endif // SYNERGY_ENABLE_ACTIVATION
 
-bool isActivationEnabled() {
+bool isActivationEnabled()
+{
   if (strToTrue(qEnvironmentVariable("SYNERGY_ENABLE_ACTIVATION"))) {
     return true;
   } else {
@@ -39,7 +40,8 @@ bool isActivationEnabled() {
   }
 }
 
-synergy::license::SerialKey parseSerialKey(const QString &hexString) {
+synergy::license::SerialKey parseSerialKey(const QString &hexString)
+{
   try {
     return synergy::license::parseSerialKey(hexString.toStdString());
   } catch (const std::exception &e) {

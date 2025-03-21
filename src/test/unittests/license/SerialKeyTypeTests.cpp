@@ -21,20 +21,23 @@
 
 #include <gtest/gtest.h>
 
-TEST(SerialKeyTypeTests, TrialTemporaryKeyType_false) {
+TEST(SerialKeyTypeTests, TrialTemporaryKeyType_false)
+{
   SerialKeyType KeyType;
   EXPECT_FALSE(KeyType.isTrial());
   EXPECT_FALSE(KeyType.isSubscription());
 }
 
-TEST(SerialKeyTypeTests, TrialTemporaryKeyType_true) {
+TEST(SerialKeyTypeTests, TrialTemporaryKeyType_true)
+{
   SerialKeyType KeyType;
   KeyType.setType("trial");
   EXPECT_TRUE(KeyType.isTrial());
   EXPECT_FALSE(KeyType.isSubscription());
 }
 
-TEST(SerialKeyTypeTests, TimeLimitedKeyType_true) {
+TEST(SerialKeyTypeTests, TimeLimitedKeyType_true)
+{
   SerialKeyType KeyType;
   KeyType.setType("subscription");
   EXPECT_FALSE(KeyType.isTrial());

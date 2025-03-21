@@ -39,7 +39,8 @@ SerialKey parseV1(const std::string &hexString, const Parts &parts);
 SerialKey parseV2(const std::string &hexString, const Parts &parts);
 std::optional<time_point> parseDate(const std::string &unixTimeString);
 
-SerialKey parseSerialKey(const std::string &hexString) {
+SerialKey parseSerialKey(const std::string &hexString)
+{
   const auto &trimmed = deskflow::utils::trim(hexString);
   const auto &plainText = decode(trimmed);
   const auto &parts = tokenize(plainText);
@@ -54,7 +55,8 @@ SerialKey parseSerialKey(const std::string &hexString) {
   }
 }
 
-std::string decode(const std::string &hexString) {
+std::string decode(const std::string &hexString)
+{
   if (hexString.length() % 2 != 0) {
     throw InvalidHexString();
   }
@@ -71,7 +73,8 @@ std::string decode(const std::string &hexString) {
   return plainText;
 }
 
-SerialKey parseV1(const std::string &hexString, const Parts &parts) {
+SerialKey parseV1(const std::string &hexString, const Parts &parts)
+{
   if (parts.size() < 8) {
     throw InvalidSerialKeyFormat();
   }
@@ -85,7 +88,8 @@ SerialKey parseV1(const std::string &hexString, const Parts &parts) {
   return serialKey;
 }
 
-SerialKey parseV2(const std::string &hexString, const Parts &parts) {
+SerialKey parseV2(const std::string &hexString, const Parts &parts)
+{
   if (parts.size() < 9) {
     throw InvalidSerialKeyFormat();
   }
@@ -99,7 +103,8 @@ SerialKey parseV2(const std::string &hexString, const Parts &parts) {
   return serialKey;
 }
 
-Parts tokenize(const std::string &plainText) {
+Parts tokenize(const std::string &plainText)
+{
   if (plainText.front() != '{' || plainText.back() != '}') {
     throw InvalidSerialKeyFormat();
   }
@@ -122,7 +127,8 @@ Parts tokenize(const std::string &plainText) {
   return parts;
 }
 
-std::optional<time_point> parseDate(const std::string &unixTimeString) {
+std::optional<time_point> parseDate(const std::string &unixTimeString)
+{
   auto clean = deskflow::utils::trim(unixTimeString);
   if (clean.empty()) {
     return std::nullopt;

@@ -26,7 +26,8 @@ namespace synergy::gui {
 
 const auto kTestTimeEnvVar = "SYNERGY_TEST_START_TIME";
 
-AppTime::AppTime() {
+AppTime::AppTime()
+{
   m_realStartTime = system_clock::now();
   if (qEnvironmentVariableIsSet(kTestTimeEnvVar)) {
     const auto testTime = qEnvironmentVariable(kTestTimeEnvVar).toLongLong();
@@ -35,9 +36,13 @@ AppTime::AppTime() {
   }
 }
 
-bool AppTime::hasTestTime() const { return m_testStartTime.has_value(); }
+bool AppTime::hasTestTime() const
+{
+  return m_testStartTime.has_value();
+}
 
-time_point AppTime::now() {
+time_point AppTime::now()
+{
   if (m_testStartTime.has_value()) {
     const auto runtime = system_clock::now() - m_realStartTime;
     return time_point{m_testStartTime.value()} + runtime;

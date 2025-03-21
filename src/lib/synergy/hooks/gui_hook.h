@@ -27,7 +27,8 @@
 
 namespace synergy::hooks {
 
-inline bool onStart(QMainWindow *parent, AppConfig *appConfig) {
+inline bool onStart(QMainWindow *parent, AppConfig *appConfig)
+{
   if (synergy::gui::license::isActivationEnabled()) {
     qDebug("license activation enabled");
     return LicenseHandler::instance().handleStart(parent, appConfig);
@@ -39,15 +40,17 @@ inline bool onStart(QMainWindow *parent, AppConfig *appConfig) {
 }
 
 inline void onSettings(
-    QDialog *parent, QCheckBox *enableTls, QCheckBox *invertConnection,
-    QRadioButton *systemScope, QRadioButton *userScope) {
+    QDialog *parent, QCheckBox *enableTls, QCheckBox *invertConnection, QRadioButton *systemScope,
+    QRadioButton *userScope
+)
+{
   if (synergy::gui::license::isActivationEnabled()) {
-    return LicenseHandler::instance().handleSettings(
-        parent, enableTls, invertConnection, systemScope, userScope);
+    return LicenseHandler::instance().handleSettings(parent, enableTls, invertConnection, systemScope, userScope);
   }
 }
 
-inline void onVersionCheck(QString &versionUrl) {
+inline void onVersionCheck(QString &versionUrl)
+{
   if (synergy::gui::license::isActivationEnabled()) {
     qDebug("license activation enabled");
     return LicenseHandler::instance().handleVersionCheck(versionUrl);

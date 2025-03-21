@@ -20,11 +20,11 @@
 #include <QMessageBox>
 #include <QPushButton>
 
-class UpgradeDialog : public QMessageBox {
+class UpgradeDialog : public QMessageBox
+{
 public:
   explicit UpgradeDialog(QWidget *parent = nullptr);
-  void
-  showDialog(const QString &title, const QString &body, const QString &link);
+  void showDialog(const QString &title, const QString &body, const QString &link);
 
 private:
   QPushButton *m_upgrade = nullptr;

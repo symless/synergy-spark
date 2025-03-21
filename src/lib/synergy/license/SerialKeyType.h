@@ -19,17 +19,20 @@
 
 #include <string>
 
-class SerialKeyType {
+class SerialKeyType
+{
 private:
-  friend bool
-  operator==(SerialKeyType const &lhs, SerialKeyType const &rhs) = default;
+  friend bool operator==(SerialKeyType const &lhs, SerialKeyType const &rhs) = default;
 
 public:
   static const std::string Trial;
   static const std::string Subscription;
 
   explicit SerialKeyType() = default;
-  explicit SerialKeyType(const std::string_view &type) { setType(type); }
+  explicit SerialKeyType(const std::string_view &type)
+  {
+    setType(type);
+  }
 
   void setType(const std::string_view &type);
   bool isTrial() const;

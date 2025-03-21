@@ -31,14 +31,16 @@ class QRadioButton;
 /**
  * @brief A convenience wrapper for `License` that provides Qt signals, etc.
  */
-class LicenseHandler : public QObject {
+class LicenseHandler : public QObject
+{
   Q_OBJECT
 
   using License = synergy::license::License;
   using SerialKey = synergy::license::SerialKey;
 
 public:
-  enum class SetSerialKeyResult {
+  enum class SetSerialKeyResult
+  {
     kSuccess,
     kFatal,
     kUnchanged,
@@ -46,34 +48,32 @@ public:
     kExpired,
   };
 
-  static LicenseHandler &instance() {
+  static LicenseHandler &instance()
+  {
     static LicenseHandler instance;
     return instance;
   }
 
   bool handleStart(QMainWindow *parent, AppConfig *appConfig);
   void handleSettings(
-      QDialog *parent, QCheckBox *enableTls, QCheckBox *invertConnection,
-      QRadioButton *systemScope, QRadioButton *userScope) const;
+      QDialog *parent, QCheckBox *enableTls, QCheckBox *invertConnection, QRadioButton *systemScope,
+      QRadioButton *userScope
+  ) const;
   void handleVersionCheck(QString &versionUrl);
   bool loadSettings();
   void saveSettings();
   const License &license() const;
   Product::Edition productEdition() const;
   QString productName() const;
-  SetSerialKeyResult
-  setLicense(const QString &hexString, bool allowExpired = false);
+  SetSerialKeyResult setLicense(const QString &hexString, bool allowExpired = false);
   void clampFeatures(bool enableTlsIfAvailable);
 
 private:
-  void checkTlsCheckBox(
-      QDialog *parent, QCheckBox *checkBoxEnableTls, bool showDialog) const;
-  void checkInvertConnectionCheckBox(
-      QDialog *parent, QCheckBox *checkBoxInvertConnection,
-      bool showDialog) const;
+  void checkTlsCheckBox(QDialog *parent, QCheckBox *checkBoxEnableTls, bool showDialog) const;
+  void checkInvertConnectionCheckBox(QDialog *parent, QCheckBox *checkBoxInvertConnection, bool showDialog) const;
   void checkSettingsScopeRadioButton(
-      QDialog *parent, QRadioButton *systemScope, QRadioButton *userScope,
-      bool showDialog) const;
+      QDialog *parent, QRadioButton *systemScope, QRadioButton *userScope, bool showDialog
+  ) const;
   void updateWindowTitle() const;
   bool showActivationDialog();
   void validate();

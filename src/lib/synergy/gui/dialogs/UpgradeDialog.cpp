@@ -22,13 +22,14 @@
 #include <QtCore>
 #include <QtGui>
 
-UpgradeDialog::UpgradeDialog(QWidget *parent) : QMessageBox(parent) {
+UpgradeDialog::UpgradeDialog(QWidget *parent) : QMessageBox(parent)
+{
   m_cancel = addButton("Cancel", QMessageBox::RejectRole);
   m_upgrade = addButton("Upgrade", QMessageBox::AcceptRole);
 }
 
-void UpgradeDialog::showDialog(
-    const QString &title, const QString &body, const QString &link) {
+void UpgradeDialog::showDialog(const QString &title, const QString &body, const QString &link)
+{
   setWindowTitle(title);
   setText(body);
   exec();

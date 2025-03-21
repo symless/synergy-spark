@@ -20,29 +20,37 @@
 #include <stdexcept>
 #include <string>
 
-class Product {
+class Product
+{
   friend bool operator==(Product const &, Product const &) = default;
 
 public:
-  class InvalidProductEdition : public std::runtime_error {
+  class InvalidProductEdition : public std::runtime_error
+  {
   public:
-    explicit InvalidProductEdition()
-        : std::runtime_error("invalid product edition") {}
+    explicit InvalidProductEdition() : std::runtime_error("invalid product edition")
+    {
+    }
   };
 
-  class InvalidFeature : public std::runtime_error {
+  class InvalidFeature : public std::runtime_error
+  {
   public:
-    explicit InvalidFeature() : std::runtime_error("invalid feature") {}
+    explicit InvalidFeature() : std::runtime_error("invalid feature")
+    {
+    }
   };
 
-  enum class Edition {
+  enum class Edition
+  {
     kUnregistered = -1,
     kBasic = 0,
     kPro = 1,
     kBusiness = 4,
   };
 
-  enum class Feature {
+  enum class Feature
+  {
     kTls = 0,
     kInvertConnection = 1,
     kSettingsScope = 2,
@@ -51,7 +59,8 @@ public:
   /**
    * @brief Product edition IDs found in a decoded serial key.
    */
-  class SerialKeyEditionID {
+  class SerialKeyEditionID
+  {
   public:
     static const std::string Basic;
     static const std::string Pro;

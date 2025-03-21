@@ -42,7 +42,8 @@ using namespace std::chrono;
 using namespace synergy::gui::license;
 using License = synergy::license::License;
 
-bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
+bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig)
+{
   m_mainWindow = parent;
   m_appConfig = appConfig;
 
@@ -57,8 +58,7 @@ bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
   updateWindowTitle();
 
   const auto serialKeyAction = new QAction("Change serial key", parent);
-  QObject::connect(
-      serialKeyAction, &QAction::triggered, [this] { showActivationDialog(); });
+  QObject::connect(serialKeyAction, &QAction::triggered, [this] { showActivationDialog(); });
 
   const auto licenseMenu = new QMenu("License");
   licenseMenu->addAction(serialKeyAction);
@@ -86,8 +86,10 @@ bool LicenseHandler::handleStart(QMainWindow *parent, AppConfig *appConfig) {
 }
 
 void LicenseHandler::handleSettings(
-    QDialog *parent, QCheckBox *enableTls, QCheckBox *invertConnection,
-    QRadioButton *systemScope, QRadioButton *userScope) const {
+    QDialog *parent, QCheckBox *enableTls, QCheckBox *invertConnection, QRadioButton *systemScope,
+    QRadioButton *userScope
+) const
+{
 
   const auto onTlsToggle = [this, parent, enableTls] {
     qDebug("tls checkbox toggled");
@@ -99,8 +101,7 @@ void LicenseHandler::handleSettings(
     qDebug("invert connection checkbox toggled");
     checkInvertConnectionCheckBox(parent, invertConnection, true);
   };
-  QObject::connect(
-      invertConnection, &QCheckBox::toggled, onInvertConnectionToggle);
+  QObject::connect(invertConnection, &QCheckBox::toggled, onInvertConnectionToggle);
 
   const auto onSystemScopeToggle = [this, parent, systemScope, userScope] {
     qDebug("system scope radio button toggled");
@@ -113,7 +114,8 @@ void LicenseHandler::handleSettings(
   checkSettingsScopeRadioButton(parent, systemScope, userScope, false);
 }
 
-void LicenseHandler::handleVersionCheck(QString &versionUrl) {
+void LicenseHandler::handleVersionCheck(QString &versionUrl)
+{
   const auto edition = license().productEdition();
   if (edition == Product::Edition::kBusiness) {
     versionUrl.append("/business");
@@ -122,7 +124,8 @@ void LicenseHandler::handleVersionCheck(QString &versionUrl) {
   }
 }
 
-bool LicenseHandler::loadSettings() {
+bool LicenseHandler::loadSettings()
+{
   using enum SetSerialKeyResult;
 
   m_settings.load();
@@ -139,13 +142,15 @@ bool LicenseHandler::loadSettings() {
   return true;
 }
 
-void LicenseHandler::saveSettings() {
+void LicenseHandler::saveSettings()
+{
   const auto hexString = m_license.serialKey().hexString;
   m_settings.setSerialKey(QString::fromStdString(hexString));
   m_settings.save();
 }
 
-bool LicenseHandler::showActivationDialog() {
+bool LicenseHandler::showActivationDialog()
+{
   ActivationDialog dialog(m_mainWindow, *m_appConfig, *this);
   const auto result = dialog.exec();
   if (result == QDialog::Accepted) {
@@ -161,14 +166,15 @@ bool LicenseHandler::showActivationDialog() {
   }
 }
 
-void LicenseHandler::updateWindowTitle() const {
+void LicenseHandler::updateWindowTitle() const
+{
   const auto productName = QString::fromStdString(m_license.productName());
   qDebug("updating main window title: %s", qPrintable(productName));
   m_mainWindow->setWindowTitle(productName);
 }
 
-void LicenseHandler::checkTlsCheckBox(
-    QDialog *parent, QCheckBox *checkBoxEnableTls, bool showDialog) const {
+void LicenseHandler::checkTlsCheckBox(QDialog *parent, QCheckBox *checkBoxEnableTls, bool showDialog) const
+{
   if (!m_license.isTlsAvailable() && checkBoxEnableTls->isChecked()) {
     qDebug("tls not available, showing upgrade dialog");
     checkBoxEnableTls->setChecked(false);
@@ -177,18 +183,18 @@ void LicenseHandler::checkTlsCheckBox(
       UpgradeDialog dialog(parent);
       dialog.showDialog(
           QString("TLS Encryption"),
-          QString("Please upgrade to %1 to enable TLS encryption.")
-              .arg(synergy::gui::kProProductName),
-          synergy::gui::kUrlPersonalUpgrade);
+          QString("Please upgrade to %1 to enable TLS encryption.").arg(synergy::gui::kProProductName),
+          synergy::gui::kUrlPersonalUpgrade
+      );
     }
   }
 }
 
 void LicenseHandler::checkInvertConnectionCheckBox(
-    QDialog *parent, QCheckBox *checkBoxInvertConnection,
-    bool showDialog) const {
-  if (!m_license.isInvertConnectionAvailable() &&
-      checkBoxInvertConnection->isChecked()) {
+    QDialog *parent, QCheckBox *checkBoxInvertConnection, bool showDialog
+) const
+{
+  if (!m_license.isInvertConnectionAvailable() && checkBoxInvertConnection->isChecked()) {
     qDebug("invert connection not available, showing upgrade dialog");
     checkBoxInvertConnection->setChecked(false);
 
@@ -196,17 +202,18 @@ void LicenseHandler::checkInvertConnectionCheckBox(
       UpgradeDialog dialog(parent);
       dialog.showDialog(
           QString("Invert Connection"),
-          QString(
-              "Please upgrade to %1 to enable the invert connection feature.")
+          QString("Please upgrade to %1 to enable the invert connection feature.")
               .arg(synergy::gui::kBusinessProductName),
-          synergy::gui::kUrlContact);
+          synergy::gui::kUrlContact
+      );
     }
   }
 }
 
 void LicenseHandler::checkSettingsScopeRadioButton(
-    QDialog *parent, QRadioButton *systemScope, QRadioButton *userScope,
-    bool showDialog) const {
+    QDialog *parent, QRadioButton *systemScope, QRadioButton *userScope, bool showDialog
+) const
+{
   if (!m_license.isSettingsScopeAvailable() && systemScope->isChecked()) {
     qDebug("settings scope not available, showing upgrade dialog");
     userScope->setChecked(true);
@@ -215,29 +222,32 @@ void LicenseHandler::checkSettingsScopeRadioButton(
       UpgradeDialog dialog(parent);
       dialog.showDialog(
           QString("Settings Scope"),
-          QString("Please upgrade to %1 to enable the settings scope feature.")
-              .arg(synergy::gui::kBusinessProductName),
-          synergy::gui::kUrlContact);
+          QString("Please upgrade to %1 to enable the settings scope feature.").arg(synergy::gui::kBusinessProductName),
+          synergy::gui::kUrlContact
+      );
     }
   }
 }
 
-const synergy::license::License &LicenseHandler::license() const {
+const synergy::license::License &LicenseHandler::license() const
+{
   return m_license;
 }
 
-Product::Edition LicenseHandler::productEdition() const {
+Product::Edition LicenseHandler::productEdition() const
+{
   return m_license.productEdition();
 }
 
-QString LicenseHandler::productName() const {
+QString LicenseHandler::productName() const
+{
   return QString::fromStdString(m_license.productName());
 }
 
 /// @param allowExpired If true, allow expired licenses to be set.
 ///     Useful for passing an expired license to the activation dialog.
-LicenseHandler::SetSerialKeyResult
-LicenseHandler::setLicense(const QString &hexString, bool allowExpired) {
+LicenseHandler::SetSerialKeyResult LicenseHandler::setLicense(const QString &hexString, bool allowExpired)
+{
   using enum LicenseHandler::SetSerialKeyResult;
 
   if (hexString.isEmpty()) {
@@ -285,7 +295,8 @@ LicenseHandler::setLicense(const QString &hexString, bool allowExpired) {
   return kSuccess;
 }
 
-void LicenseHandler::validate() {
+void LicenseHandler::validate()
+{
   if (!m_license.isValid()) {
     qDebug("license validation failed, license invalid");
     showActivationDialog();
@@ -301,7 +312,8 @@ void LicenseHandler::validate() {
   qDebug("license validation succeeded");
 }
 
-void LicenseHandler::clampFeatures(bool enableTlsIfAvailable) {
+void LicenseHandler::clampFeatures(bool enableTlsIfAvailable)
+{
   if (enableTlsIfAvailable && m_license.isTlsAvailable()) {
     qDebug("tls available, enabling tls");
     m_appConfig->setTlsEnabled(true);
@@ -310,14 +322,12 @@ void LicenseHandler::clampFeatures(bool enableTlsIfAvailable) {
     m_appConfig->setTlsEnabled(false);
   }
 
-  if (m_appConfig->invertConnection() &&
-      !m_license.isInvertConnectionAvailable()) {
+  if (m_appConfig->invertConnection() && !m_license.isInvertConnectionAvailable()) {
     qWarning("invert connection not available, disabling invert connection");
     m_appConfig->setInvertConnection(false);
   }
 
-  if (m_appConfig->isActiveScopeSystem() &&
-      !m_license.isSettingsScopeAvailable()) {
+  if (m_appConfig->isActiveScopeSystem() && !m_license.isSettingsScopeAvailable()) {
     qWarning("settings scope not available, disabling system scope");
     m_appConfig->setLoadFromSystemScope(false);
   }

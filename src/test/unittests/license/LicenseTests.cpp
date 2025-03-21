@@ -29,14 +29,17 @@ using namespace synergy::license;
 using time_point = std::chrono::system_clock::time_point;
 using seconds = std::chrono::seconds;
 
-class LicenseTests : public ::testing::Test {
+class LicenseTests : public ::testing::Test
+{
 protected:
-  void setNow(License &license, int unixTime) const {
+  void setNow(License &license, int unixTime) const
+  {
     license.setNowFunc([unixTime]() { return time_point{seconds{unixTime}}; });
   }
 };
 
-TEST_F(LicenseTests, isExpiring_validV2TrialBasicSerial_isTrial) {
+TEST_F(LicenseTests, isExpiring_validV2TrialBasicSerial_isTrial)
+{
   // {v2;trial;basic;Bob;1;email;company name;1;86400}
   License license("7B76323B747269616C3B62617369633B426F623B313B656D61696C3B636"
                   "F6D70616E79206E616D653B313B38363430307D");
@@ -45,7 +48,8 @@ TEST_F(LicenseTests, isExpiring_validV2TrialBasicSerial_isTrial) {
   EXPECT_TRUE(license.isTrial());
 }
 
-TEST_F(LicenseTests, isExpiring_validV2TrialBasicSerial_isTimeLimited) {
+TEST_F(LicenseTests, isExpiring_validV2TrialBasicSerial_isTimeLimited)
+{
   // {v2;trial;basic;Bob;1;email;company name;1;86400}
   License license("7B76323B747269616C3B62617369633B426F623B313B656D61696C3B636"
                   "F6D70616E79206E616D653B313B38363430307D");
@@ -54,7 +58,8 @@ TEST_F(LicenseTests, isExpiring_validV2TrialBasicSerial_isTimeLimited) {
   EXPECT_TRUE(license.isTimeLimited());
 }
 
-TEST_F(LicenseTests, isExpiring_validV2TrialBasicSerial_isNotSubscription) {
+TEST_F(LicenseTests, isExpiring_validV2TrialBasicSerial_isNotSubscription)
+{
   // {v2;trial;basic;Bob;1;email;company name;1;86400}
   License license("7B76323B747269616C3B62617369633B426F623B313B656D61696C3B636"
                   "F6D70616E79206E616D653B313B38363430307D");
@@ -63,7 +68,8 @@ TEST_F(LicenseTests, isExpiring_validV2TrialBasicSerial_isNotSubscription) {
   EXPECT_FALSE(license.isSubscription());
 }
 
-TEST_F(LicenseTests, isExpiring_validV2TrialBasicSerial_isExpiring) {
+TEST_F(LicenseTests, isExpiring_validV2TrialBasicSerial_isExpiring)
+{
   // {v2;trial;basic;Bob;1;email;company name;1;86400}
   License license("7B76323B747269616C3B62617369633B426F623B313B656D61696C3B636"
                   "F6D70616E79206E616D653B313B38363430307D");
@@ -72,7 +78,8 @@ TEST_F(LicenseTests, isExpiring_validV2TrialBasicSerial_isExpiring) {
   EXPECT_FALSE(license.isExpiringSoon());
 }
 
-TEST_F(LicenseTests, isExpiring_validV2TrialBasicSerial_isBasicEdition) {
+TEST_F(LicenseTests, isExpiring_validV2TrialBasicSerial_isBasicEdition)
+{
   // {v2;trial;basic;Bob;1;email;company name;1;86400}
   License license("7B76323B747269616C3B62617369633B426F623B313B656D61696C3B636"
                   "F6D70616E79206E616D653B313B38363430307D");
@@ -81,7 +88,8 @@ TEST_F(LicenseTests, isExpiring_validV2TrialBasicSerial_isBasicEdition) {
   EXPECT_EQ(kBasic, license.productEdition());
 }
 
-TEST_F(LicenseTests, isExpiring_expiringV2TrialBasicSerial_returnTrue) {
+TEST_F(LicenseTests, isExpiring_expiringV2TrialBasicSerial_returnTrue)
+{
   // {v2;trial;basic;Bob;1;email;company name;86400;0}
   License license("7B76323B747269616C3B62617369633B426F623B313B656D61696C3B636"
                   "F6D70616E79206E616D653B38363430303B307D");
@@ -91,7 +99,8 @@ TEST_F(LicenseTests, isExpiring_expiringV2TrialBasicSerial_returnTrue) {
   EXPECT_TRUE(license.isExpiringSoon());
 }
 
-TEST_F(LicenseTests, isExpired_validV2TrialBasicSerial_returnFalse) {
+TEST_F(LicenseTests, isExpired_validV2TrialBasicSerial_returnFalse)
+{
   // {v2;trial;basic;Bob;1;email;company name;0;86400}
   License license("7B76323B747269616C3B62617369633B426F623B313B656D61696C3B636"
                   "F6D70616E79206E616D653B303B38363430307D");
@@ -101,7 +110,8 @@ TEST_F(LicenseTests, isExpired_validV2TrialBasicSerial_returnFalse) {
   EXPECT_FALSE(license.isExpired());
 }
 
-TEST_F(LicenseTests, isExpired_expiringV2TrialBasicSerial_returnFalse) {
+TEST_F(LicenseTests, isExpired_expiringV2TrialBasicSerial_returnFalse)
+{
   // {v2;trial;basic;Bob;1;email;company name;0;86400}
   License license("7B76323B747269616C3B62617369633B426F623B313B656D61696C3B636"
                   "F6D70616E79206E616D653B303B38363430307D");
@@ -111,7 +121,8 @@ TEST_F(LicenseTests, isExpired_expiringV2TrialBasicSerial_returnFalse) {
   EXPECT_FALSE(license.isExpired());
 }
 
-TEST_F(LicenseTests, isExpired_expiredV2TrialBasicSerial_returnTrue) {
+TEST_F(LicenseTests, isExpired_expiredV2TrialBasicSerial_returnTrue)
+{
   // {v2;trial;basic;Bob;1;email;company name;0;86400}
   License license("7B76323B747269616C3B62617369633B426F623B313B656D61696C3B636"
                   "F6D70616E79206E616D653B303B38363430307D");
@@ -121,7 +132,8 @@ TEST_F(LicenseTests, isExpired_expiredV2TrialBasicSerial_returnTrue) {
   EXPECT_TRUE(license.isExpired());
 }
 
-TEST_F(LicenseTests, daysLeft_validExactlyOneDayV2TrialBasicSerial_returnOne) {
+TEST_F(LicenseTests, daysLeft_validExactlyOneDayV2TrialBasicSerial_returnOne)
+{
   // {v2;trial;basic;Bob;1;email;company name;0;86400}
   License license("7B76323B747269616C3B62617369633B426F623B313B656D61696C3B636"
                   "F6D70616E79206E616D653B303B38363430307D");
@@ -130,7 +142,8 @@ TEST_F(LicenseTests, daysLeft_validExactlyOneDayV2TrialBasicSerial_returnOne) {
   EXPECT_EQ(1, license.secondsLeft().count());
 }
 
-TEST_F(LicenseTests, daysLeft_validWithinOneDayV2TrialBasicSerial_returnOne) {
+TEST_F(LicenseTests, daysLeft_validWithinOneDayV2TrialBasicSerial_returnOne)
+{
   // {v2;trial;basic;Bob;1;email;company name;0;86400}
   License license("7B76323B747269616C3B62617369633B426F623B313B656D61696C3B636"
                   "F6D70616E79206E616D653B303B38363430307D");
@@ -139,7 +152,8 @@ TEST_F(LicenseTests, daysLeft_validWithinOneDayV2TrialBasicSerial_returnOne) {
   EXPECT_EQ(1, license.secondsLeft().count());
 }
 
-TEST_F(LicenseTests, daysLeft_expiredV2TrialBasicSerial_returnZero) {
+TEST_F(LicenseTests, daysLeft_expiredV2TrialBasicSerial_returnZero)
+{
   // {v2;trial;basic;Bob;1;email;company name;0;86400}
   License license("7B76323B747269616C3B62617369633B426F623B313B656D61696C3B636"
                   "F6D70616E79206E616D653B303B38363430307D");
@@ -149,7 +163,8 @@ TEST_F(LicenseTests, daysLeft_expiredV2TrialBasicSerial_returnZero) {
 }
 
 // Subscription license tests
-TEST_F(LicenseTests, isExpiring_validV2SubscriptionBasicSerial_returnFalse) {
+TEST_F(LicenseTests, isExpiring_validV2SubscriptionBasicSerial_returnFalse)
+{
   // {v2;subscription;basic;Bob;1;email;company name;1;86400}
   License license("7B76323B737562736372697074696F6E3B62617369633B426F623B313B6"
                   "56D61696C3B636F6D70616E79206E616D653B313B38363430307D");
@@ -160,7 +175,8 @@ TEST_F(LicenseTests, isExpiring_validV2SubscriptionBasicSerial_returnFalse) {
   EXPECT_EQ(kBasic, license.productEdition());
 }
 
-TEST_F(LicenseTests, isExpiring_expiringV2SubscriptionBasicSerial_returnTrue) {
+TEST_F(LicenseTests, isExpiring_expiringV2SubscriptionBasicSerial_returnTrue)
+{
   // {v2;subscription;basic;Bob;1;email;company name;86400;0}
   License license("7B76323B737562736372697074696F6E3B62617369633B426F623B313B6"
                   "56D61696C3B636F6D70616E79206E616D653B38363430303B307D");
@@ -170,7 +186,8 @@ TEST_F(LicenseTests, isExpiring_expiringV2SubscriptionBasicSerial_returnTrue) {
   EXPECT_TRUE(license.isExpiringSoon());
 }
 
-TEST_F(LicenseTests, isExpired_expiredV2SubscriptionBasicSerial_returnTrue) {
+TEST_F(LicenseTests, isExpired_expiredV2SubscriptionBasicSerial_returnTrue)
+{
   // {v2;subscription;basic;Bob;1;email;company name;0;86400}
   License license("7B76323B737562736372697074696F6E3B62617369633B426F623B313B6"
                   "56D61696C3B636F6D70616E79206E616D653B303B38363430307D");

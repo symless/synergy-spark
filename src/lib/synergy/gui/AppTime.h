@@ -22,7 +22,8 @@
 
 namespace synergy::gui {
 
-class AppTime {
+class AppTime
+{
   using time_point = std::chrono::system_clock::time_point;
 
 public:

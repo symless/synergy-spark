@@ -23,7 +23,8 @@ namespace Ui {
 class CancelActivationDialog;
 }
 
-class CancelActivationDialog : public QDialog {
+class CancelActivationDialog : public QDialog
+{
   Q_OBJECT
 
 public:

@@ -22,7 +22,8 @@
 
 namespace synergy::gui::license {
 
-class LicenseSettings : public QObject {
+class LicenseSettings : public QObject
+{
   Q_OBJECT
 public:
   LicenseSettings();
@@ -30,8 +31,14 @@ public:
   void load();
   void save();
 
-  QString serialKey() const { return m_serialKey; }
-  void setSerialKey(const QString &serialKey) { m_serialKey = serialKey; }
+  QString serialKey() const
+  {
+    return m_serialKey;
+  }
+  void setSerialKey(const QString &serialKey)
+  {
+    m_serialKey = serialKey;
+  }
 
 private:
   QString m_serialKey;
