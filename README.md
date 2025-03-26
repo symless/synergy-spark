@@ -1,9 +1,3 @@
-# Synergy Spark
+This repository is now obsolete. 
 
-Open source customer-focused technology stack for Synergy.
-
-Upstream: [Deskflow project](https://github.com/deskflow/deskflow)
-
-For technical support, please [contact us](https://symless.com/synergy/contact).
-
-Setup script: `scripts/setup.py`
+New repository: https://github.com/symless/synergy
